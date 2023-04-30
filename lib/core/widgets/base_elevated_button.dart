@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CommonButton extends StatelessWidget {
-  CommonButton({
+class BaseElevatedButton extends StatelessWidget {
+  BaseElevatedButton({
     super.key,
     required this.text,
     required this.onPressed,
