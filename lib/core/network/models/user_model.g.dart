@@ -9,10 +9,10 @@ part of 'user_model.dart';
 UserModel _$UserModelFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    requiredKeys: const ['email', 'username', 'password', 'is_verified'],
+    requiredKeys: const ['email', 'user_name', 'password', 'is_verified'],
   );
   return UserModel(
-    username: json['username'] as String,
+    userName: json['user_name'] as String,
     email: json['email'] as String,
     token: json['password'] as String,
     isVerified: json['is_verified'] as bool,
@@ -35,7 +35,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'skills': instance.skills,
       'id': instance.id,
       'email': instance.email,
-      'username': instance.username,
+      'user_name': instance.userName,
       'password': instance.token,
       'is_verified': instance.isVerified,
     };

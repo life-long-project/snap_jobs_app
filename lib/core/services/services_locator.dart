@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:snap_jobs/core/network/network_util.dart';
+import 'package:snap_jobs/core/network/base_http_client.dart';
 
 import '../../Jobs_feature/presentation/controller/cubit/jobs_cubit.dart';
 import '../../Jobs_feature/presentation/controller/cubit/search_cubit.dart';
@@ -15,10 +14,9 @@ final sl = GetIt.instance;
 
 class ServicesLocator {
   void init() {
+    GetIt.I.allowReassignment = true;
 
-        sl.registerLazySingleton(() => Dio());
-        sl.registerLazySingleton(() => NetworkUtil(sl()));
-
+    sl.registerLazySingleton(() => BaseHttpClient());
 
     //services of job feature
     ///bloc
@@ -39,5 +37,13 @@ class ServicesLocator {
     ///
 
     sl.registerLazySingleton<NoParameters>(() => NoParameters());
+  }
+}
+
+class ServiceLocatorWithTokens {
+  init(String token) {
+    sl.registerLazySingleton(
+      () => BaseHttpClient.addToken(token),
+    );
   }
 }

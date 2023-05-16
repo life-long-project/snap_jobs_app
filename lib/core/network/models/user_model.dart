@@ -3,10 +3,8 @@ import 'package:snap_jobs/core/common_domain/entities/user.dart';
 
 part 'user_model.g.dart';
 
-
 @JsonSerializable(fieldRename: FieldRename.snake)
 class UserModel extends User {
-
   @override
   @JsonKey(
     required: true,
@@ -17,14 +15,14 @@ class UserModel extends User {
   @JsonKey(
     required: true,
   )
-  String get username => super.username;
+  String get userName => super.userName;
 
   @override
   @JsonKey(
     required: true,
     name: "password",
   )
-  String get token => super.token;  
+  String get token => super.token;
 
   @override
   @JsonKey(
@@ -32,27 +30,20 @@ class UserModel extends User {
   )
   bool get isVerified => super.isVerified;
 
-  
-
-  
-
-
-
-const UserModel({
-  required super.username,
-  required super.email,
-  required super.token,
-  required super.isVerified,
-  required super.age,
-  required super.gender,
-  required super.cities,
-  required super.country,
-  required super.pastExperience,
-  required super.skills,
-  required super.id,
-});
+  const UserModel({
+    required super.userName,
+    required super.email,
+    required super.token,
+    required super.isVerified,
+    required super.age,
+    required super.gender,
+    required super.cities,
+    required super.country,
+    required super.pastExperience,
+    required super.skills,
+    required super.id,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
-
 }

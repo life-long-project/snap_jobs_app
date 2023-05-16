@@ -5,7 +5,6 @@ import 'package:snap_jobs/core/utils/themeApp/themeDataLight.dart';
 import '../../Home_Feature/Presentation/UI/Screens/home.dart';
 import '../../Jobs_feature/domain/entities/jobs.dart';
 
-import '../../Jobs_feature/presentation/uI/screens/jobs_screen.dart';
 import '../../Jobs_feature/presentation/uI/screens/test.dart';
 
 class BottomNavigation extends StatefulWidget {
