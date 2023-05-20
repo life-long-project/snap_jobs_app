@@ -58,7 +58,6 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   intl: ^0.18.1
   json_annotation: ^4.8.0
-  sqflite: ^2.2.8+1
   path: ^1.8.3
   connectivity_plus: ^3.0.6
   formz: ^0.6.0

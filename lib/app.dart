@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation%20/screens/login/login_page.dart';
+import 'package:snap_jobs/core/network/api_constants.dart';
 
 import 'package:user_repository/user_repository.dart';
 
@@ -9,6 +10,7 @@ import 'Home_Feature/Presentation/UI/Screens/home.dart';
 import 'authentication_and_login_features/presentation /controllers/authenttication_bloc/authentication_bloc.dart';
 import 'core/network/base_http_client.dart';
 import 'core/services/services_locator.dart';
+import 'core/utils/themeApp/themeDataLight.dart';
 import 'splash/view/splash_page.dart';
 
 class App extends StatefulWidget {
@@ -21,12 +23,12 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   late final AuthenticationRepository _authenticationRepository;
   late final UserRepository _userRepository;
+  late Future<bool>  _requiredBeforeInitializing;
 
   @override
   void initState() {
     super.initState();
-    _authenticationRepository = AuthenticationRepository(sl<BaseHttpClient>());
-    _userRepository = UserRepository(sl<BaseHttpClient>());
+    _requiredBeforeInitializing = _preInitializeRepositories();
   }
 
   @override
@@ -37,18 +39,44 @@ class _AppState extends State<App> {
     super.dispose();
   }
 
+  Future<bool> _preInitializeRepositories() async {
+    await Future.delayed(Duration.zero);
+
+    ServicesLocator().init();
+
+    _authenticationRepository =
+        await AuthenticationRepository.create(sl<BaseHttpClient>());
+    _userRepository =
+        UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AuthenticationBloc(
-          authenticationRepository: _authenticationRepository,
-          userRepository: _userRepository,
-        ),
-        child: const AppView(),
-      ),
-    );
+    return FutureBuilder(
+        future: _requiredBeforeInitializing,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            // Future hasn't finished yet, return a placeholder
+            return const MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          }
+          return RepositoryProvider.value(
+            value: _authenticationRepository,
+            child: BlocProvider(
+              create: (_) => AuthenticationBloc(
+                authenticationRepository: _authenticationRepository,
+                userRepository: _userRepository,
+              ),
+              child: const AppView(),
+            ),
+          );
+        });
   }
 }
 
@@ -69,6 +97,7 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,
+      theme: getThemeDtaLight(),
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {

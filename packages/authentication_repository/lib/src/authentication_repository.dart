@@ -9,28 +9,53 @@ import 'package:http/http.dart' as http;
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthenticationRepository {
+
   final _statusStreamController = StreamController<AuthenticationStatus>();
   String? _token;
-
-  SharedPreferences? sharedPrefs;
-
-  AuthenticationRepository(this.httpClient) {
-    _initPrefs();
-  }
-
   http.Client httpClient;
+  SharedPreferences? _sharedPrefs;
+  bool hasSharedPreferences = false;
 
+
+  // private constructor, see [create] to understand why.
+  AuthenticationRepository._(this.httpClient);
   Future<void> _initPrefs() async {
-    sharedPrefs = await SharedPreferences.getInstance();
+    _sharedPrefs = await SharedPreferences.getInstance();
   }
+
+///AuthenticationRepository streams the Authentication status the user {authenticated, unauthenticated , unknown}
+///
+  /// AuthenticationRepository uses SharedPreferences to persist the user's token.
+  /// but Shared preferences initialization is async, so we need to wait for it to finish.
+  /// so we use a static create method to create an instance of the repository.
+  static Future<AuthenticationRepository> create(http.Client httpClient) async {
+    var authenticationRepository = AuthenticationRepository._(httpClient);
+    await authenticationRepository
+        ._initPrefs()
+        .then((value) => {authenticationRepository.hasSharedPreferences = true})
+        .onError((error, stackTrace) => {});
+
+    return authenticationRepository;
+  }
+
 
   Future<String> get token async {
-    _token = sharedPrefs?.getString('token');
-    return _token ?? '';
+    if (_token != null) {
+      return _token!;
+    } else if (hasSharedPreferences) {
+      _sharedPrefs?.containsKey('token') ?? false
+          ? _token = _sharedPrefs?.getString('token')
+          : null;
+      return (_token ?? '');
+    }
+    return (_token ?? '');
   }
 
+
+
+
   Stream<AuthenticationStatus> get status async* {
-    _token = sharedPrefs?.getString('token');
+    _token = _sharedPrefs?.getString('token');
     if (_token != null) {
       yield AuthenticationStatus.authenticated;
     } else {
@@ -38,6 +63,9 @@ class AuthenticationRepository {
     }
     yield* _statusStreamController.stream;
   }
+
+
+
 
   Future<void> logIn(
       {required Uri url, required Map<String, String> body}) async {
@@ -47,7 +75,12 @@ class AuthenticationRepository {
         httpClient,
         body,
       );
-      await sharedPrefs?.setString('token', token);
+      hasSharedPreferences                                                  
+          ? (_sharedPrefs?.containsKey('token') ?? false)
+              ? await _deleteAndAdd(token)
+              : await _sharedPrefs?.setString('token', token)
+          : null;
+      _token = token;
 
       _statusStreamController.add(AuthenticationStatus.authenticated);
     } on Exception catch (e) {
@@ -55,10 +88,26 @@ class AuthenticationRepository {
     }
   }
 
+
+
+
+
   Future<void> logOut() async {
     _statusStreamController.add(AuthenticationStatus.unauthenticated);
-    await sharedPrefs?.remove('token');
+    await _sharedPrefs?.remove('token');
+    _token = null;
   }
 
+
+
   void dispose() => _statusStreamController.close();
+
+  Future<void> _deleteAndAdd(String token) async {
+    _sharedPrefs?.remove('token').then((value) {
+      _sharedPrefs?.setString('token', token);
+      return value;
+    });
+
+
+  }
 }

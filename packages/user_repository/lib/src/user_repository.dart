@@ -6,30 +6,61 @@ import 'package:user_repository/src/models/models.dart';
 
 class UserRepository {
   User? _user;
-  String? _profileId;
-
+  String? _userId;
+  String getUserPath;
   http.Client httpClient;
 
   UserRepository(
     this.httpClient,
+    this.getUserPath,
   );
 
-  Future<User> getUser(
-    Uri url,
-  ) async {
-    if (_user != null) {
-      return Future.value(_user);
-    } else {
-      final User response = await httpClient
-          .get(url)
-          .then((value) => User.fromJson(jsonDecode(value.body)))
-          .onError((error, stackTrace) {
-        return Future.error(error!, stackTrace);
-      });
+  get user => _user ?? User.empty;
 
-      _user = response;
 
-      return response;
+/// When token comes back from the server we set it here and the repo gets the user
+/// automatically, you should just wait for the setToken to complete and then get user
+  setToken(String token) async {
+    if (_user == null) {
+      _parseToken(token);
+      await _getUserFromRemote();
+    } else if (_user!.token != token) {
+      _parseToken(token);
+      logOut();
+      await _getUserFromRemote();
     }
+    return;
+  }
+
+
+  Future<void> _getUserFromRemote() async {
+    var url = Uri.parse(getUserPath + _userId!);
+    final User response = await httpClient
+        .get(url)
+        .then((value) => User.fromJson(jsonDecode(value.body)["user"]))
+        .onError((error, stackTrace) {
+      return Future.error(error!, stackTrace);
+    });
+
+    _user = response;
+    return;
+  }
+
+  logOut() {
+    _user = null;
+  }
+
+/// Parses the token and gets the user id from it.
+  _parseToken(String token) {
+    var userSnippet = json.decode(
+      ascii.decode(
+        base64.decode(
+          base64.normalize(
+            token.split(".")[1],
+          ),
+        ),
+      ),
+    );
+    _userId = userSnippet["user"]["_id"];
   }
 }

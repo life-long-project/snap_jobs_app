@@ -4,7 +4,7 @@ class ApiConstants {
 
   static const String getAllJobsPath = "$baseUrl/jobs/";
   static const String deleteJobPath = "$baseUrl/jobs/";
-  static const String getUserByToken = "$baseUrl/user/profile/";
+  static const String getUserByID = "$baseUrl/user/";
 
   static const String searchJobsPath = "$baseUrl/jobs/?search=";
 

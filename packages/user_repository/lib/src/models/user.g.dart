@@ -6,25 +6,26 @@ part of 'user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    requiredKeys: const ['email', 'userName', 'is_verified'],
-  );
-  return User(
-    userName: json['userName'] as String,
-    email: json['email'] as String,
-    token: json['password'] as String,
-    isVerified: json['is_verified'] as bool,
-    age: json['age'] as int,
-    gender: json['gender'] as String,
-    cities: (json['cities'] as List<dynamic>).map((e) => e as String).toList(),
-    country: json['country'] as String,
-    pastExperience: json['past_experience'] as String,
-    skills: (json['skills'] as List<dynamic>).map((e) => e as String).toList(),
-    id: json['id'] as String,
-  );
-}
+User _$UserFromJson(Map<String, dynamic> json) => User(
+      firstName: json['f_name'] as String? ?? 'not found',
+      lastName: json['l_name'] as String? ?? 'not found',
+      email: json['email'] as String? ?? 'not found',
+      token: json['password'] as String? ?? 'not found',
+      isVerified: json['is_verified'] as bool? ?? false,
+      age: json['age'] as String? ?? '0',
+      gender: json['gender'] as String? ?? 'not found',
+      cities: (json['cities'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          ['not found'],
+      country: json['country'] as String? ?? 'not found',
+      pastExperience: json['past_experience'] as String? ?? 'not found',
+      skills: (json['skills'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          ['not found'],
+      id: json['_id'] as String? ?? 'not found',
+    );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
@@ -34,8 +35,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'country': instance.country,
       'past_experience': instance.pastExperience,
       'skills': instance.skills,
-      'id': instance.id,
-      'userName': instance.userName,
+      '_id': instance.id,
+      'f_name': instance.firstName,
+      'l_name': instance.lastName,
       'password': instance.token,
       'is_verified': instance.isVerified,
     };

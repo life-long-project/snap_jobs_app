@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snap_jobs/core/network/api_constants.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/get_user_usecase.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/log_out_usecase.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:user_repository/user_repository.dart';
@@ -28,6 +29,9 @@ class AuthenticationBloc
     on<AuthenticationLogoutRequested>(
       _onAuthenticationLogoutRequested,
     );
+
+    ///listen to the authentication Repository status stream and add the
+    ///_AuthenticationStatusChanged event to the bloc.
     _authenticationStatusSubscription = _authenticationRepository.status.listen(
       (status) => add(
         _AuthenticationStatusChanged(status),
@@ -40,12 +44,10 @@ class AuthenticationBloc
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
-  @override
-  Future<void> close() {
-    _authenticationStatusSubscription.cancel();
-    return super.close();
-  }
-
+  ///this method is called when the authentication status changes.
+  ///it reflects the status change in the bloc state.
+  ///it also calls the GetUserUsecase to get the user data from the server
+  ///when the status is authenticated.
   Future<void> _onAuthenticationStatusChanged(
     _AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
@@ -56,18 +58,21 @@ class AuthenticationBloc
           const AuthenticationState.unauthenticated(),
         );
       case AuthenticationStatus.authenticated:
-/*
-        await sl.unregister<BaseHttpClient>();
+      //below commented code is for changing the baseClient singleton to
+      //include Token in the header of every request.
+      //but currently it's not working as expected
+        //TODO : fix this
 
-        await ServiceLocatorWithTokens()
-            .init(await _authenticationRepository.token);
-*/
+        //  await sl.unregister<BaseHttpClient>();
 
-        final user = await _tryGetUser(
-          _authenticationRepository.token,
-        );
+        // await ServiceLocatorWithTokens()
+        //     .init(await _authenticationRepository.token);
+
+        final user = await GetUserUsecase(_userRepository)
+            .call(await _authenticationRepository.token);
+
         return emit(
-          user != null
+          user != User.empty
               ? AuthenticationState.authenticated(
                   user,
                 )
@@ -80,36 +85,17 @@ class AuthenticationBloc
     }
   }
 
+  ///this method is called when the user requests to logout.
   void _onAuthenticationLogoutRequested(
     AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
-  ) {
-    _authenticationRepository.logOut();
+  ) async {
+    await LogOutUsecase(_userRepository, _authenticationRepository).call(null);
   }
 
-  Future<User?> _tryGetUser(
-    Future<String> token,
-  ) async {
-    try {
-      String _token = await token.then((value) => value);
-      print(_token);
-      var profileId = json.decode(
-        ascii.decode(
-          base64.decode(
-            base64.normalize(
-              _token.split(".")[1],
-            ),
-          ),
-        ),
-      );
-      profileId = profileId["user"]["_id"];
-      var url = Uri.parse((ApiConstants.getUserByToken + profileId));
-      final user = await _userRepository.getUser(
-        url,
-      );
-      return user;
-    } catch (_) {
-      rethrow;
-    }
+  @override
+  Future<void> close() {
+    _authenticationStatusSubscription.cancel();
+    return super.close();
   }
 }

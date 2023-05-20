@@ -20,20 +20,21 @@ class BaseHttpClient extends http.BaseClient {
   BaseHttpClient();
 
   BaseHttpClient.addToken(String token) {
-    if (_tokenQuery != null) {
-      // _addTokenToQuery(token);
-      _addTokenToHeader(token);
+    _addTokenToHeader(token);
+    // if (_tokenQuery != null) {
+    //   // _addTokenToQuery(token);
 
-      profileId = json.decode(
-        ascii.decode(
-          base64.decode(
-            base64.normalize(
-              token.split(".")[1],
-            ),
-          ),
-        ),
-      )["user"]["profile_id"];
-    }
+
+    //   profileId = json.decode(
+    //     ascii.decode(
+    //       base64.decode(
+    //         base64.normalize(
+    //           token.split(".")[1],
+    //         ),
+    //       ),
+    //     ),
+    //   )["user"]["profile_id"];
+    // }
   }
 
   _addTokenToHeader(String token) {

@@ -6,33 +6,60 @@ part 'user.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class User extends Equatable {
   @JsonKey(
-    required: true,
+    defaultValue: "not found",
   )
-  final String email;
-
-  final int age;
-  final String gender;
-  final List<String> cities;
-  final String country;
-  final String pastExperience;
-  final List<String> skills;
-  final String id;
-
-  @JsonKey(required: true, name: "userName")
-  final String userName;
+  final String? email;
 
   @JsonKey(
-    name: "password",
+    defaultValue: "0",
   )
-  final String token;
+  final String? age;
 
   @JsonKey(
-    required: true,
+    defaultValue: "not found",
+  )
+  final String? gender;
+
+  @JsonKey(
+    defaultValue: ["not found"],
+  )
+  final List<String>? cities;
+
+  @JsonKey(
+    defaultValue: "not found",
+  )
+  final String? country;
+
+  @JsonKey(
+    defaultValue: "not found",
+  )
+  final String? pastExperience;
+
+  @JsonKey(
+    defaultValue: ["not found"],
+  )
+  final List<String>? skills;
+
+  @JsonKey(defaultValue: "not found", name: "_id")
+  final String? id;
+
+  @JsonKey(defaultValue: "not found", name: "f_name")
+  final String firstName;
+
+  @JsonKey(defaultValue: "not found", name: "l_name")
+  final String lastName;
+
+  @JsonKey(defaultValue: "not found", name: "password")
+  final String? token;
+
+  @JsonKey(
+    defaultValue: false,
   )
   final bool isVerified;
 
   const User({
-    required this.userName,
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.token,
     required this.isVerified,
@@ -53,16 +80,17 @@ class User extends Equatable {
       ];
 
   static const empty = User(
-    userName: '-',
     email: '',
     token: '',
     isVerified: false,
-    age: 0,
+    age: "0",
     gender: '',
     cities: [],
     country: '',
     pastExperience: '',
     skills: [],
     id: '',
+    lastName: '',
+    firstName: '',
   );
 }

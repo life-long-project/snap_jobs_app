@@ -8,7 +8,7 @@ import '../../Jobs_feature/data/repository/data_repo_jobs.dart';
 import '../../Jobs_feature/domain/repository/job_feature.dart';
 import '../../Jobs_feature/domain/use_case/get_job.dart';
 import '../../Jobs_feature/domain/use_case/search_use_case.dart';
-import '../use_case/base_usecase.dart';
+import '../use_case/base_usecase_with_dartz.dart';
 
 final sl = GetIt.instance;
 
@@ -16,7 +16,7 @@ class ServicesLocator {
   void init() {
     GetIt.I.allowReassignment = true;
 
-    sl.registerLazySingleton(() => BaseHttpClient());
+    sl.registerSingleton(BaseHttpClient());
 
     //services of job feature
     ///bloc
@@ -42,8 +42,8 @@ class ServicesLocator {
 
 class ServiceLocatorWithTokens {
   init(String token) {
-    sl.registerLazySingleton(
-      () => BaseHttpClient.addToken(token),
+    sl.registerSingleton(
+      BaseHttpClient.addToken(token),
     );
   }
 }

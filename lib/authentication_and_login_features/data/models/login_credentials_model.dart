@@ -3,16 +3,20 @@ import '../../domain/entities/login_credentials.dart';
 
 part 'login_credentials_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+)
 class LoginCredentialsModel extends LoginCredentials {
-
-
   @override
-@JsonKey(required: true, )
+  @JsonKey(
+    required: true,
+  )
   String get email => super.email;
 
   @override
-@JsonKey(required: true)
+  @JsonKey(
+    required: true,
+  )
   String get password => super.password;
 
   const LoginCredentialsModel({
@@ -20,8 +24,6 @@ class LoginCredentialsModel extends LoginCredentials {
     required super.password,
   });
 
-
-
-
-Map<String, dynamic> toJson() => _$LoginCredentialsModelToJson(this);
+  Map<String, String> toJson() => _$LoginCredentialsModelToJson(this)
+      .map((key, value) => MapEntry(key, value.toString()));
 }

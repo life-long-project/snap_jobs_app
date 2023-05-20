@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:snap_jobs/app.dart';
 import 'core/services/services_locator.dart';
 
-
-
-void main() async {
+void main() {
   //WidgetsFlutterBinding.ensureInitialized();
-  ServicesLocator().init();
 
-  runApp(const App());
+  runApp(App());
 }
-
 
 // import 'package:flutter/material.dart';
 // import 'package:snap_jobs/app.dart';

@@ -12,7 +12,7 @@ class Email extends FormzInput<String, EmailValidationError> {
 
   @override
   EmailValidationError? validator(String? value) {
-    return value != ""
+    return _emailRegex.hasMatch(value ?? '')
         ? null
         : EmailValidationError.invalid;
   }

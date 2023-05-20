@@ -12,7 +12,23 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {},
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications_active),
+              onPressed: () {},
+              color: Colors.blue,
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+          ]),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

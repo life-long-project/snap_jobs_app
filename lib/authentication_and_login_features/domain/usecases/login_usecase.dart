@@ -1,23 +1,36 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:snap_jobs/auth_feature/domain/entities/login_credentials.dart';
-// import '../../../core/common_domain/entities/user.dart';
-// import '../../../core/error/failure.dart';
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:snap_jobs/authentication_and_login_features/data/models/login_credentials_model.dart';
 
-// import 'package:snap_jobs/core/use_case/base_usecase.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/entities/login_credentials.dart';
+import 'package:snap_jobs/core/error/failure.dart';
+import 'package:snap_jobs/core/network/api_constants.dart';
 
-// import '../repository/base_auth_repository.dart';
+import 'package:snap_jobs/core/use_case/base_usecase.dart';
 
-// class LoginUseCase extends BaseUseCase<User, LoginCredentials> {
+class LoginUseCase extends BaseUseCase<void, LoginCredentials> {
+  final AuthenticationRepository _authenticationRepository;
 
-//     final BaseAuthRepository baseAuthRepository;
+  LoginUseCase(this._authenticationRepository);
 
-//   LoginUseCase(this.baseAuthRepository);
+  ///Returns the token of the user if the login is successful.
+  ///
+  ///the token is used later to get all user data.
+  ///but also in my implementation it doesn't have to return anything to
+  ///the presentation layer because the authentication repository is a singleton
+  ///and it's status is listened to by the authentication bloc.
+  @override
+  Future<void> call(LoginCredentials parameters) async {
+    var url = Uri.parse(ApiConstants.loginPath);
+    final credentials = LoginCredentialsModel(email:  parameters.email , password: parameters.password);
+    // notice that the data layer is the AuthenticationRepository and
+    // UserRepository packages.so we convert ToJson() in the domain layer.
 
-
-//   @override
-//   Future<Either<Failure, User>> call( LoginCredentials parameters) async{
-//         return await baseAuthRepository.login(parameters);
-
-//   }
-// }
+    try {
+      await _authenticationRepository.logIn(
+          url: url, body: credentials.toJson() );
+    } catch (e){
+      throw  ServerFailure("Login Failed: ${e.toString()}" );
+    }
+  }
+}
