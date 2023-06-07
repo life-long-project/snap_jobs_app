@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
 import '../../Home_Feature/Presentation/UI/Screens/home.dart';
-import '../../Jobs_feature/domain/entities/jobs.dart';
-
-import '../../Jobs_feature/presentation/uI/screens/test.dart';
 
 class BottomNavigation extends StatefulWidget {
   BottomNavigation({
@@ -19,14 +16,11 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  Jobs? job;
   int _currentIndex = 0;
   final List<Widget> _children = [
     //TODO
     const HomePage(),
-    const className(),
-    const className(),
-    const className(),
+  
   ];
   void onTappedBar(int index) {
     setState(() {

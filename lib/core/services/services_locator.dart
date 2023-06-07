@@ -12,13 +12,7 @@ import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:user_repository/user_repository.dart';
 
-import '../../Jobs_feature/presentation/controller/cubit/jobs_cubit.dart';
-import '../../Jobs_feature/presentation/controller/cubit/search_cubit.dart';
-import '../../Jobs_feature/data/dataSource/get_jobs.dart';
-import '../../Jobs_feature/data/repository/data_repo_jobs.dart';
-import '../../Jobs_feature/domain/repository/job_feature.dart';
-import '../../Jobs_feature/domain/use_case/get_job.dart';
-import '../../Jobs_feature/domain/use_case/search_use_case.dart';
+
 import '../use_case/base_usecase_with_dartz.dart';
 
 final sl = GetIt.instance;
@@ -35,9 +29,7 @@ class ServicesLocator {
     await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
     //*bloc
-
-    sl.registerFactory(() => JobsCubit(sl()));
-    sl.registerFactory(() => SearchCubit(sl()));
+;
 
     sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           authenticationRepository: sl<AuthenticationRepository>(),
@@ -50,16 +42,13 @@ class ServicesLocator {
         LoginBloc(authenticationRepository: sl<AuthenticationRepository>()));
 
     // *Use Cases
-    sl.registerLazySingleton(() => GEtAllJopUseCase(sl()));
-    sl.registerLazySingleton(() => SearchJobUseCase(sl()));
+   
     sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
     //*DataSource
-    sl.registerLazySingleton<BaseDataSource>(() => DataSource());
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
 
     //* repository
-    sl.registerLazySingleton<BaseJobsRepository>(() => JobRepository(sl()));
     sl.registerLazySingleton<BaseSignUpRepository>(
         () => SignUpRepository(sl()));
     sl.registerLazySingleton<AuthenticationRepository>(
