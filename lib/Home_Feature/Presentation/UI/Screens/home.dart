@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  //int selectedItemIndex = 0;
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar with search container
       appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -31,7 +29,29 @@ class _HomePageState extends State<HomePage> {
               width: 15,
             ),
           ]),
-      //botton navigation bar
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Builder(
+              builder: (context) {
+                final userId = context.select(
+                  (AuthenticationBloc bloc) => bloc.state.user.id,
+                );
+                return Text('UserID: $userId');
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Logout'),
+              onPressed: () {
+                context
+                    .read<AuthenticationBloc>()
+                    .add(AuthenticationLogoutRequested());
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

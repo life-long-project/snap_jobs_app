@@ -25,6 +25,7 @@ class ThemeVariables {
 }
 
 ThemeData getThemeDtaLight() => ThemeData(
+  //*colors
       scaffoldBackgroundColor: Colors.white,
       colorScheme: const ColorScheme(
           primary: ThemeVariables.primary,
@@ -45,9 +46,11 @@ ThemeData getThemeDtaLight() => ThemeData(
           brightness: ThemeVariables.brightness),
       fontFamily: GoogleFonts.poppins().fontFamily,
       iconTheme: const IconThemeData(color: ThemeVariables.onBackground),
+      //*inputDecoration
       inputDecorationTheme: const InputDecorationTheme(
         fillColor: ThemeVariables.inputColor,
         filled: true,
+        
         prefixIconColor: ThemeVariables.secondary,
         suffixIconColor: ThemeVariables.secondary,
         border: OutlineInputBorder(
@@ -55,6 +58,7 @@ ThemeData getThemeDtaLight() => ThemeData(
             gapPadding: 4,
             borderSide: BorderSide.none),
       ),
+      //*elevatedButton
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeVariables.secondary,
@@ -63,6 +67,7 @@ ThemeData getThemeDtaLight() => ThemeData(
           ),
         ),
       ),
+      //*outlinedButton
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: ThemeVariables.inverseSurface,

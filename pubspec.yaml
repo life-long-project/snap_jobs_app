@@ -20,7 +20,7 @@ version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.0-417.1.beta <4.0.0'
-  flutter: "3.10.0-1.4.pre"
+  flutter: "3.10.4"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,6 +32,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  authentication_repository:
+    path: packages/authentication_repository
+  user_repository:
+    path: packages/user_repository
+
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,9 +45,9 @@ dependencies:
   cupertino_icons: ^1.0.5
 
   equatable: ^2.0.5
-  dio: ^5.1.1
   dartz: ^0.10.1
   flutter_bloc: ^8.1.2
+  bloc: ^8.1.1
   get_it: ^7.3.0
 
   animate_do: ^3.0.2
@@ -51,6 +57,13 @@ dependencies:
   shimmer: ^2.0.0
   curved_navigation_bar: ^1.0.3
   intl: ^0.18.1
+  json_annotation: ^4.8.0
+  path: ^1.8.3
+  connectivity_plus: ^3.0.6
+  formz: ^0.6.0
+  http: ^0.13.6
+  shared_preferences: ^2.1.1
+
 
 
 
@@ -65,6 +78,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.0
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
