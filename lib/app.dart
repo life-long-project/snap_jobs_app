@@ -1,16 +1,17 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation%20/screens/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
 import 'package:snap_jobs/core/network/api_constants.dart';
 
 import 'package:user_repository/user_repository.dart';
 
 import 'Home_Feature/Presentation/UI/Screens/home.dart';
-import 'authentication_and_login_features/presentation /controllers/authenttication_bloc/authentication_bloc.dart';
+import 'authentication_and_login_features/presentation/screens/login/login_page.dart';
 import 'core/network/base_http_client.dart';
 import 'core/services/services_locator.dart';
-import 'core/utils/themeApp/themeDataLight.dart';
+import 'core/utilities_and_theme/themeApp/themeDataLight.dart';
 import 'splash/view/splash_page.dart';
 
 class App extends StatefulWidget {
@@ -23,7 +24,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   late final AuthenticationRepository _authenticationRepository;
   late final UserRepository _userRepository;
-  late Future<bool>  _requiredBeforeInitializing;
+  late Future<bool> _requiredBeforeInitializing;
 
   @override
   void initState() {
@@ -42,12 +43,15 @@ class _AppState extends State<App> {
   Future<bool> _preInitializeRepositories() async {
     await Future.delayed(Duration.zero);
 
-    ServicesLocator().init();
+    await ServicesLocator().init();
 
-    _authenticationRepository =
-        await AuthenticationRepository.create(sl<BaseHttpClient>());
-    _userRepository =
-        UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID);
+
+
+    _authenticationRepository = sl<AuthenticationRepository>();
+    _userRepository = sl<UserRepository>();
+
+    //Future builder cant receive value of void so i make it return bool
+
     return true;
   }
 

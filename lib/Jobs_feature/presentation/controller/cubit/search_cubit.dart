@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/enums.dart';
+import '../../../../core/utilities_and_theme/enums.dart';
 import '../../../domain/entities/jobs.dart';
 import '../../../domain/use_case/search_use_case.dart';
 

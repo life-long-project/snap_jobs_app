@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/utils/enums.dart';
+import '../../../../core/utilities_and_theme/enums.dart';
 import '../../../domain/entities/jobs.dart';
 
 class JobsState extends Equatable {

@@ -37,6 +37,7 @@ class User extends Equatable {
 
   @JsonKey(
     defaultValue: ["not found"],
+    
   )
   final List<String>? skills;
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../../core/utils/enums.dart';
+import '../../../../core/utilities_and_theme/enums.dart';
 
 import '../../../domain/use_case/get_job.dart';
 import 'jobs_state.dart';

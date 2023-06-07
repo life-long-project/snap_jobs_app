@@ -17,9 +17,8 @@ class UserRepository {
 
   get user => _user ?? User.empty;
 
-
-/// When token comes back from the server we set it here and the repo gets the user
-/// automatically, you should just wait for the setToken to complete and then get user
+  /// When token comes back from the server we set it here and the repo gets the user
+  /// automatically, you should just wait for the setToken to complete and then get user
   setToken(String token) async {
     if (_user == null) {
       _parseToken(token);
@@ -31,7 +30,6 @@ class UserRepository {
     }
     return;
   }
-
 
   Future<void> _getUserFromRemote() async {
     var url = Uri.parse(getUserPath + _userId!);
@@ -50,7 +48,7 @@ class UserRepository {
     _user = null;
   }
 
-/// Parses the token and gets the user id from it.
+  /// Parses the token and gets the user id from it.
   _parseToken(String token) {
     var userSnippet = json.decode(
       ascii.decode(
@@ -64,3 +62,4 @@ class UserRepository {
     _userId = userSnippet["user"]["_id"];
   }
 }
+

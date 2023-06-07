@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation%20/controllers/authenttication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

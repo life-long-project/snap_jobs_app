@@ -20,3 +20,7 @@ class DatabaseFailure extends Failure {
 class NoInternetFailure extends Failure {
   const NoInternetFailure(super.message);
 }
+
+class ImplementationFailure extends Failure {
+  const ImplementationFailure(super.message);
+}

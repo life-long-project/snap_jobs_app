@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 //import '../../../../Core/services/services_locator.dart';
-import '../../../../core/utils/enums.dart';
+import '../../../../core/utilities_and_theme/enums.dart';
 
 import '../../controller/cubit/jobs_cubit.dart';
 import '../../controller/cubit/jobs_state.dart';
