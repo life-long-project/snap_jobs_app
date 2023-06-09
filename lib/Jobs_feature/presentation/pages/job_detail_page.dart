@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:post_job/post_job_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
 
 import '../widgets/job_detail_page/job_detail.dart';
 

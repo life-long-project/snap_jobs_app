@@ -14,7 +14,7 @@ class ServerFailure extends Failure {
 }
 
 class DatabaseFailure extends Failure {
-  const DatabaseFailure(super.message);
+  const DatabaseFailure() : super('');
 }
 
 class NoInternetFailure extends Failure {
@@ -23,4 +23,12 @@ class NoInternetFailure extends Failure {
 
 class ImplementationFailure extends Failure {
   const ImplementationFailure(super.message);
+}
+
+class OfflineFailure extends Failure {
+  const OfflineFailure() : super('');
+}
+
+class EmptyCacheFailure extends Failure {
+  const EmptyCacheFailure() : super('');
 }

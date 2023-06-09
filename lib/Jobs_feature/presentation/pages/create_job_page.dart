@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:post_job/post_job_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 
 import '../../../core/util/snackbar_message.dart';
 import '../../domain/entities/post_job_entity.dart';
 
-import 'package:post_job/core/widgets/loading_widget.dart';
+import 'package:snap_jobs/core/widgets/loading_widget.dart';
 
 import '../widgets/add_job/form_widget.dart';
 

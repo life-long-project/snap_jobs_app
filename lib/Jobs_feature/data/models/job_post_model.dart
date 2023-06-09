@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:post_job/post_job_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
 
 class JobPostModel extends JobPost {
   const JobPostModel(
@@ -16,11 +16,11 @@ class JobPostModel extends JobPost {
       jobName: json['job_name'] as String,
       jobDescription: json['job_description'] as String,
       jobType: json['job_type'] as String,
-      salary: (json['salary'] is String) ? int.tryParse(json['salary']) ??  json['salary']  : json['salary'] , 
+      salary: (json['salary'] is String) ? int.tryParse(json['salary']) ??  json['salary']  : json['salary'] ,
       image: json['job_img_url'] != null
           ? Image.network(json['job_img_url'])
           : null,
-      
+
     );
   }
 
@@ -32,7 +32,7 @@ class JobPostModel extends JobPost {
       'job_type': jobType,
       'salary': salary,
       'job_img_url': image?.toString(),
-      
+
     };
   }
 }

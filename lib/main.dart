@@ -1,49 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:snap_jobs/app.dart';
-import 'core/services/services_locator.dart';
-
-void main() {
-  //WidgetsFlutterBinding.ensureInitialized();
-
-  runApp(App());
-}
-
 // import 'package:flutter/material.dart';
 // import 'package:snap_jobs/app.dart';
 // import 'core/services/services_locator.dart';
-// import 'core/utils/themeApp/themeDataLight.dart';
-// import 'core/utils/app_string.dart';
 
-// import 'core/widgets/base_outlined_button.dart';
-// import 'core/widgets/bottom_navigation.dart';
-// import 'core/widgets/base_elevated_button.dart';
-
-// void main() async {
+// void main() {
 //   //WidgetsFlutterBinding.ensureInitialized();
-//   ServicesLocator().init();
 
-//   runApp(const App());
+//   runApp(App());
 // }
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/pages/jobs_page.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+import 'Jobs_feature/presentation/bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
+import 'Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         debugShowCheckedModeBanner: false,
-//         title: AppString.appName,
-//         theme: getThemeDtaLight(),
-//         home: MyHomePage());
-//   }
-// }
 
-// class MyHomePage extends StatelessWidget {
-//   const MyHomePage({Key? key}) : super(key: key);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ServicesLocator().init();
+  runApp(MyApp());
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-
-//   }
-// }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
+          BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: getThemeDtaLight(),
+            title: 'Posts Job',
+            home: JobsPage()));
+  }
+}

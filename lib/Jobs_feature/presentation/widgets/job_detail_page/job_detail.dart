@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:post_job/post_job_feature/domain/entities/post_job_entity.dart';
-import 'package:post_job/post_job_feature/presentation/widgets/job_detail_page/update_job_button.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/update_job_button.dart';
 
 import 'delete_job_button.dart';
 
@@ -15,8 +15,8 @@ class JobDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    
+
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -46,7 +46,7 @@ class JobDetailWidget extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-         
+
           SizedBox(height: 10),
           Text(
             'Job Type: ${post.jobType}',

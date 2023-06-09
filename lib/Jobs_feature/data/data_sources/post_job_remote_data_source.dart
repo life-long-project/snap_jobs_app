@@ -1,13 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-
-import 'package:post_job/core/network/api_constants.dart';
-import 'package:post_job/post_job_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/core/network/api_constants.dart';
+import 'package:snap_jobs/core/network/base_http_client.dart';
+import 'package:snap_jobs/core/network/error_message_model.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../models/job_post_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract class PostJobRemoteDataSource {
   Future<List<JobPostModel>> getAllJobs();
@@ -17,26 +17,30 @@ abstract class PostJobRemoteDataSource {
 }
 
 class PostJobRemoteDataSourceImpl extends PostJobRemoteDataSource {
-  final http.Client client;
+  final BaseHttpClient client;
 
   PostJobRemoteDataSourceImpl({required this.client});
   @override
   Future<List<JobPostModel>> getAllJobs() async {
-    final response = await client.get(
-      Uri.parse(ApiConstants.getAllJobsPath),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (response.statusCode == 200) {
-      final  decodedJson = json.decode(response.body)["jobs"]  ;
+    try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getAllJobsPath),
+        headers: {"Content-Type": "application/json"},
+      );
+      final decodedJson = json.decode(response.body)["jobs"];
       final List<JobPostModel> jobModel = decodedJson
           .map<JobPostModel>(
               (jsonJobPostModel) => JobPostModel.fromJson(jsonJobPostModel))
           .toList();
 
       return jobModel;
-    } else {
-      throw ServerException();
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+    throw OfflineException();
     }
   }
 
@@ -49,31 +53,39 @@ class PostJobRemoteDataSourceImpl extends PostJobRemoteDataSource {
       'job_type': jobPostModel.jobType,
       'salary': jobPostModel.salary,
       'job_img_url': jobPostModel.image?.toString(),
-      
     };
+try {
 
-    final response =
         await client.post(Uri.parse(ApiConstants.getAllJobsPath), body: body);
+return Future.value(unit);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
 
-    if (response.statusCode == 201) {
-      return Future.value(unit);
-    } else {
-      throw ServerException();
+    throw OfflineException();
     }
   }
 
   @override
   Future<Unit> deleteJob(String jobId) async {
-    final response = await client.delete(
+
+try {
+    await client.delete(
       Uri.parse(ApiConstants.getAllJobsPath + jobId),
       headers: {"Content-Type": "application/json"},
     );
+return Future.value(unit);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
 
-    if (response.statusCode == 200) {
-      return Future.value(unit);
-    } else {
-      throw ServerException();
+    throw OfflineException();
     }
+
   }
 
   @override
@@ -85,16 +97,18 @@ class PostJobRemoteDataSourceImpl extends PostJobRemoteDataSource {
       'job_type': jobPostModel.jobType,
       'salary': jobPostModel.salary,
       'job_img_url': jobPostModel.image?.toString(),
-      
     };
+try {
+     await client.post(Uri.parse(ApiConstants.getAllJobsPath), body: body);
+return Future.value(unit);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
 
-    final response =
-        await client.post(Uri.parse(ApiConstants.getAllJobsPath), body: body);
-
-    if (response.statusCode == 201) {
-      return Future.value(unit);
-    } else {
-      throw ServerException();
+    throw OfflineException();
     }
+
   }
 }
