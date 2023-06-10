@@ -64,9 +64,9 @@ class _FormWidgetState extends State<FormWidget> {
                 isUpdateJob: (widget.post != null),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    UpdateOrAddPost;
+                    UpdateOrAddPost();
                   } else {
-                     null;
+                    null;
                   }
                 }),
           ]),
