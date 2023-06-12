@@ -80,7 +80,6 @@ class ServicesLocator {
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
-
     sl.registerLazySingleton<JobsRepository>(() => JobsRepositoryImpl(
         remoteDataSource: sl(), networkInfo: sl(), localDataSource: sl()));
 
