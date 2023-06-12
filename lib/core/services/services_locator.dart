@@ -55,6 +55,10 @@ class ServicesLocator {
     sl.registerFactory(() =>
         AddDeleteUpdateJobBloc(addJob: sl(), updateJob: sl(), deleteJob: sl()));
 
+    sl.registerFactory(() =>
+        AllJobsBloc(getAllJobs: sl()));
+
+
     // *Use Cases
 
     sl.registerLazySingleton(() => SignUpUseCase(sl()));
