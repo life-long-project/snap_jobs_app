@@ -26,17 +26,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
-          BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
-        ],
-        child: MaterialApp(
+    return  MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: getThemeDtaLight(),
             title: 'Posts Job',
-            home: JobsPage()));
+            home: JobsPage());
   }
 }
 

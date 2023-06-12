@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/core/services/profile_service_locator.dart';
 
 import '../../../core/widgets/loading_widget.dart';
 import '../bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
@@ -13,8 +15,13 @@ class JobsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
-      body: _buildBody(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
+          BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
+        ],
+        child: _buildBody()),
       floatingActionButton: _buildFloatingBtn(context),
     );
   }
