@@ -1,6 +1,17 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snap_jobs/Jobs_feature/data/data_sources/local_data_source.dart';
+import 'package:snap_jobs/Jobs_feature/data/data_sources/post_job_remote_data_source.dart';
+import 'package:snap_jobs/Jobs_feature/data/repositries/jobs_repository_impl.dart';
+import 'package:snap_jobs/Jobs_feature/domain/repositiries/jobs_repository.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/data/data_source/sign_up_data_source.dart';
 import 'package:snap_jobs/authentication_and_login_features/data/repository/sign_up_repository.dart';
 import 'package:snap_jobs/authentication_and_login_features/domain/repository/base_sign_up_repository.dart';
@@ -10,15 +21,9 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/control
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/sign_up_bloc/sign_up_bloc.dart';
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
+import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:user_repository/user_repository.dart';
 
-import '../../Jobs_feature/presentation/controller/cubit/jobs_cubit.dart';
-import '../../Jobs_feature/presentation/controller/cubit/search_cubit.dart';
-import '../../Jobs_feature/data/dataSource/get_jobs.dart';
-import '../../Jobs_feature/data/repository/data_repo_jobs.dart';
-import '../../Jobs_feature/domain/repository/job_feature.dart';
-import '../../Jobs_feature/domain/use_case/get_job.dart';
-import '../../Jobs_feature/domain/use_case/search_use_case.dart';
 import '../use_case/base_usecase_with_dartz.dart';
 
 final sl = GetIt.instance;
@@ -35,9 +40,7 @@ class ServicesLocator {
     await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
     //*bloc
-
-    sl.registerFactory(() => JobsCubit(sl()));
-    sl.registerFactory(() => SearchCubit(sl()));
+    ;
 
     sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           authenticationRepository: sl<AuthenticationRepository>(),
@@ -49,17 +52,27 @@ class ServicesLocator {
     sl.registerFactory<LoginBloc>(() =>
         LoginBloc(authenticationRepository: sl<AuthenticationRepository>()));
 
+    sl.registerFactory(() =>
+        AddDeleteUpdateJobBloc(addJob: sl(), updateJob: sl(), deleteJob: sl()));
+
+    sl.registerFactory(() =>
+        AllJobsBloc(getAllJobs: sl()));
+
+
     // *Use Cases
-    sl.registerLazySingleton(() => GEtAllJopUseCase(sl()));
-    sl.registerLazySingleton(() => SearchJobUseCase(sl()));
+
     sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
+    //*Jobs  Usecases
+    sl.registerLazySingleton(() => GetAllJobsUseCase(sl()));
+    sl.registerLazySingleton(() => AddJobUseCase(sl()));
+    sl.registerLazySingleton(() => DeleteJobUseCase(sl()));
+    sl.registerLazySingleton(() => UpdateJobUseCase(sl()));
+
     //*DataSource
-    sl.registerLazySingleton<BaseDataSource>(() => DataSource());
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
 
     //* repository
-    sl.registerLazySingleton<BaseJobsRepository>(() => JobRepository(sl()));
     sl.registerLazySingleton<BaseSignUpRepository>(
         () => SignUpRepository(sl()));
     sl.registerLazySingleton<AuthenticationRepository>(
@@ -71,8 +84,21 @@ class ServicesLocator {
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
+    sl.registerLazySingleton<JobsRepository>(() => JobsRepositoryImpl(
+        remoteDataSource: sl(), networkInfo: sl(), localDataSource: sl()));
 
-    ///
+    //! Core
+
+    sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
+    sl.registerLazySingleton<Connectivity>(() => Connectivity());
+
+    // *Datasources
+
+    sl.registerLazySingleton<PostJobRemoteDataSource>(
+        () => PostJobRemoteDataSourceImpl(client: sl()));
+    sl.registerLazySingleton<JobsLocalDataSource>(
+        () => JobsLocalDataSourceImpl(sharedPreferences: sl()));
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
   }

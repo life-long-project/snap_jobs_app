@@ -18,8 +18,17 @@ class LocalDatabaseException implements Exception {
   });
 }
 
-class noInternetException implements Exception {
+
+class NoInternetException implements Exception {
   final String message = "No Internet Connection";
 
- 
+
+}
+
+class CacheException implements Exception {}
+
+class EmptyCacheException implements Exception {}
+
+class OfflineException implements Exception {
+
 }
