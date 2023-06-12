@@ -27,7 +27,7 @@ class JobsPage extends StatelessWidget {
       child: BlocBuilder<AllJobsBloc, GetAllJobsState>(
         builder: (context, state) {
           if (state is LoadingJobsState) {
-            return LoadingWidget();
+            return const LoadingWidget();
           } else if (state is LoadedJobsState) {
             return RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
@@ -35,7 +35,7 @@ class JobsPage extends StatelessWidget {
           } else if (state is ErrorPostJobsState) {
             return MessageDisplayWidget(message: state.message);
           }
-          return LoadingWidget();
+          return const LoadingWidget();
         },
       ),
     );

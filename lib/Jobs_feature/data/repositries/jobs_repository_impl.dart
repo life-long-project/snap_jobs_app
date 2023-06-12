@@ -16,7 +16,9 @@ class JobsRepositoryImpl extends JobsRepository {
   final NetworkInfo networkInfo;
   final JobsLocalDataSource localDataSource;
   JobsRepositoryImpl(
-      {required this.localDataSource, required this.remoteDataSource, required this.networkInfo});
+      {required this.localDataSource,
+       required this.remoteDataSource,
+        required this.networkInfo});
   @override
   Future<Either<Failure, Unit>> addJob(JobPost post) async {
 

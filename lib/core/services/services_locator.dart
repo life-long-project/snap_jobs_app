@@ -20,7 +20,8 @@ import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:user_repository/user_repository.dart';
 
-
+import '../../Jobs_feature/data/repositries/jobs_repository_impl.dart';
+import '../../Jobs_feature/domain/repositiries/jobs_repository.dart';
 import '../use_case/base_usecase_with_dartz.dart';
 
 final sl = GetIt.instance;
@@ -37,7 +38,7 @@ class ServicesLocator {
     await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
     //*bloc
-;
+    ;
 
     sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           authenticationRepository: sl<AuthenticationRepository>(),
@@ -49,10 +50,8 @@ class ServicesLocator {
     sl.registerFactory<LoginBloc>(() =>
         LoginBloc(authenticationRepository: sl<AuthenticationRepository>()));
 
-        sl.registerFactory(() =>
+    sl.registerFactory(() =>
         AddDeleteUpdateJobBloc(addJob: sl(), updateJob: sl(), deleteJob: sl()));
-
-
 
     // *Use Cases
 
@@ -63,7 +62,6 @@ class ServicesLocator {
     sl.registerLazySingleton(() => AddJobUseCase(sl()));
     sl.registerLazySingleton(() => DeleteJobUseCase(sl()));
     sl.registerLazySingleton(() => UpdateJobUseCase(sl()));
-
 
     //*DataSource
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
@@ -80,6 +78,10 @@ class ServicesLocator {
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
+    ///TODO:regidter JobsRepositoryImpl
+    // sl.registerLazySingleton<JobsRepository>(
+    //   () => JobsRepositoryImpl(sl()),
+    // );
 
     //! Core
 
@@ -91,7 +93,6 @@ class ServicesLocator {
         () => PostJobRemoteDataSourceImpl(client: sl()));
     sl.registerLazySingleton<JobsLocalDataSource>(
         () => JobsLocalDataSourceImpl(sharedPreferences: sl()));
-
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
   }
