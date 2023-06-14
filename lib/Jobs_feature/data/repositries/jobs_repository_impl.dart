@@ -67,14 +67,14 @@ class JobsRepositoryImpl extends JobsRepository {
         localDataSource.cacheJobs(remoteJobs);
         return Right(remoteJobs);
       } on ServerException {
-        return Left(ServerFailure(""));
+        return const Left(ServerFailure(""));
       }
     } else {
       try {
         final localJobs = await localDataSource.getCachedJobs();
         return Right(localJobs);
       } on EmptyCacheException {
-        return Left(EmptyCacheFailure());
+        return const Left(EmptyCacheFailure());
       }
     }
   }

@@ -9,24 +9,26 @@ import '../widgets/jobs_page/job_list_widget.dart';
 import '../widgets/jobs_page/message_display_widget.dart';
 import 'create_job_page.dart';
 
-class JobsPage extends StatelessWidget {
-  const JobsPage({Key? key}) : super(key: key);
+class AllJobsPage extends StatelessWidget {
+  const AllJobsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
-          BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
-        ],
-        child: _buildBody()),
-      floatingActionButton: _buildFloatingBtn(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
+        BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
+      ],
+      child: Stack(children: [
+        _buildBody(),
+        Positioned(
+          right: 10,
+          bottom: 10,
+          child: _buildFloatingBtn(context),
+        ),
+      ]),
     );
   }
-
-  AppBar _buildAppbar() => AppBar(title: Text('Jobs'));
 
   Widget _buildBody() {
     return Padding(
@@ -56,13 +58,15 @@ class JobsPage extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => AddJobPage(
-                      isUpdateJob: false,
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (_) => const AddJobPage(
+              isUpdateJob: false,
+            ),
+          ),
+        );
       },
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }

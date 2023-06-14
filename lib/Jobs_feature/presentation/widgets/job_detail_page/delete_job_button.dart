@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/util/snackbar_message.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../bloc/post_job/post_job_bloc.dart';
-import '../../pages/jobs_page.dart';
+import '../../pages/all_jobs_page.dart';
 import 'delete_dialog.dart';
 
 class DeleteJobBtnWidget extends StatelessWidget {
@@ -32,8 +32,7 @@ class DeleteJobBtnWidget extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) {
-          return BlocConsumer<AddDeleteUpdateJobBloc,
-              AddDeleteUpdateJobsState>(
+          return BlocConsumer<AddDeleteUpdateJobBloc, AddDeleteUpdateJobsState>(
             listener: (context, state) {
               if (state is MessageAddDeleteUpdateJobsState) {
                 SnackBarMessage().showSuccessSnackBar(
@@ -41,7 +40,7 @@ class DeleteJobBtnWidget extends StatelessWidget {
 
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (_) => JobsPage(),
+                      builder: (_) => AllJobsPage(),
                     ),
                     (route) => false);
               } else if (state is ErrorAddDeleteUpdateJobsState) {
