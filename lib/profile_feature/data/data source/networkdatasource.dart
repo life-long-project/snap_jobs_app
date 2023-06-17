@@ -20,7 +20,7 @@ abstract class BaseProfileDataSource {
   Future<void> updaterofile(ProfileModel profileModel);
 }
 
-class ProfileDataSource extends BaseProfileDataSource {
+class NetworkDataSource extends BaseProfileDataSource {
   @override
   Future<ProfileModel> getProfile(String id) async {
     final response = await sl<BaseHttpClient>()

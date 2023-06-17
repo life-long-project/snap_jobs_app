@@ -1,11 +1,7 @@
-import '../entities/profile.dart';
-import 'package:dartz/dartz.dart';
+import 'package:snap_jobs/profile_feature/data/model/profile_get.dart';
 
-import '../../../core/error/failure.dart';
-
-abstract class BaseProfilerepo{
-
-
- Future<Either< Failure, Profile>>getprofile(String id);
-
+abstract class BaseProfilerepo {
+  Future<ProfileModel> getProfile(String id);
+  Future<void> postProfile(ProfileModel profileModel);
+  Future<void> updateProfile(ProfileModel profileModel);
 }
