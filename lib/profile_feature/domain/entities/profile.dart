@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class Profile extends Equatable {
+abstract class Profile extends Equatable {
   //get one profile data
  const Profile({
     required this.isAdmin,
