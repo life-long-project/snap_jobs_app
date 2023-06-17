@@ -1,7 +1,7 @@
-//abstract class of base profile data source
+
 
 import 'dart:convert';
-import 'dart:html';
+
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
@@ -16,8 +16,8 @@ import '../../../core/utilities_and_theme/profileapi.dart';
 
 abstract class BaseProfileDataSource {
   Future<ProfileModel> getProfile(String id);
-  Future<Unit> postprofile(ProfileModel profileModel);
-  Future<Unit> updaterofile(ProfileModel profileModel);
+  Future<void> postprofile(ProfileModel profileModel);
+  Future<void> updaterofile(ProfileModel profileModel);
 }
 
 class ProfileDataSource extends BaseProfileDataSource {
@@ -38,8 +38,8 @@ class ProfileDataSource extends BaseProfileDataSource {
   }
 
   @override
-  Future<Unit> postprofile(ProfileModel profileModel) async {
-    final Body = {
+ Future<void> postprofile(ProfileModel profileModel) async {
+    final body = {
       "userName": profileModel.userName,
       "bio": profileModel.bio,
       "age": profileModel.age,
@@ -48,8 +48,8 @@ class ProfileDataSource extends BaseProfileDataSource {
       "past_jobs": profileModel.pastJobs
     };
     try {
-      await sl<BaseHttpClient>().post(Uri.parse(Profileconstant.profileUrl),body: Body);
-      return Future.value(unit);
+      await sl<BaseHttpClient>().post(Uri.parse(Profileconstant.profileUrl),body: body);
+      
     } on ServerException catch (e, s) {
       stderr.writeln(e);
       stderr.writeln(s);
@@ -58,8 +58,8 @@ class ProfileDataSource extends BaseProfileDataSource {
   }
 
   @override
-  Future<Unit> updaterofile(ProfileModel profileModel) async{
-    final Body = {
+  Future<void> updaterofile(ProfileModel profileModel) async{
+    final body = {
       "userName": profileModel.userName,
       "bio": profileModel.bio,
       "age": profileModel.age,
@@ -68,8 +68,8 @@ class ProfileDataSource extends BaseProfileDataSource {
       "past_jobs": profileModel.pastJobs
     };
     try {
-      await sl<BaseHttpClient>().post(Uri.parse('${Profileconstant.profileUrl}/$id'),body: Body);
-      return Future.value(unit);
+      await sl<BaseHttpClient>().post(Uri.parse('${Profileconstant.profileUrl}/$id'),body: body);
+     
     } on ServerException catch (e, s) {
       stderr.writeln(e);
       stderr.writeln(s);
