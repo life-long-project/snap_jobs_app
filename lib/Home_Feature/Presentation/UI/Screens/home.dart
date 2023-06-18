@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,36 +13,30 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {},
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications_active),
-              onPressed: () {},
-              color: Colors.blue,
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+              ),
+              child: Text('Drawer Header'),
             ),
-            const SizedBox(
-              width: 15,
-            ),
-          ]),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Builder(
-              builder: (context) {
-                final userId = context.select(
-                  (AuthenticationBloc bloc) => bloc.state.user.id,
-                );
-                return Text('UserID: $userId');
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
               },
             ),
-            ElevatedButton(
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),ElevatedButton(
               child: const Text('Logout'),
               onPressed: () {
                 context
@@ -52,6 +47,22 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+     
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_active),
+            onPressed: () {},
+            color: Colors.blue,
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+        ],
+      ),
+      body: const AllJobsPage(),
     );
   }
 }

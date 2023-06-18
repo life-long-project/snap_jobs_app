@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
-import 'package:snap_jobs/core/services/profile_service_locator.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 
 import '../../../core/widgets/loading_widget.dart';
 import '../bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
@@ -60,7 +60,7 @@ class AllJobsPage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => const AddJobPage(
+            builder: (_) =>  AddJobPage(
               isUpdateJob: false,
             ),
           ),

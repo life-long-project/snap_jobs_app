@@ -59,12 +59,11 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             EmailInput(focusNode: _emailFocusNode),
-            const Padding(padding: EdgeInsets.all(12)),
             PasswordInput(focusNode: _passwordFocusNode),
-            const Padding(padding: EdgeInsets.all(12)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
