@@ -4,15 +4,16 @@ import 'dart:convert';
 
 import 'dart:io';
 
+
 import 'package:dartz/dartz.dart';
+import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/profile_feature/data/model/profile_get.dart';
 
 import '../../../core/error/exceptions.dart';
 
-import '../../../core/network/error_message_model.dart';
-import '../../../core/utilities_and_theme/profileapi.dart';
+
 
 abstract class BaseProfileDataSource {
   Future<ProfileModel> getProfile(String id);
@@ -24,18 +25,14 @@ class NetworkDataSource extends BaseProfileDataSource {
   @override
   Future<ProfileModel> getProfile(String id) async {
     final response = await sl<BaseHttpClient>()
-        .get(Uri.parse('${Profileconstant.profileUrl}/$id'),
+        .get(Uri.parse('${ApiConstants.profileUrl}/$id'),
          headers: {"Content-Type": "application/json"},);
 
-    if (response.statusCode == 200) {
+    
       return (ProfileModel.fromJson(jsonDecode(response.body)['data']));
-    } else {
-      throw ServerException(
-        errorMessageModel:
-            ErrorMessageModel.fromJson(jsonDecode(response.body)['data']),
-      );
+    
     }
-  }
+  
 
   @override
  Future<void> postprofile(ProfileModel profileModel) async {
@@ -48,7 +45,8 @@ class NetworkDataSource extends BaseProfileDataSource {
       "past_jobs": profileModel.pastJobs
     };
     try {
-      await sl<BaseHttpClient>().post(Uri.parse(Profileconstant.profileUrl),body: body);
+      //check id here
+      await sl<BaseHttpClient>().post(Uri.parse(ApiConstants.profileUrl),body: body);
       
     } on ServerException catch (e, s) {
       stderr.writeln(e);
@@ -68,7 +66,7 @@ class NetworkDataSource extends BaseProfileDataSource {
       "past_jobs": profileModel.pastJobs
     };
     try {
-      await sl<BaseHttpClient>().post(Uri.parse('${Profileconstant.profileUrl}/$id'),body: body);
+      await sl<BaseHttpClient>().patch(Uri.parse('${ApiConstants.profileUrl}/$id'),body: body);
      
     } on ServerException catch (e, s) {
       stderr.writeln(e);

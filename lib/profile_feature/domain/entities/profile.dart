@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 abstract class Profile extends Equatable {
   //get one profile data
  const Profile({
