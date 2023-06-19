@@ -25,7 +25,7 @@ class NetworkDataSource extends BaseProfileDataSource {
   @override
   Future<ProfileModel> getProfile(String id) async {
     final response = await sl<BaseHttpClient>()
-        .get(Uri.parse('${ApiConstants.profileUrl}/$id'),
+        .get(Uri.parse(ApiConstants.getprofileUrl+id),
          headers: {"Content-Type": "application/json"},);
 
     
@@ -65,8 +65,8 @@ class NetworkDataSource extends BaseProfileDataSource {
       "skills": profileModel.skills,
       "past_jobs": profileModel.pastJobs
     };
-    try {
-      await sl<BaseHttpClient>().patch(Uri.parse('${ApiConstants.profileUrl}/$id'),body: body);
+    try {//check url 
+      await sl<BaseHttpClient>().patch(Uri.parse(ApiConstants.getprofileUrl),body: body);
      
     } on ServerException catch (e, s) {
       stderr.writeln(e);

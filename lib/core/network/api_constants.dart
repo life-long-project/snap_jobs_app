@@ -16,5 +16,7 @@ class ApiConstants {
 
   ///path=Test-Logo.svg/783px-Test-Logo.svg.png
   static String imageUrl(String path) => '$baseImageUrl$path';
-  static const String profileUrl= 'https://jobseeker-profile-api.onrender.com/profile';
+  static const String getprofileUrl= "$baseUrl/profile";
+   static const String profileUrl= "$baseUrl/profile/";
+  
 }
