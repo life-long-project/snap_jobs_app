@@ -59,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             EmailInput(focusNode: _emailFocusNode),
@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return TextButton(
       onPressed: () {
         Navigator.of(context).push(
           SignUpPages.route(),

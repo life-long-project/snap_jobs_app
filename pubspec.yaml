@@ -56,13 +56,15 @@ dependencies:
   google_fonts: ^4.0.4
   shimmer: ^2.0.0
   curved_navigation_bar: ^1.0.3
-  intl: ^0.18.1
+  intl: any
   json_annotation: ^4.8.0
   path: ^1.8.3
   connectivity_plus: ^3.0.6
   formz: ^0.6.0
   http: ^0.13.6
   shared_preferences: ^2.1.1
+  flutter_localizations:
+    sdk: flutter
 
 
 

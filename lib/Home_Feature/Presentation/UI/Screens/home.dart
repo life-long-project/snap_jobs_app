@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,6 +13,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userName = context.select((AuthenticationBloc bloc) {
+      final user = bloc.state.user;
+      return user.firstName;
+    });
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -19,10 +24,10 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(
-              ),
-              child: Text('Drawer Header'),
-            ),
+                decoration: BoxDecoration(),
+                child: Image(
+                  image: AssetImage('assets/images/logo.png'),
+                )),
             ListTile(
               title: const Text('Item 1'),
               onTap: () {
@@ -36,7 +41,8 @@ class HomePage extends StatelessWidget {
                 // Update the state of the app.
                 // ...
               },
-            ),ElevatedButton(
+            ),
+            ElevatedButton(
               child: const Text('Logout'),
               onPressed: () {
                 context
@@ -50,7 +56,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-     
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_active),
@@ -62,7 +67,18 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: const AllJobsPage(),
+      body: Column(
+        children: [
+          Text(
+            'Hi, $userName',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          AllJobsPage(),
+        ],
+      ),
     );
   }
 }

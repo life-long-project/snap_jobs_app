@@ -14,7 +14,7 @@ class ThemeVariables {
   static const onPrimary = LightColors.darkGrey;
   static const onSecondary = LightColors.white;
   static const surface = LightColors.white;
-  static const onSurface = LightColors.darkBlueBlack;
+  static const onSurface = LightColors.blue;
   static const background = LightColors.white;
   static const onBackground = LightColors.darkGrey;
   static const error = Colors.red;
@@ -25,7 +25,7 @@ class ThemeVariables {
 }
 
 ThemeData getThemeDtaLight() => ThemeData(
-  //*colors
+      //*colors
       scaffoldBackgroundColor: Colors.white,
       colorScheme: const ColorScheme(
           primary: ThemeVariables.primary,
@@ -50,7 +50,6 @@ ThemeData getThemeDtaLight() => ThemeData(
       inputDecorationTheme: const InputDecorationTheme(
         fillColor: ThemeVariables.inputColor,
         filled: true,
-        
         prefixIconColor: ThemeVariables.secondary,
         suffixIconColor: ThemeVariables.secondary,
         border: OutlineInputBorder(
@@ -62,6 +61,7 @@ ThemeData getThemeDtaLight() => ThemeData(
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeVariables.secondary,
+          foregroundColor: ThemeVariables.onSecondary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -71,6 +71,18 @@ ThemeData getThemeDtaLight() => ThemeData(
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: ThemeVariables.inverseSurface,
+          foregroundColor: ThemeVariables.onInverseSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+      //*textButton
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          backgroundColor: ThemeVariables.surface,
+          foregroundColor:ThemeVariables.onSurface ,
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
