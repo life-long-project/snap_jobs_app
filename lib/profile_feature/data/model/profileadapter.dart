@@ -3,8 +3,8 @@
 
 
 import 'package:hive/hive.dart';
-import 'package:snap_jobs/profile_feature/data/model/profile_get.dart';
-import 'package:snap_jobs/profile_feature/data/model/profiledata.dart';
+import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/profilecasheddata.dart';
 
 class ProfileHiveModelAdapter extends TypeAdapter<Profilehivemodel> {
   @override
