@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -51,9 +51,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 20),
                   CircleAvatar(
                     radius: 60,
-                    backgroundImage: CachedNetworkImageProvider(
-                      'https://example.com/profile_photo.jpg',
-                    ),
+                    // backgroundImage: CachedNetworkImageProvider(
+                    //   'https://example.com/profile_photo.jpg',
+                    // ),
                   ),
                   SizedBox(height: 20),
                   Text(

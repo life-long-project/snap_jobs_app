@@ -8,10 +8,13 @@
 //   runApp(App());
 // }
 import 'package:flutter/material.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/pages/create_job_page.dart';
 
 import 'package:snap_jobs/Jobs_feature/presentation/pages/jobs_page.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
+
+import 'profile_feature/presentation/Screens/post_profile.dart';
 
 
 
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: getThemeDtaLight(),
             title: 'Posts Job',
-            home: JobsPage());
+            home: AddJobPage(isUpdateJob: false,));
   }
 }
 

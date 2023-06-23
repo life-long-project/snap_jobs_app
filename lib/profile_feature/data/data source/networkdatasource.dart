@@ -12,25 +12,25 @@ import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
 import '../../../core/error/exceptions.dart';
 
 abstract class BaseProfileDataSource {
-  Future<Either<Failure, ProfileModel?>> getoneProfile(String id);
-  Future<Either<Failure, Unit>> postprofile(ProfileModel profileModel);
-  Future<Either<Failure, Unit>> updaterofile(ProfileModel profileModel);
+  Future<ProfileModel?> getoneProfile(String id);
+  Future<Unit> postprofile(ProfileModel profileModel);
+  Future<Unit> updaterofile(ProfileModel profileModel);
 }
 
 class NetworkDataSource extends BaseProfileDataSource {
   @override
-  Future<Either<Failure, ProfileModel?>> getoneProfile(String id) async {
+  Future<ProfileModel?> getoneProfile(String id) async {
     final response = await sl<BaseHttpClient>().get(
       Uri.parse(ApiConstants.getprofileUrl + id),
       headers: {"Content-Type": "application/json"},
     );
 
     final result = ProfileModel.fromJson(jsonDecode(response.body)['data']);
-    return right(result);
+    return (result);
   }
 
   @override
-  Future<Either<Failure, Unit>> postprofile(ProfileModel profileModel) async {
+  Future<Unit> postprofile(ProfileModel profileModel) async {
     final body = {
       "userName": profileModel.userName,
       "bio": profileModel.bio,
@@ -39,20 +39,15 @@ class NetworkDataSource extends BaseProfileDataSource {
       "skills": profileModel.skills,
       "past_jobs": profileModel.pastJobs
     };
-    try {
-      //check id here
-      await sl<BaseHttpClient>()
-          .post(Uri.parse(ApiConstants.profileUrl), body: body);
-      return right(unit);
-    } on ServerException catch (e, s) {
-      stderr.writeln(e);
-      stderr.writeln(s);
-      throw OfflineException();
-    }
+
+    //check id here
+    await sl<BaseHttpClient>()
+        .post(Uri.parse(ApiConstants.profileUrl), body: body);
+    return Future.value(unit);
   }
 
   @override
-  Future<Either<Failure, Unit>> updaterofile(ProfileModel profileModel) async {
+  Future<Unit> updaterofile(ProfileModel profileModel) async {
     final body = {
       "userName": profileModel.userName,
       "bio": profileModel.bio,
@@ -65,11 +60,11 @@ class NetworkDataSource extends BaseProfileDataSource {
       //check url
       await sl<BaseHttpClient>()
           .patch(Uri.parse(ApiConstants.getprofileUrl), body: body);
-      return right(unit);
+      return Future.value(unit);
     } on ServerException catch (e, s) {
       stderr.writeln(e);
       stderr.writeln(s);
-      throw OfflineException();
+      throw Error();
     }
   }
 }

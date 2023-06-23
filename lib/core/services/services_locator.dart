@@ -109,7 +109,7 @@ class ServicesLocator {
 
 ///$$$
     ///Profile repo
-    sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl()));
+    sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl(),sl()));
 
     ///ProfilenetDataSource
     sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());

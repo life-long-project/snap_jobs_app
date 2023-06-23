@@ -9,7 +9,7 @@ import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 
 import '../../../core/error/failure.dart';
 
-typedef UpdateOrAddJob = Future<Either<Failure, Unit>> Function();
+typedef UpdateOrAddJob = Future< Unit> Function();
 
 class DataRepository implements BaseProfilerepo {
   final NetworkDataSource _networkDataSource;
@@ -33,7 +33,7 @@ class DataRepository implements BaseProfilerepo {
     // Cache the fetched profile
     await _cacheDataSource.saveProfile(networkProfile as ProfileModel );
 
-    return networkProfile;
+    return right(networkProfile) ;
   }
 
   @override
@@ -58,7 +58,7 @@ class DataRepository implements BaseProfilerepo {
       return _networkDataSource.postprofile(postprofileModel);
     });
     // Clear the cached profile after posting
-    await _cacheDataSource.saveProfile(profileModel);
+   return ( await _cacheDataSource.saveProfile(profileModel));
   }
 
   @override
@@ -78,12 +78,16 @@ class DataRepository implements BaseProfilerepo {
       rateQuantity: null,
     );
     await _networkDataSource.updaterofile(profileModel);
-    return await _getMessage(() {
-      return _networkDataSource.updaterofile(updateprofileModel);
-    });
+    try {
+  return await _getMessage(() {
+    return _networkDataSource.updaterofile(updateprofileModel);
+  });
+} finally {
+   await _cacheDataSource.saveProfile(profileModel);
+}
 
     // Clear the cached profile after updating
-    await _cacheDataSource.saveProfile(profileModel);
+   
   }
 
   Future<Either<Failure, Unit>> _getMessage(
