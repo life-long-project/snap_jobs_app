@@ -8,29 +8,34 @@
 //   runApp(App());
 // }
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/pages/create_job_page.dart';
+
 import 'package:snap_jobs/Jobs_feature/presentation/pages/jobs_page.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
-import 'Jobs_feature/presentation/bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
-import 'Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'profile_feature/presentation/Screens/post_profile.dart';
+
+
+
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ServicesLocator().init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: getThemeDtaLight(),
             title: 'Posts Job',
-            home: JobsPage());
+            home: AddJobPage(isUpdateJob: false,));
   }
 }
 

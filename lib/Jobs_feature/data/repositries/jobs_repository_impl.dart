@@ -45,6 +45,7 @@ class JobsRepositoryImpl extends JobsRepository {
       return remoteDataSource.updateJob(postModel);
     });
   }
+
   Future<Either<Failure, Unit>> _getMessage(
       DeleteOrUpdateOrAddJob deleteOrUpdateOrAddPost) async {
     if (await networkInfo.isConnected) {

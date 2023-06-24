@@ -22,6 +22,11 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/control
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
+import 'package:snap_jobs/profile_feature/data/data%20source/cashedatasource.dart';
+import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
+import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -55,9 +60,7 @@ class ServicesLocator {
     sl.registerFactory(() =>
         AddDeleteUpdateJobBloc(addJob: sl(), updateJob: sl(), deleteJob: sl()));
 
-    sl.registerFactory(() =>
-        AllJobsBloc(getAllJobs: sl()));
-
+    sl.registerFactory(() => AllJobsBloc(getAllJobs: sl()));
 
     // *Use Cases
 
@@ -101,6 +104,25 @@ class ServicesLocator {
         () => JobsLocalDataSourceImpl(sharedPreferences: sl()));
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
+
+
+
+///$$$
+    ///Profile repo
+    sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl(),sl()));
+
+    ///ProfilenetDataSource
+    sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());
+
+    ///profilecasheDataSource
+    sl.registerLazySingleton<CacheDataSource>(() => CacheDataSourceImpl());
+
+    ///usecase
+    sl.registerLazySingleton(() =>  GetProfileUseCase( baserepo: (sl())));
+  
+  
+  
+  ///bloc
   }
 }
 
