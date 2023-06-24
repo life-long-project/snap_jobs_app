@@ -13,7 +13,7 @@ class AuthenticationRepository {
   String? _token;
   http.Client httpClient;
   final SharedPreferences _sharedPrefs;
-  bool hasSharedPreferences = false;
+  bool hasSharedPreferences = true;
 
   AuthenticationRepository(this.httpClient, this._sharedPrefs);
 
@@ -49,13 +49,15 @@ class AuthenticationRepository {
           ? _token = _sharedPrefs.getString('token')
           : null;
 
-      if (_token == null)
+      if (_token == null) {
         _statusStreamController.add(AuthenticationStatus.unauthenticated);
+      }
 
       return (_token ?? '');
     }
-    if (_token == null)
+    if (_token == null) {
       _statusStreamController.add(AuthenticationStatus.unauthenticated);
+    }
 
     return (_token ?? '');
   }
@@ -63,7 +65,7 @@ class AuthenticationRepository {
 //*sharing of the authentication status as a stream
 
   Stream<AuthenticationStatus> get status async* {
-    _token = _sharedPrefs.getString('token');
+    _token =   _sharedPrefs.getString('token');
     if (_token != null) {
       yield AuthenticationStatus.authenticated;
     } else {

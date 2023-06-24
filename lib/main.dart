@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/app.dart';
+import 'package:snap_jobs/splash/view/splash_page.dart';
 
 void main() {
   //WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const App());
+  runApp(const SplashPage());
 }
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';

@@ -22,6 +22,8 @@ class LoginPage extends StatelessWidget {
         kBottomNavigationBarHeight);
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+
       appBar: AppBar(title: const Text('Login')),
       body: BlocProvider(
         create: (context) {
@@ -47,7 +49,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: deviceHeight * 0.3,
                 width: deviceWidth * 0.8,
-                child: LoginForm(),
+                child:  LoginForm(),
               ),
             ],
           ),

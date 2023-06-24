@@ -20,11 +20,13 @@ class ThemeVariables {
   static const error = Colors.red;
   static const onError = LightColors.white;
   static const brightness = Brightness.light;
+  static const inputLabelColor = LightColors.grey;
 
   static const inputColor = LightColors.softGrey;
 }
 
 ThemeData getThemeDtaLight() => ThemeData(
+      useMaterial3: true,
       //*colors
       scaffoldBackgroundColor: Colors.white,
       colorScheme: const ColorScheme(
@@ -45,6 +47,15 @@ ThemeData getThemeDtaLight() => ThemeData(
           onError: ThemeVariables.onError,
           brightness: ThemeVariables.brightness),
       fontFamily: GoogleFonts.poppins().fontFamily,
+      drawerTheme: const DrawerThemeData(
+        elevation: 0,
+        backgroundColor: ThemeVariables.surface,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: ThemeVariables.secondary,
+        selectionColor: ThemeVariables.secondary.withOpacity(0.2),
+        selectionHandleColor: ThemeVariables.tertiary,
+      ),
       iconTheme: const IconThemeData(color: ThemeVariables.onBackground),
       //*inputDecoration
       inputDecorationTheme: const InputDecorationTheme(
@@ -52,6 +63,9 @@ ThemeData getThemeDtaLight() => ThemeData(
         filled: true,
         prefixIconColor: ThemeVariables.secondary,
         suffixIconColor: ThemeVariables.secondary,
+        labelStyle: TextStyle(
+          color: ThemeVariables.inputLabelColor,
+        ),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
             gapPadding: 4,
@@ -81,11 +95,28 @@ ThemeData getThemeDtaLight() => ThemeData(
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           backgroundColor: ThemeVariables.surface,
-          foregroundColor:ThemeVariables.onSurface ,
-
+          foregroundColor: ThemeVariables.onSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
+      ),
+
+      //*listTileTheme
+      listTileTheme: const ListTileThemeData(
+titleTextStyle: TextStyle(
+  color: ThemeVariables.onBackground,
+  fontWeight: FontWeight.w600,
+
+),
+
+      ),
+      //*cardTheme
+
+      cardTheme: CardTheme(
+shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+
       ),
     );

@@ -59,17 +59,19 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            EmailInput(focusNode: _emailFocusNode),
-            PasswordInput(focusNode: _passwordFocusNode),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                LoginButton(),
-                _SignUpButton(),
-              ],
+           Expanded (child: EmailInput(focusNode: _emailFocusNode)),
+            Expanded(child: PasswordInput(focusNode: _passwordFocusNode)),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  LoginButton(),
+                  _SignUpButton(),
+                ],
+              ),
             ),
           ],
         ),
@@ -87,7 +89,7 @@ class _SignUpButton extends StatelessWidget {
           SignUpPages.route(),
         );
       },
-      child: Text('Sign up'),
+      child: const Text('Sign up'),
     );
   }
 }

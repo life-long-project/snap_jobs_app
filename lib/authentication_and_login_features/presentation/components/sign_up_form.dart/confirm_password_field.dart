@@ -15,8 +15,8 @@ class ConfirmPasswordField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: 1,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-
+      obscureText: true,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         hintText: "Confirm your password",
         label: RichText(

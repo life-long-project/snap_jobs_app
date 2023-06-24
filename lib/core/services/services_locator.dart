@@ -30,9 +30,9 @@ final sl = GetIt.instance;
 
 class ServicesLocator {
   Future<void> init() async {
-    GetIt.I.allowReassignment = true;
+    // GetIt.I.allowReassignment = true;
 //*core services
-    sl.registerSingleton(BaseHttpClient());
+    sl.registerSingleton<BaseHttpClient>(BaseHttpClient());
     sl.registerSingletonAsync<SharedPreferences>(() async {
       return await SharedPreferences.getInstance();
     });

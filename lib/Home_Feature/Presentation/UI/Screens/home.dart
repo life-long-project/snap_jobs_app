@@ -18,37 +18,64 @@ class HomePage extends StatelessWidget {
       return user.firstName;
     });
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
+
       drawer: Drawer(
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-                decoration: BoxDecoration(),
                 child: Image(
-                  image: AssetImage('assets/images/logo.png'),
-                )),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Logout'),
-              onPressed: () {
-                context
-                    .read<AuthenticationBloc>()
-                    .add(AuthenticationLogoutRequested());
-              },
+              image: AssetImage('assets/images/blue_logo_black_text.png'),
+            )),
+            Center(
+              child: Container(
+                //304 is the e default width of the drawer
+                width: (304 /3) ,
+
+                child: Column(
+
+
+
+                  children: [
+                    ListTile(
+                      title: Text(
+
+                        'Settings',
+                      ),
+                      onTap: () {
+                        // Update the state of the app.
+                        // ...
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        'About us',
+                      ),
+                      onTap: () {
+                        // Update the state of the app.
+                        // ...
+                      },
+                    ),
+                    ListTile(
+                      title: const Text('Help & Support'),
+                      onTap: () {
+                        // Update the state of the app.
+                        // ...
+                      },
+                    ),
+                    OutlinedButton(
+                      child: const Text('Logout'),
+                      onPressed: () {
+                        context
+                            .read<AuthenticationBloc>()
+                            .add(AuthenticationLogoutRequested());
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -76,7 +103,7 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          AllJobsPage(),
+          Expanded(child: AllJobsPage()),
         ],
       ),
     );

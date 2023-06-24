@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_card_without_pic.dart';
 
 import '../../pages/job_detail_page.dart';
 
@@ -15,43 +16,15 @@ class JobListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: posts.length,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Text(posts[index].jobId),
-          title: Text(
-            posts[index].jobName,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                posts[index].jobDescription,
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                'Job Type: ${posts[index].jobType}',
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                'Salary: ${posts[index].salary}',
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => JobDetailPage(post: posts[index]),
-              ),
-            );
-          },
+        return JobCardWithoutPic(
+          job: posts[index],
+          index: index,
         );
       },
-      separatorBuilder: (context, index) => Divider(thickness: 1),
+      separatorBuilder: (context, index) => const Divider(thickness: 1),
     );
   }
 }

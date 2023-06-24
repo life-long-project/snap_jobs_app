@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/login_bloc/login_bloc.dart';
@@ -13,11 +12,9 @@ class LoginButton extends StatelessWidget {
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 key: const Key('loginForm_continue_raisedButton'),
-                onPressed: state.isValid == true
+                onPressed: true
                     ? () {
-                        context
-                            .read<LoginBloc>()
-                            .add(LoginSubmitted(Form.of(context).validate()));
+                        context.read<LoginBloc>().add(LoginSubmitted());
                       }
                     : null,
                 child: const Text('Login'),
