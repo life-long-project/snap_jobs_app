@@ -33,14 +33,14 @@ class SignUpStepper extends StatefulWidget {
 }
 
 class _SignUpStepperState extends State<SignUpStepper> {
-  int _StepsIndex = 0;
+  int _stepsIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: const Text("Sign Up"),
         centerTitle: true,
       ),
       body: Form(
@@ -78,17 +78,24 @@ class _SignUpStepperState extends State<SignUpStepper> {
             }
           },
           child: Stepper(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             type: StepperType.horizontal,
-            currentStep: _StepsIndex,
+            currentStep: _stepsIndex,
             onStepContinue: () {
-              if (_StepsIndex == 0) {
+              if (_stepsIndex == 0) {
                 setState(() {
-                  _StepsIndex += 1;
+                  _stepsIndex += 1;
                 });
-              } else if (_StepsIndex == 1) {
+              } else if (_stepsIndex == 1) {
                 if (_formKey.currentState!.validate()) {
-                  context.read<SignUpBloc>().add(SignUpSubmitted());
+                  context.read<SignUpBloc>().add(const SignUpSubmitted());
+                } else {
+                  ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              const SnackBar(content: Text('please fill all fields correctly')),
+            );
+
                 }
               }
             },
@@ -97,19 +104,19 @@ class _SignUpStepperState extends State<SignUpStepper> {
             },
             onStepTapped: (index) {
               setState(() {
-                _StepsIndex = index;
+                _stepsIndex = index;
               });
             },
             steps: [
               Step(
-                title: Text("Sign up"),
-                content: SignUpFirstPage(),
-                isActive: _StepsIndex == 0,
+                title: const Text("Sign up"),
+                content: const SignUpFirstPage(),
+                isActive: _stepsIndex == 0,
               ),
               Step(
-                title: Text("More About yourself"),
-                content: SignUpSecondPage(),
-                isActive: _StepsIndex == 1,
+                title: const Text("More About yourself"),
+                content: const SignUpSecondPage(),
+                isActive: _stepsIndex == 1,
               ),
             ],
           ),

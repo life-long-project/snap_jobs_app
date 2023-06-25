@@ -5,28 +5,28 @@ enum SubmissionStatus { initial, inProgress, success, failure }
 class SignUpState extends Equatable {
   const SignUpState({
     this.submissionStatus = SubmissionStatus.initial,
-    this.email = "",
-    this.password = "",
+    this.email,
+    this.password ,
+    this.confirmedPassword ,
+    this.firstName ,
+    this.gender ,
+    this.lastName,
+    this.phoneNumber ,
+    this.pastExperiences,
+    this.country,
     this.age,
     this.city,
-    this.confirmedPassword = "",
-    this.country,
-    this.firstName = "",
-    this.gender = "",
-    this.lastName = "",
-    this.phoneNumber = "",
-    this.pastExperiences,
     this.skills,
   });
 
   final SubmissionStatus submissionStatus;
-  final String email;
-  final String confirmedPassword;
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
-  final String password;
-  final String gender;
+  final String? email;
+  final String? confirmedPassword;
+  final String? firstName;
+  final String? lastName;
+  final String? phoneNumber;
+  final String? password;
+  final String? gender;
   final String? country;
   final String? city;
   final int? age;
@@ -53,9 +53,9 @@ class SignUpState extends Equatable {
       submissionStatus: submissionStatus ?? this.submissionStatus,
       email: email ?? this.email,
       password: password ?? this.password, // Updated password argument
+      gender: gender ?? this.gender,
       age: age ?? this.age,
       city: city ?? this.city,
-      gender: gender ?? this.gender,
       confirmedPassword: confirmedPassword ?? this.confirmedPassword,
       country: country ?? this.country,
       firstName: firstName ?? this.firstName,
@@ -68,18 +68,18 @@ class SignUpState extends Equatable {
 
   @override
   List<Object> get props => [
-        email,
-        password,
-        confirmedPassword,
         submissionStatus,
-        gender,
-        age ?? 0,
-        city ?? "",
-        country ?? "",
-        firstName,
-        lastName,
-        phoneNumber,
-        pastExperiences ?? "",
+        email??'',
+        password??'',
+        confirmedPassword??'',
+        gender??'',
+        firstName??'',
+        lastName??'',
+        phoneNumber??'',
+        pastExperiences??'' ,
+        country ?? '',
+        city ?? '',
         skills ?? [],
+        age ?? 0,
       ];
 }

@@ -16,15 +16,22 @@ class AllJobsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<AllJobsBloc>()..add(GetAllJobsEvent())),
-        BlocProvider(create: (_) => sl<AddDeleteUpdateJobBloc>()),
+        BlocProvider(
+          create: (_) => sl<AllJobsBloc>()
+            ..add(
+              GetAllJobsEvent(),
+            ),
+        ),
+        BlocProvider(
+          create: (_) => sl<AddDeleteUpdateJobBloc>(),
+        ),
       ],
       child: Stack(children: [
         _buildBody(),
         Positioned(
           right: 10,
           bottom: 10,
-          child: _buildFloatingBtn(context),
+          child: _buildFloatingBtn(),
         ),
       ]),
     );
@@ -54,19 +61,21 @@ class AllJobsPage extends StatelessWidget {
     BlocProvider.of<AllJobsBloc>(context).add(RefreshJobsEvent());
   }
 
-  Widget _buildFloatingBtn(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) =>  AddJobPage(
-              isUpdateJob: false,
+  Widget _buildFloatingBtn() {
+    return Builder(builder: (context) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>  AddJobPage(
+                isUpdateJob: false,
+              ),
             ),
-          ),
-        );
-      },
-      child: const Icon(Icons.add),
-    );
+          );
+        },
+        child: const Icon(Icons.add),
+      );
+    });
   }
 }

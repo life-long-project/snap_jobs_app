@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
               SizedBox(
                 height: deviceHeight * 0.3,
                 width: deviceWidth * 0.8,
-                child:  LoginForm(),
+                child:  const LoginForm(),
               ),
             ],
           ),

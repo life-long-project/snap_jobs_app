@@ -3,75 +3,99 @@ import 'package:snap_jobs/authentication_and_login_features/domain/entities/sign
 
 part 'sign_up_parameters_model.g.dart';
 
+// as this is the gate of data layer the required fields are marked as required
+// and the optional fields are marked as nullable
 @JsonSerializable(fieldRename: FieldRename.snake)
 class SignUpParametersModel extends SignUpParameters {
   @override
-  @JsonKey(required: true, name: "f_name")
-  String get firstName => super.firstName;
+  @JsonKey(
+    required: true,
+    name: "f_name",
+  )
+  String get firstName => super.firstName!;
 
   @override
-  @JsonKey(required: true, name: "l_name")
-  String get lastName => super.lastName;
+  @JsonKey(
+    required: true,
+    name: "l_name",
+  )
+  String get lastName => super.lastName!;
 
   @override
   @JsonKey(
     required: true,
   )
-  String get email => super.email;
+  String get email => super.email!;
 
   @override
-  @JsonKey(required: true, name: "phone")
-  String get phoneNumber => super.phoneNumber;
+  @JsonKey(
+    required: true,
+    name: "phone",
+  )
+  String get phoneNumber => super.phoneNumber!;
 
   @override
   @JsonKey(required: true)
-  String get password => super.password;
+  String get password => super.password!;
 
   @override
   @JsonKey(
     required: true,
   )
-  String get confirmPassword => super.confirmPassword;
-
-  @override
-  @JsonKey(required: false)
-  int? get age => super.age;
-
-  @override
-  @JsonKey(required: true)
-  String get gender => super.gender;
-
-  @override
-  @JsonKey(required: false)
-  String? get pastExperiences => super.pastExperiences;
-
-  @override
-  @JsonKey(required: false)
-  String? get city => super.city;
-
-  @override
-  @JsonKey(required: false)
-  String? get country => super.country;
+  String get confirmPassword => super.confirmPassword!;
 
   @override
   @JsonKey(
     required: false,
+    includeIfNull: false,
   )
+  int? get age => super.age;
+
+  @override
+  @JsonKey(
+    required: true,
+    includeIfNull: false,
+  )
+  String get gender => super.gender!;
+
+  @override
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+  )
+  String? get pastExperiences => super.pastExperiences;
+
+  @override
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+  )
+  String? get city => super.city;
+
+  @override
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+  )
+  String? get country => super.country;
+
+  @override
+  @JsonKey(required: false, includeIfNull: false)
   List<String>? get skills => super.skills;
 
   const SignUpParametersModel({
     required super.firstName,
     required super.lastName,
     required super.email,
-    super.skills,
+    required super.phoneNumber,
     required super.password,
     required super.confirmPassword,
-    super.age,
     required super.gender,
     required super.pastExperiences,
+    super.skills,
     super.city,
+    super.age,
     super.country,
-    required super.phoneNumber,
   });
 
   factory SignUpParametersModel.fromEntity({required SignUpParameters entity}) {

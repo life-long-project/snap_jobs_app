@@ -19,8 +19,6 @@ class HomePage extends StatelessWidget {
     });
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
-
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -32,16 +30,12 @@ class HomePage extends StatelessWidget {
             Center(
               child: Container(
                 //304 is the e default width of the drawer
-                width: (304 /3) ,
+                width: (304 / 3),
 
                 child: Column(
-
-
-
                   children: [
                     ListTile(
                       title: Text(
-
                         'Settings',
                       ),
                       onTap: () {
@@ -98,12 +92,14 @@ class HomePage extends StatelessWidget {
         children: [
           Text(
             'Hi, $userName',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Expanded(child: AllJobsPage()),
+          const Expanded(
+            child: AllJobsPage(),
+          ),
         ],
       ),
     );
