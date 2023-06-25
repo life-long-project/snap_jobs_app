@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/splash/view/stateless_splash_screen.dart';
 
 import 'package:user_repository/user_repository.dart';
 
@@ -10,7 +11,6 @@ import 'authentication_and_login_features/presentation/screens/login/login_page.
 import 'core/network/base_http_client.dart';
 import 'core/services/services_locator.dart';
 import 'core/utilities_and_theme/themeApp/themeDataLight.dart';
-import 'splash/view/splash_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -41,15 +41,13 @@ class _AppState extends State<App> {
   Future<bool> _preInitializeRepositories() async {
     await Future.delayed(Duration.zero);
 
-    await ServicesLocator().init();
-
-
+    // await ServicesLocator().init();
 
     _authenticationRepository = sl<AuthenticationRepository>();
     _userRepository = sl<UserRepository>();
 
     //Future builder cant receive value of void so i make it return bool
-
+    //so this bool value doesn't have any meaning
     return true;
   }
 
@@ -61,9 +59,10 @@ class _AppState extends State<App> {
           if (!snapshot.hasData) {
             // Future hasn't finished yet, return a placeholder
             return const MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: Scaffold(
                 body: Center(
-                  child: CircularProgressIndicator(),
+                  child: StatelessSplashPage(),
                 ),
               ),
             );
@@ -123,7 +122,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashPage.route(),
+      onGenerateRoute: (_) => StatelessSplashPage.route(),
     );
   }
 }

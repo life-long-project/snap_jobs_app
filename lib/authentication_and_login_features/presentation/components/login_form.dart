@@ -59,18 +59,19 @@ class _LoginFormState extends State<LoginForm> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            EmailInput(focusNode: _emailFocusNode),
-            const Padding(padding: EdgeInsets.all(12)),
-            PasswordInput(focusNode: _passwordFocusNode),
-            const Padding(padding: EdgeInsets.all(12)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                LoginButton(),
-                _SignUpButton(),
-              ],
+           Expanded (child: EmailInput(focusNode: _emailFocusNode)),
+            Expanded(child: PasswordInput(focusNode: _passwordFocusNode)),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  LoginButton(),
+                  _SignUpButton(),
+                ],
+              ),
             ),
           ],
         ),
@@ -82,13 +83,13 @@ class _LoginFormState extends State<LoginForm> {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return TextButton(
       onPressed: () {
         Navigator.of(context).push(
           SignUpPages.route(),
         );
       },
-      child: Text('Sign up'),
+      child: const Text('Sign up'),
     );
   }
 }

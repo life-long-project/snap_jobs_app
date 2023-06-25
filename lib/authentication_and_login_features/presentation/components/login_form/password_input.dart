@@ -17,14 +17,14 @@ class PasswordInput extends StatefulWidget {
 class PasswordInputState extends State<PasswordInput> {
   Timer? debounce;
 
-  bool _passwordPure = false;
+  bool _isPasswordFieldPure = true;
 
   @override
   void initState() {
     super.initState();
     widget.focusNode.addListener(() {
-      if (!widget.focusNode.hasFocus) {
-        _passwordPure = true;
+      if (widget.focusNode.hasFocus) {
+        _isPasswordFieldPure = false;
       }
     });
   }
@@ -35,7 +35,7 @@ class PasswordInputState extends State<PasswordInput> {
         const Duration(milliseconds: 500),
         () => context
             .read<LoginBloc>()
-            .add(LoginPasswordChanged(password, Form.of(context).validate())));
+            .add(LoginPasswordChanged(password, Form.of(context).validate() && !_isPasswordFieldPure)));
   }
 
   @override
@@ -51,8 +51,8 @@ class PasswordInputState extends State<PasswordInput> {
           obscureText: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return _passwordPure ? 'Please enter your password' : null;
-            } else if (value.length < 8 && _passwordPure) {
+              return _isPasswordFieldPure ? null: 'Please enter your password' ;
+            } else if (value.length < 8 && !_isPasswordFieldPure) {
               return 'invalid password , at least 8 characters';
             }
 

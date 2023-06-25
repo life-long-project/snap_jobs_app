@@ -8,30 +8,33 @@ abstract class LoginEvent extends Equatable {
 }
 
 class LoginEmailChanged extends LoginEvent {
-  const LoginEmailChanged(this.email , this.isValid);
+  const LoginEmailChanged(this.email , this.isEmailValid);
 
   final String email;
-  final bool isValid;
+  final bool isEmailValid;
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [email ,isEmailValid ];
 }
 
 class LoginPasswordChanged extends LoginEvent {
-  const LoginPasswordChanged(this.password, this.isValid);
+  const LoginPasswordChanged(this.password, this.isPasswordValid);
 
   final String password;
-  final bool isValid;
+  final bool isPasswordValid;
 
   @override
-  List<Object> get props => [password];
+  List<Object> get props => [password , isPasswordValid];
 }
 
 class LoginSubmitted extends LoginEvent {
-    const LoginSubmitted(this.isValid);
+    const LoginSubmitted();
 
-      final bool isValid;
 
-      
+
+
+
+  @override
+  List<Object> get props => [];
 
 }

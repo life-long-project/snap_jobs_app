@@ -20,10 +20,10 @@ class FormWidget extends StatefulWidget {
 
 class _FormWidgetState extends State<FormWidget> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _jobNameController = TextEditingController();
-  TextEditingController _jobDescriptionController = TextEditingController();
-  TextEditingController _jobTypeController = TextEditingController();
-  TextEditingController _salaryController = TextEditingController();
+  final TextEditingController _jobNameController = TextEditingController();
+  final TextEditingController _jobDescriptionController = TextEditingController();
+  final TextEditingController _jobTypeController = TextEditingController();
+  final TextEditingController _salaryController = TextEditingController();
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _FormWidgetState extends State<FormWidget> {
                 isUpdateJob: (widget.post != null),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    UpdateOrAddPost();
+                    updateOrAddPost();
                   } else {
                     null;
                   }
@@ -73,7 +73,7 @@ class _FormWidgetState extends State<FormWidget> {
     );
   }
 
-  void UpdateOrAddPost() {
+  void updateOrAddPost() {
     final post = JobPost(
       jobName: _jobNameController.text,
       jobDescription: _jobDescriptionController.text,

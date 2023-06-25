@@ -19,8 +19,12 @@ enum SubmissionStatus {
 
 class LoginState extends Equatable {
   const LoginState({
+
     this.submissionStatus = SubmissionStatus.initial,
+
     this.isValid = false,
+    this.isEmailValid = false,
+    this.isPasswordValid = false,
     this.email = "",
     this.password = "",
   });
@@ -29,21 +33,28 @@ class LoginState extends Equatable {
   final bool isValid;
   final String email;
   final String password;
+  final bool isEmailValid ;
+  final bool isPasswordValid ;
 
   LoginState copyWith({
     SubmissionStatus? submissionStatus,
+    bool? isEmailValid,
+    bool? isPasswordValid,
     bool? isValid,
     String? email,
     String? password,
   }) {
     return LoginState(
       submissionStatus: submissionStatus ?? this.submissionStatus,
+      isEmailValid: isEmailValid ?? this.isEmailValid,
+      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       isValid: isValid ?? this.isValid,
+
       email: email ?? this.email,
       password: password ?? this.password,
     );
   }
 
   @override
-  List<Object> get props => [submissionStatus, email, password, isValid];
+  List<Object> get props => [submissionStatus, email, password, isValid , isEmailValid , isPasswordValid];
 }

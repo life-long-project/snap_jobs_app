@@ -24,18 +24,19 @@ class _EmailInputState extends State<EmailInput> {
         const Duration(milliseconds: 500),
         () => context
             .read<LoginBloc>()
-            .add(LoginEmailChanged(email, Form.of(context).validate())));
+            .add(LoginEmailChanged(email, Form.of(context).validate() && !_isEmailFieldPure )));
+
   }
 
-  bool _emailPure = false;
+  bool _isEmailFieldPure = true;
 
 
   @override
   void initState() {
     super.initState();
     widget.focusNode.addListener(() {
-      if (!widget.focusNode.hasFocus) {
-        _emailPure = true;
+      if (widget.focusNode.hasFocus) {
+        _isEmailFieldPure = false;
       }
     });
   }
@@ -59,11 +60,11 @@ class _EmailInputState extends State<EmailInput> {
           onChanged: (email) => _onEmailChanged(email, context),
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return _emailPure ? 'Please enter your email' : null;
+              return _isEmailFieldPure ?null : 'Please enter your email' ;
             } else if (!RegExp(
                   r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
                 ).hasMatch(value) &&
-                _emailPure) {
+                !_isEmailFieldPure) {
               return 'invalid email';
             }
 

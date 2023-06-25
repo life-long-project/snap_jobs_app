@@ -14,18 +14,20 @@ class ThemeVariables {
   static const onPrimary = LightColors.darkGrey;
   static const onSecondary = LightColors.white;
   static const surface = LightColors.white;
-  static const onSurface = LightColors.darkBlueBlack;
+  static const onSurface = LightColors.blue;
   static const background = LightColors.white;
   static const onBackground = LightColors.darkGrey;
   static const error = Colors.red;
   static const onError = LightColors.white;
   static const brightness = Brightness.light;
+  static const inputLabelColor = LightColors.grey;
 
   static const inputColor = LightColors.softGrey;
 }
 
 ThemeData getThemeDtaLight() => ThemeData(
-  //*colors
+      useMaterial3: true,
+      //*colors
       scaffoldBackgroundColor: Colors.white,
       colorScheme: const ColorScheme(
           primary: ThemeVariables.primary,
@@ -45,14 +47,25 @@ ThemeData getThemeDtaLight() => ThemeData(
           onError: ThemeVariables.onError,
           brightness: ThemeVariables.brightness),
       fontFamily: GoogleFonts.poppins().fontFamily,
+      drawerTheme: const DrawerThemeData(
+        elevation: 0,
+        backgroundColor: ThemeVariables.surface,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: ThemeVariables.secondary,
+        selectionColor: ThemeVariables.secondary.withOpacity(0.2),
+        selectionHandleColor: ThemeVariables.tertiary,
+      ),
       iconTheme: const IconThemeData(color: ThemeVariables.onBackground),
       //*inputDecoration
       inputDecorationTheme: const InputDecorationTheme(
         fillColor: ThemeVariables.inputColor,
         filled: true,
-        
         prefixIconColor: ThemeVariables.secondary,
         suffixIconColor: ThemeVariables.secondary,
+        labelStyle: TextStyle(
+          color: ThemeVariables.inputLabelColor,
+        ),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
             gapPadding: 4,
@@ -62,6 +75,7 @@ ThemeData getThemeDtaLight() => ThemeData(
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: ThemeVariables.secondary,
+          foregroundColor: ThemeVariables.onSecondary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -71,9 +85,38 @@ ThemeData getThemeDtaLight() => ThemeData(
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           backgroundColor: ThemeVariables.inverseSurface,
+          foregroundColor: ThemeVariables.onInverseSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
+      ),
+      //*textButton
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          backgroundColor: ThemeVariables.surface,
+          foregroundColor: ThemeVariables.onSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+
+      //*listTileTheme
+      listTileTheme: const ListTileThemeData(
+titleTextStyle: TextStyle(
+  color: ThemeVariables.onBackground,
+  fontWeight: FontWeight.w600,
+
+),
+
+      ),
+      //*cardTheme
+
+      cardTheme: CardTheme(
+shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+
       ),
     );

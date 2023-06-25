@@ -30,9 +30,11 @@ final sl = GetIt.instance;
 
 class ServicesLocator {
   Future<void> init() async {
-    GetIt.I.allowReassignment = true;
+    // GetIt.I.allowReassignment = true;
 //*core services
-    sl.registerSingleton(BaseHttpClient());
+    sl.registerSingleton<BaseHttpClient>(
+      BaseHttpClient(),
+    );
     sl.registerSingletonAsync<SharedPreferences>(() async {
       return await SharedPreferences.getInstance();
     });
@@ -40,7 +42,6 @@ class ServicesLocator {
     await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
     //*bloc
-    ;
 
     sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           authenticationRepository: sl<AuthenticationRepository>(),
@@ -49,32 +50,61 @@ class ServicesLocator {
     sl.registerFactory<SignUpBloc>(() => SignUpBloc(
           signUpRepository: sl<BaseSignUpRepository>(),
         ));
-    sl.registerFactory<LoginBloc>(() =>
-        LoginBloc(authenticationRepository: sl<AuthenticationRepository>()));
+    sl.registerFactory<LoginBloc>(
+      () => LoginBloc(
+        authenticationRepository: sl<AuthenticationRepository>(),
+      ),
+    );
 
-    sl.registerFactory(() =>
-        AddDeleteUpdateJobBloc(addJob: sl(), updateJob: sl(), deleteJob: sl()));
+    sl.registerFactory<AddDeleteUpdateJobBloc>(
+      () => AddDeleteUpdateJobBloc(
+        addJob: sl<AddJobUseCase>(),
+        updateJob: sl<UpdateJobUseCase>(),
+        deleteJob: sl<DeleteJobUseCase>(),
+      ),
+    );
 
-    sl.registerFactory(() =>
-        AllJobsBloc(getAllJobs: sl()));
-
+    sl.registerFactory<AllJobsBloc>(
+      () => AllJobsBloc(
+        getAllJobs: sl(),
+      ),
+    );
 
     // *Use Cases
 
     sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
     //*Jobs  Usecases
-    sl.registerLazySingleton(() => GetAllJobsUseCase(sl()));
-    sl.registerLazySingleton(() => AddJobUseCase(sl()));
-    sl.registerLazySingleton(() => DeleteJobUseCase(sl()));
-    sl.registerLazySingleton(() => UpdateJobUseCase(sl()));
+    sl.registerLazySingleton(
+      () => GetAllJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => AddJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => DeleteJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => UpdateJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
 
     //*DataSource
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
 
     //* repository
     sl.registerLazySingleton<BaseSignUpRepository>(
-        () => SignUpRepository(sl()));
+      () => SignUpRepository(
+        sl<BaseSignUpDataSource>(),
+      ),
+    );
     sl.registerLazySingleton<AuthenticationRepository>(
         () => AuthenticationRepository(
               sl<BaseHttpClient>(),
@@ -84,12 +114,21 @@ class ServicesLocator {
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
-    sl.registerLazySingleton<JobsRepository>(() => JobsRepositoryImpl(
-        remoteDataSource: sl(), networkInfo: sl(), localDataSource: sl()));
+    sl.registerLazySingleton<JobsRepository>(
+      () => JobsRepositoryImpl(
+        remoteDataSource: sl<PostJobRemoteDataSource>(),
+        networkInfo: sl<NetworkInfo>(),
+        localDataSource: sl<JobsLocalDataSource>(),
+      ),
+    );
 
     //! Core
 
-    sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+    sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(
+        sl<Connectivity>(),
+      ),
+    );
 
     sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
@@ -98,7 +137,10 @@ class ServicesLocator {
     sl.registerLazySingleton<PostJobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
     sl.registerLazySingleton<JobsLocalDataSource>(
-        () => JobsLocalDataSourceImpl(sharedPreferences: sl()));
+      () => JobsLocalDataSourceImpl(
+        sharedPreferences: sl<SharedPreferences>(),
+      ),
+    );
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
   }

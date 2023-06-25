@@ -16,6 +16,7 @@ class PasswordField extends StatelessWidget {
     return TextFormField(
       maxLines: 1,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                obscureText: true,
 
       decoration: InputDecoration(
         label: RichText(

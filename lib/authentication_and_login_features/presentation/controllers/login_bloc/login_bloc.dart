@@ -34,10 +34,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) {
     final email = event.email;
+    final isEmailValid = event.isEmailValid;
+    final isValid = isEmailValid && state.isPasswordValid;
+
     emit(
       state.copyWith(
         email: email,
-        isValid: event.isValid ,
+        isValid: isValid,
+        isEmailValid: isEmailValid ,
       ),
     );
   }
@@ -47,10 +51,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) {
     final password = event.password;
+    final isPasswordValid = event.isPasswordValid;
+    final isValid = isPasswordValid && state.isEmailValid;
     emit(
       state.copyWith(
         password: password,
-        isValid: event.isValid,
+        isPasswordValid: isPasswordValid,
+        isValid: isValid,
       ),
     );
   }
@@ -66,7 +73,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       state.copyWith(
         email: email,
         password: password,
-        isValid: event.isValid,
       ),
     );
     if (state.isValid) {
