@@ -3,20 +3,22 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snap_jobs/Jobs_feature/data/data_sources/local_data_source.dart';
-import 'package:snap_jobs/Jobs_feature/data/data_sources/post_job_remote_data_source.dart';
-import 'package:snap_jobs/Jobs_feature/data/repositries/jobs_repository_impl.dart';
-import 'package:snap_jobs/Jobs_feature/domain/repositiries/jobs_repository.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_usecase.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_usecase.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_usecase.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_usecase.dart';
-import 'package:snap_jobs/Jobs_feature/presentation/bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/data/data_sources/job_remote_data_source.dart';
+import 'package:snap_jobs/Jobs_feature/data/repositories/jobs_repository_impl.dart';
+import 'package:snap_jobs/Jobs_feature/domain/repositories/jobs_repository.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/data/data_source/sign_up_data_source.dart';
 import 'package:snap_jobs/authentication_and_login_features/data/repository/sign_up_repository.dart';
 import 'package:snap_jobs/authentication_and_login_features/domain/repository/base_sign_up_repository.dart';
-import 'package:snap_jobs/authentication_and_login_features/domain/usecases/sign_up_uecase.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/sign_up_use_case.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/login_bloc/login_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/sign_up_bloc/sign_up_bloc.dart';
 import 'package:snap_jobs/core/network/api_constants.dart';
@@ -64,9 +66,11 @@ class ServicesLocator {
       ),
     );
 
-    sl.registerFactory<AllJobsBloc>(
-      () => AllJobsBloc(
-        getAllJobs: sl(),
+    sl.registerFactory<RequestJobsBloc>(
+      () => RequestJobsBloc(
+        getAllJobs: sl<GetAllJobsUseCase>(),
+        getUserJobs: sl<GetUserJobsUseCase>(),
+        getOneJob: sl<GetOneJobUseCase>(),
       ),
     );
 
@@ -80,6 +84,18 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
+
+    sl.registerLazySingleton(
+      () => GetUserJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => GetOneJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
     sl.registerLazySingleton(
       () => AddJobUseCase(
         sl<JobsRepository>(),
@@ -116,7 +132,7 @@ class ServicesLocator {
     );
     sl.registerLazySingleton<JobsRepository>(
       () => JobsRepositoryImpl(
-        remoteDataSource: sl<PostJobRemoteDataSource>(),
+        remoteDataSource: sl<JobRemoteDataSource>(),
         networkInfo: sl<NetworkInfo>(),
         localDataSource: sl<JobsLocalDataSource>(),
       ),
@@ -134,7 +150,7 @@ class ServicesLocator {
 
     // *Datasources
 
-    sl.registerLazySingleton<PostJobRemoteDataSource>(
+    sl.registerLazySingleton<JobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
     sl.registerLazySingleton<JobsLocalDataSource>(
       () => JobsLocalDataSourceImpl(

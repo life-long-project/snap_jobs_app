@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 
 import '../../../core/widgets/loading_widget.dart';
-import '../bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
 import '../widgets/jobs_page/job_list_widget.dart';
 import '../widgets/jobs_page/message_display_widget.dart';
 import 'create_job_page.dart';
@@ -17,9 +17,9 @@ class AllJobsPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => sl<AllJobsBloc>()
+          create: (_) => sl<RequestJobsBloc>()
             ..add(
-              GetAllJobsEvent(),
+              RequestAllJobsEvent(),
             ),
         ),
         BlocProvider(
@@ -40,15 +40,15 @@ class AllJobsPage extends StatelessWidget {
   Widget _buildBody() {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: BlocBuilder<AllJobsBloc, GetAllJobsState>(
+      child: BlocBuilder<RequestJobsBloc, RequestJobsState>(
         builder: (context, state) {
-          if (state is LoadingJobsState) {
+          if (state is RequestJobLoading) {
             return const LoadingWidget();
-          } else if (state is LoadedJobsState) {
+          } else if (state is RequestJobLoaded) {
             return RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
                 child: JobListWidget(posts: state.posts));
-          } else if (state is ErrorPostJobsState) {
+          } else if (state is RequestJobError) {
             return MessageDisplayWidget(message: state.message);
           }
           return const LoadingWidget();
@@ -58,7 +58,7 @@ class AllJobsPage extends StatelessWidget {
   }
 
   Future<void> _onRefresh(BuildContext context) async {
-    BlocProvider.of<AllJobsBloc>(context).add(RefreshJobsEvent());
+    BlocProvider.of<RequestJobsBloc>(context).add(RefreshJobsEvent());
   }
 
   Widget _buildFloatingBtn() {
@@ -68,7 +68,7 @@ class AllJobsPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>  AddJobPage(
+              builder: (_) =>  const AddJobPage(
                 isUpdateJob: false,
               ),
             ),

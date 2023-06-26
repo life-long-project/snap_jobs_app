@@ -8,7 +8,7 @@ abstract class AddDeleteUpdateJobsEvent extends Equatable {
 }
 
 class AddJobEvent extends AddDeleteUpdateJobsEvent {
-  final JobPost post;
+  final JobEntity post;
 
   const AddJobEvent({required this.post});
 
@@ -17,7 +17,7 @@ class AddJobEvent extends AddDeleteUpdateJobsEvent {
 }
 
 class UpdateJobEvent extends AddDeleteUpdateJobsEvent {
-  final JobPost post;
+  final JobEntity post;
 
   const UpdateJobEvent({required this.post});
 

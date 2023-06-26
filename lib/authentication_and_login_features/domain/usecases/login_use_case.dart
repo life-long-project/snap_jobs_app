@@ -1,5 +1,4 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/authentication_and_login_features/data/models/login_credentials_model.dart';
 
 import 'package:snap_jobs/authentication_and_login_features/domain/entities/login_credentials.dart';

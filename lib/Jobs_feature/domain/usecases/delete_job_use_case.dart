@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failure.dart';
-import '../repositiries/jobs_repository.dart';
+import '../repositories/jobs_repository.dart';
 
 class DeleteJobUseCase {
   final JobsRepository repository;

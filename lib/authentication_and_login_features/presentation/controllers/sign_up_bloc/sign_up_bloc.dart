@@ -5,14 +5,14 @@ import 'package:equatable/equatable.dart';
 
 import 'package:snap_jobs/authentication_and_login_features/domain/entities/sign_up_parameters.dart';
 import 'package:snap_jobs/authentication_and_login_features/domain/repository/base_sign_up_repository.dart';
-import 'package:snap_jobs/authentication_and_login_features/domain/usecases/sign_up_uecase.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/sign_up_use_case.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  ///the signup form inputText should show error if the input is invalid
+  ///the signUp form inputText should show error if the input is invalid
   ///and the user unfocused the inputText. not when the user is typing.
   SignUpBloc({
     required BaseSignUpRepository signUpRepository,

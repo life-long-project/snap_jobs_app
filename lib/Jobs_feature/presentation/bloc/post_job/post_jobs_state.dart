@@ -14,7 +14,7 @@ class LoadingAddDeleteUpdateJobsState extends AddDeleteUpdateJobsState {}
 class ErrorAddDeleteUpdateJobsState extends AddDeleteUpdateJobsState {
   final String message;
 
-  ErrorAddDeleteUpdateJobsState({required this.message});
+  const ErrorAddDeleteUpdateJobsState({required this.message});
 
   @override
   List<Object> get props => [message];
@@ -23,7 +23,7 @@ class ErrorAddDeleteUpdateJobsState extends AddDeleteUpdateJobsState {
 class MessageAddDeleteUpdateJobsState extends AddDeleteUpdateJobsState {
   final String message;
 
-  MessageAddDeleteUpdateJobsState({required this.message});
+  const MessageAddDeleteUpdateJobsState({required this.message});
 
   @override
   List<Object> get props => [message];

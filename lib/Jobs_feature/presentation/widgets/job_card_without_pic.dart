@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/job_detail_page.dart';
 import 'package:snap_jobs/core/util/colors_list.dart';
 
 class JobCardWithoutPic extends StatelessWidget {
-  final JobPost job;
+  final JobEntity job;
   final int _colorIndex;
 
   const JobCardWithoutPic({
@@ -17,7 +17,6 @@ class JobCardWithoutPic extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-
       color: ColorsLists.backgroundColors[_colorIndex],
       child: Container(
         // width: 304,
@@ -28,8 +27,6 @@ class JobCardWithoutPic extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-
-
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -39,7 +36,7 @@ class JobCardWithoutPic extends StatelessWidget {
                 SizedBox(
                   //*Title
                   child: Text(
-                    job.jobName,
+                    job.jobTitle,
                     style: TextStyle(
                       color: ColorsLists.titleColors[_colorIndex],
                       fontSize: 18,
@@ -62,7 +59,7 @@ class JobCardWithoutPic extends StatelessWidget {
             ),
             // const SizedBox(height: 24),
             Container(
-margin: const EdgeInsets.symmetric( vertical: 16),
+              margin: const EdgeInsets.symmetric(vertical: 16),
               // width: 256,
               child: Text(
                 job.jobDescription,

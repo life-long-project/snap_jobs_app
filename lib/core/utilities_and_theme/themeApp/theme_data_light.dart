@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'lightColors.dart';
+import 'light_colors.dart';
 
 class ThemeVariables {
   static const primary = LightColors.white;
@@ -104,19 +104,16 @@ ThemeData getThemeDtaLight() => ThemeData(
 
       //*listTileTheme
       listTileTheme: const ListTileThemeData(
-titleTextStyle: TextStyle(
-  color: ThemeVariables.onBackground,
-  fontWeight: FontWeight.w600,
-
-),
-
+        titleTextStyle: TextStyle(
+          color: ThemeVariables.onBackground,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       //*cardTheme
 
       cardTheme: CardTheme(
-shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );

@@ -8,12 +8,12 @@ import '../error/exceptions.dart';
 import 'error_message_model.dart';
 
 class BaseHttpClient extends http.BaseClient {
-  Map<String, String> _defaultHeaders = {
+  final Map<String, String> _defaultHeaders = {
     'Content-Type': 'application/json',
   };
 
   Map<String, String>? _tokenQuery;
-  String? profileId = null;
+  String? profileId;
 
   final http.Client _httpClient = http.Client();
 
@@ -52,7 +52,7 @@ class BaseHttpClient extends http.BaseClient {
   }
 
   Map<String, String> _mergedHeaders(Map<String, String> headers) =>
-      {...?_defaultHeaders, ...?headers};
+      {..._defaultHeaders, ...headers};
 
   Uri _mergedQuery(Uri url) {
     url.queryParameters.addAll(_tokenQuery!);

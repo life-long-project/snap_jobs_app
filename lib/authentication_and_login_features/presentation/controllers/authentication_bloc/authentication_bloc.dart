@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snap_jobs/authentication_and_login_features/domain/usecases/get_user_usecase.dart';
-import 'package:snap_jobs/authentication_and_login_features/domain/usecases/log_out_usecase.dart';
-import 'package:snap_jobs/core/network/base_http_client.dart';
-import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/get_user_use_case.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/log_out_use_case.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';

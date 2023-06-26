@@ -1,5 +1,3 @@
-
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -7,10 +5,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/error_message_model.dart';
 import '../../../../core/network/messages.dart';
-import '../../../domain/entities/post_job_entity.dart';
-import '../../../domain/usecases/add_job_usecase.dart';
-import '../../../domain/usecases/delete_job_usecase.dart';
-import '../../../domain/usecases/update_job_usecase.dart';
+import '../../../domain/entities/job_entity.dart';
+import '../../../domain/usecases/add_job_use_case.dart';
+import '../../../domain/usecases/delete_job_use_case.dart';
+import '../../../domain/usecases/update_job_use_case.dart';
 
 part 'post_job_event.dart';
 part 'post_jobs_state.dart';

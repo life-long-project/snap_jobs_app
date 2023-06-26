@@ -1,7 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
 import 'package:snap_jobs/splash/view/stateless_splash_screen.dart';
 
 import 'package:user_repository/user_repository.dart';
@@ -10,7 +10,7 @@ import 'Home_Feature/Presentation/UI/Screens/home.dart';
 import 'authentication_and_login_features/presentation/screens/login/login_page.dart';
 import 'core/network/base_http_client.dart';
 import 'core/services/services_locator.dart';
-import 'core/utilities_and_theme/themeApp/themeDataLight.dart';
+import 'core/utilities_and_theme/themeApp/theme_data_light.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

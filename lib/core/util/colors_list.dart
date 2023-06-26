@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/core/utilities_and_theme/themeApp/lightColors.dart';
+import 'package:snap_jobs/core/utilities_and_theme/themeApp/light_colors.dart';
 
 class ColorsLists {
   static const List<Color> backgroundColors = [

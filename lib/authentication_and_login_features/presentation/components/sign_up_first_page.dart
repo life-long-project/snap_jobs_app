@@ -84,7 +84,7 @@ class _SignUpFirstPageState extends State<SignUpFirstPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //*Signup Form paramters
+          //*SignUp Form parameters
 
           Row(
             mainAxisSize: MainAxisSize.min,

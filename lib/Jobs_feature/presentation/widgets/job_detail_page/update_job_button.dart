@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
 import '../../pages/create_job_page.dart';
 
 class UpdateJobBtnWidget extends StatelessWidget {
-  final JobPost post;
+  final JobEntity post;
   const UpdateJobBtnWidget({
     Key? key,
     required this.post,
@@ -17,14 +17,13 @@ class UpdateJobBtnWidget extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => AddJobPage(
+              builder: (_) => const AddJobPage(
                 isUpdateJob: true,
-
               ),
             ));
       },
-      icon: Icon(Icons.edit),
-      label: Text("Edit"),
+      icon: const Icon(Icons.edit),
+      label: const Text("Edit"),
     );
   }
 }

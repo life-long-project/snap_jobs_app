@@ -7,32 +7,32 @@ import '../../../core/error/exceptions.dart';
 import '../models/job_post_model.dart';
 
 abstract class JobsLocalDataSource {
-  Future<List<JobPostModel>> getCachedJobs();
-  Future<Unit> cacheJobs(List<JobPostModel> postModels);
+  Future<List<JobModel>> getCachedJobs();
+  Future<Unit> cacheJobs(List<JobModel> postModels);
 }
 
-const CACHED_Jobs = "CACHED_JOBS";
+const cachedJobs = "CACHED_JOBS";
 
 class JobsLocalDataSourceImpl implements JobsLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   JobsLocalDataSourceImpl({required this.sharedPreferences});
   @override
-  Future<Unit> cacheJobs(List<JobPostModel> postModels) {
+  Future<Unit> cacheJobs(List<JobModel> postModels) {
     List postModelsToJson = postModels
         .map<Map<String, dynamic>>((postModel) => postModel.toJson())
         .toList();
-    sharedPreferences.setString(CACHED_Jobs, json.encode(postModelsToJson));
+    sharedPreferences.setString(cachedJobs, json.encode(postModelsToJson));
     return Future.value(unit);
   }
 
   @override
-  Future<List<JobPostModel>> getCachedJobs() {
-    final jsonString = sharedPreferences.getString(CACHED_Jobs);
+  Future<List<JobModel>> getCachedJobs() {
+    final jsonString = sharedPreferences.getString(cachedJobs);
     if (jsonString != null) {
       List decodeJsonData = json.decode(jsonString);
-      List<JobPostModel> jsonToPostModels = decodeJsonData
-          .map<JobPostModel>((jsonPostModel) => JobPostModel.fromJson(jsonPostModel))
+      List<JobModel> jsonToPostModels = decodeJsonData
+          .map<JobModel>((jsonPostModel) => JobModel.fromJson(jsonPostModel))
           .toList();
       return Future.value(jsonToPostModels);
     } else {
