@@ -40,7 +40,7 @@ class NetworkDataSource extends BaseProfileDataSource {
       "past_jobs": profileModel.pastJobs
     };
 
-    //check id here
+    //this create profile depend on signup and usermodel not req
     await sl<BaseHttpClient>()
         .post(Uri.parse(ApiConstants.profileUrl), body: body);
     return Future.value(unit);
