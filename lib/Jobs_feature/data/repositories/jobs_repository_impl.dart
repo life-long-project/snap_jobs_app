@@ -9,17 +9,18 @@ import '../data_sources/local_data_source.dart';
 import '../data_sources/job_remote_data_source.dart';
 import '../models/job_post_model.dart';
 
-typedef DeleteOrUpdateOrAddJob = Future<Unit> Function();
 
 class JobsRepositoryImpl extends JobsRepository {
+    final JobsLocalDataSource localDataSource;
   final JobRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
-  final JobsLocalDataSource localDataSource;
-  JobsRepositoryImpl(
-      {required this.localDataSource,
-      required this.remoteDataSource,
-      required this.networkInfo});
 
+  JobsRepositoryImpl({
+    required this.localDataSource,
+    required this.remoteDataSource,
+    required this.networkInfo,
+  });
+  //* addJob
   @override
   Future<Either<Failure, Unit>> addJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
@@ -43,6 +44,8 @@ class JobsRepositoryImpl extends JobsRepository {
     });
   }
 
+  //* updateJob
+
   @override
   Future<Either<Failure, Unit>> updateJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
@@ -57,6 +60,7 @@ class JobsRepositoryImpl extends JobsRepository {
       return remoteDataSource.updateJob(jobModel);
     });
   }
+  //* getAllJobs
 
   @override
   Future<Either<Failure, List<JobEntity>>> getAllJobs() async {
@@ -78,6 +82,8 @@ class JobsRepositoryImpl extends JobsRepository {
     }
   }
 
+  //* getOneJob
+
   @override
   Future<Either<Failure, JobEntity>> getOneJob(String jobId) async {
 
@@ -86,18 +92,20 @@ class JobsRepositoryImpl extends JobsRepository {
 
 
   }
-
+//* getUserJobs
   @override
   Future<Either<Failure, List<JobEntity>>> getUserJobs(String userId) {
     // TODO: implement getUserJobs
     throw UnimplementedError();
   }
 
+  //* helper method
+
   Future<Either<Failure, Unit>> _getMessage(
-      DeleteOrUpdateOrAddJob deleteOrUpdateOrAddPost) async {
+      Function request) async {
     if (await networkInfo.isConnected) {
       try {
-        await deleteOrUpdateOrAddPost();
+        await request();
         return const Right(unit);
       } on ServerException {
         return const Left(ServerFailure(""));

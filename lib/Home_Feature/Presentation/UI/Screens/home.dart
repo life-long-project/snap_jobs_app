@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -96,8 +99,27 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Expanded(
-            child: AllJobsPage(),
+         MultiBlocProvider(
+
+
+      providers: [
+        BlocProvider<RequestJobsBloc>(
+            lazy: false,
+            create: (context) {
+              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
+
+              return sl<RequestJobsBloc>();
+            }),
+        BlocProvider(create: (_) => sl<PostJobBloc>(),
+        ),
+      ],
+
+
+
+
+            child: Expanded(
+              child: AllJobsPage(),
+            ),
           ),
         ],
       ),

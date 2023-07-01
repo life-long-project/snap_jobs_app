@@ -23,7 +23,7 @@ class DeleteDialogWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            BlocProvider.of<AddDeleteUpdateJobBloc>(context).add(
+            BlocProvider.of<PostJobBloc>(context).add(
               DeleteJobEvent(jobId: jobId),
             );
           },

@@ -29,8 +29,7 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     try {
       final response = await client.get(
         Uri.parse(ApiConstants.getAllJobsPath),
-        headers: {"Content-Type": "application/json"},
-      );
+       );
       final decodedJson = json.decode(response.body)["jobs"];
       final List<JobModel> jobModel = decodedJson
           .map<JobModel>(

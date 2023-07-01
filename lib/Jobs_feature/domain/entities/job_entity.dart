@@ -28,7 +28,7 @@ class JobEntity extends Equatable {
     this.duration,
     this.image,
     this.jobId = "0",
-  }) : assert(isActive == true ? (workerId == null) : workerId != null);
+  }) ;
 
   @override
   List<Object?> get props => [

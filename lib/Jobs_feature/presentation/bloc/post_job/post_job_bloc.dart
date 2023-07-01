@@ -13,17 +13,16 @@ import '../../../domain/usecases/update_job_use_case.dart';
 part 'post_job_event.dart';
 part 'post_jobs_state.dart';
 
-class AddDeleteUpdateJobBloc
-    extends Bloc<AddDeleteUpdateJobsEvent, AddDeleteUpdateJobsState> {
+class PostJobBloc extends Bloc<PostJobEvent, PostJobState> {
   final AddJobUseCase addJob;
   final DeleteJobUseCase deleteJob;
   final UpdateJobUseCase updateJob;
-  AddDeleteUpdateJobBloc(
+  PostJobBloc(
       {required this.addJob, required this.deleteJob, required this.updateJob})
-      : super(AddDeleteUpdateJobsInitial()) {
-    on<AddDeleteUpdateJobsEvent>((event, emit) async {
+      : super(PostJobInitial()) {
+    on<PostJobEvent>((event, emit) async {
       if (event is AddJobEvent) {
-        emit(LoadingAddDeleteUpdateJobsState());
+        emit(PostJobLoading());
 
         final failureOrDoneMessage = await addJob(event.post);
         emit(
@@ -31,7 +30,7 @@ class AddDeleteUpdateJobBloc
               failureOrDoneMessage, addSuccessMessage),
         );
       } else if (event is UpdateJobEvent) {
-        emit(LoadingAddDeleteUpdateJobsState());
+        emit(PostJobLoading());
 
         final failureOrDoneMessage = await updateJob(event.post);
 
@@ -40,7 +39,7 @@ class AddDeleteUpdateJobBloc
               failureOrDoneMessage, updateSuccessMessage),
         );
       } else if (event is DeleteJobEvent) {
-        emit(LoadingAddDeleteUpdateJobsState());
+        emit(PostJobLoading());
 
         final failureOrDoneMessage = await deleteJob(event.jobId);
 
@@ -52,13 +51,13 @@ class AddDeleteUpdateJobBloc
     });
   }
 
-  AddDeleteUpdateJobsState _eitherDoneMessageOrErrorState(
+  PostJobState _eitherDoneMessageOrErrorState(
       Either<Failure, Unit> either, String message) {
     return either.fold(
-      (failure) => ErrorAddDeleteUpdateJobsState(
+      (failure) => PostJobError(
         message: _mapFailureToMessage(failure),
       ),
-      (_) => MessageAddDeleteUpdateJobsState(message: message),
+      (_) => PostJobMessage(message: message),
     );
   }
 

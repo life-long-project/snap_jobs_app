@@ -59,8 +59,7 @@ class _FormWidgetState extends State<FormWidget> {
                 name: "Description",
                 multiLines: true,
                 controller: _jobDescriptionController),
-            JobTypeFormField(
-                controller: _jobTypeController),
+            JobTypeFormField(controller: _jobTypeController),
             TextFormFieldWidget(
                 name: "Salary",
                 multiLines: false,
@@ -93,11 +92,9 @@ class _FormWidgetState extends State<FormWidget> {
     );
 
     if (widget.post != null) {
-      BlocProvider.of<AddDeleteUpdateJobBloc>(context)
-          .add(UpdateJobEvent(post: post));
+      BlocProvider.of<PostJobBloc>(context).add(UpdateJobEvent(post: post));
     } else {
-      BlocProvider.of<AddDeleteUpdateJobBloc>(context)
-          .add(AddJobEvent(post: post));
+      BlocProvider.of<PostJobBloc>(context).add(AddJobEvent(post: post));
     }
   }
 }

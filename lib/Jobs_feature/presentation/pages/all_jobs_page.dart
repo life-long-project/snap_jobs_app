@@ -9,73 +9,102 @@ import '../widgets/jobs_page/job_list_widget.dart';
 import '../widgets/jobs_page/message_display_widget.dart';
 import 'create_job_page.dart';
 
-class AllJobsPage extends StatelessWidget {
+class AllJobsPage extends StatefulWidget {
   const AllJobsPage({Key? key}) : super(key: key);
+
+  @override
+  State<AllJobsPage> createState() => _AllJobsPageState();
+}
+
+class _AllJobsPageState extends State<AllJobsPage> {
+  Future<void> _onStart(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 1));
+    BlocProvider.of<RequestJobsBloc>(context).add(RequestAllJobsEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<RequestJobsBloc>()
-            ..add(
-              RequestAllJobsEvent(),
-            ),
-        ),
-        BlocProvider(
-          create: (_) => sl<AddDeleteUpdateJobBloc>(),
-        ),
+        BlocProvider<RequestJobsBloc>(
+            lazy: false,
+            create: (context) {
+              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
+              _onStart(context);
+              return sl<RequestJobsBloc>();
+            }),
+        BlocProvider(create: (_) => sl<PostJobBloc>())
       ],
       child: Stack(children: [
-        _buildBody(),
-        Positioned(
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: BlocBuilder<RequestJobsBloc, RequestJobsState>(
+            builder: (context, state) {
+              switch (state.requestJobsStatus) {
+                case RequestJobsStatus.initial:
+                  return const initial();
+                case RequestJobsStatus.loading:
+                  return const LoadingWidget();
+
+                case RequestJobsStatus.success:
+                  return RefreshIndicator(
+                      onRefresh: () => _onRefresh(context),
+                      child: JobListWidget(posts: state.jobs));
+                case RequestJobsStatus.failure:
+                  return MessageDisplayWidget(message: state.message);
+              }
+            },
+          ),
+        ),
+        const Positioned(
           right: 10,
           bottom: 10,
-          child: _buildFloatingBtn(),
+          child: BuildFloatingBtn(),
         ),
       ]),
-    );
-  }
-
-  Widget _buildBody() {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: BlocBuilder<RequestJobsBloc, RequestJobsState>(
-        builder: (context, state) {
-          if (state is RequestJobLoading) {
-            return const LoadingWidget();
-          } else if (state is RequestJobLoaded) {
-            return RefreshIndicator(
-                onRefresh: () => _onRefresh(context),
-                child: JobListWidget(posts: state.posts));
-          } else if (state is RequestJobError) {
-            return MessageDisplayWidget(message: state.message);
-          }
-          return const LoadingWidget();
-        },
-      ),
     );
   }
 
   Future<void> _onRefresh(BuildContext context) async {
     BlocProvider.of<RequestJobsBloc>(context).add(RefreshJobsEvent());
   }
+}
 
-  Widget _buildFloatingBtn() {
-    return Builder(builder: (context) {
-      return FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) =>  const AddJobPage(
-                isUpdateJob: false,
-              ),
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      );
-    });
+class initial extends StatelessWidget {
+  const initial({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    /*
+    return const LoadingWidget();
+*/
+
+    BlocProvider.of<RequestJobsBloc>(context).add(
+      RequestAllJobsEvent(),
+    );
+
+    return Center(
+        child: Text(
+      'initial',
+      style: TextStyle(fontSize: 20),
+    ));
+  }
+}
+
+class BuildFloatingBtn extends StatelessWidget {
+  const BuildFloatingBtn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          AddJobPage.addJobRoute(),
+        );
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }

@@ -1,13 +1,16 @@
 part of 'request_jobs_bloc.dart';
 
-abstract class RequestJobsEvent extends Equatable {
+sealed class RequestJobsEvent extends Equatable{
   const RequestJobsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class RequestAllJobsEvent extends RequestJobsEvent {}
+class RequestAllJobsEvent extends RequestJobsEvent {
+  const RequestAllJobsEvent();
+
+}
 
 class RequestOneJobEvent extends RequestJobsEvent {
   final String id;
@@ -23,8 +26,12 @@ class RequestUserJobsEvent extends RequestJobsEvent {
 
   const RequestUserJobsEvent({required this.userId});
 
-  @override
-  List<Object> get props => [userId];
+   @override
+   List<Object> get props => [userId];
 }
 
-class RefreshJobsEvent extends RequestJobsEvent {}
+class RefreshJobsEvent extends RequestJobsEvent {
+  
+
+
+}

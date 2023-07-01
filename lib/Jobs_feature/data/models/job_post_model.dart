@@ -3,7 +3,7 @@ import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
 class JobModel extends JobEntity {
   const JobModel({
-     super.userId,
+    super.userId,
     required super.jobTitle,
     required super.jobDescription,
     required super.jobType,
@@ -24,14 +24,20 @@ class JobModel extends JobEntity {
       jobTitle: (json['job_name'] ?? "error") as String,
       jobDescription: json['job_description'] as String,
       // workerId: "6462e25fff14a736805e1382",
-      duration: (json['job_duration'] ?? 0) as int,
+      duration: ((json['job_duration'] ?? 0) is String)
+          ? int.tryParse(json['job_duration']) ?? json['job_duration']
+          : json['job_duration'],
       isActive: (json['is_active'] ?? false) as bool,
 
-      jobType: (json['job_type'] ?? JobType.partTime) as JobType,
+      jobType: (json['job_type'] ?? "service") == "part-time"
+          ? JobType.partTime
+          : json['job_type'] == "full-time"
+              ? JobType.fullTime
+              : JobType.service,
       salary: ((json['salary'] ?? 0) is String)
           ? int.tryParse(json['salary']) ?? json['salary']
           : json['salary'],
-      skills: (json['skills'] ?? []) as List<String>?,
+      skills: (json['skills'] ?? []),
 
       image: json['job_img_url'] != null
           ? Image.network(json['job_img_url'])

@@ -58,8 +58,8 @@ class ServicesLocator {
       ),
     );
 
-    sl.registerFactory<AddDeleteUpdateJobBloc>(
-      () => AddDeleteUpdateJobBloc(
+    sl.registerFactory<PostJobBloc>(
+      () => PostJobBloc(
         addJob: sl<AddJobUseCase>(),
         updateJob: sl<UpdateJobUseCase>(),
         deleteJob: sl<DeleteJobUseCase>(),

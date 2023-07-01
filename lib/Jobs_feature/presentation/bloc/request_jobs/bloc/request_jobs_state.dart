@@ -1,30 +1,38 @@
 part of 'request_jobs_bloc.dart';
 
-abstract class RequestJobsState extends Equatable {
-  const RequestJobsState();
+enum RequestJobsStatus {
+  initial,
 
-  @override
-  List<Object> get props => [];
+  loading,
+
+  success,
+
+  /// The form submission failed.
+  failure,
 }
 
-class RequestJobsInitial extends RequestJobsState {}
+final class RequestJobsState extends Equatable {
+  const RequestJobsState(
+      {this.requestJobsStatus = RequestJobsStatus.initial,
+      this.jobs = const [],
+      this.message = ""});
 
-class RequestJobLoading extends RequestJobsState {}
-
-class RequestJobLoaded extends RequestJobsState {
-  final List<JobEntity> posts;
-
-  const RequestJobLoaded({required this.posts});
-
-  @override
-  List<Object> get props => [posts];
-}
-
-class RequestJobError extends RequestJobsState {
+  final RequestJobsStatus requestJobsStatus;
+  final List<JobEntity> jobs;
   final String message;
 
-  const RequestJobError({required this.message});
-
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [requestJobsStatus, jobs, message];
+
+  RequestJobsState copyWith({
+    RequestJobsStatus? status,
+    List<JobEntity>? jobs,
+    String? message,
+  }) {
+    return RequestJobsState(
+      requestJobsStatus: status ?? requestJobsStatus,
+      jobs: jobs ?? this.jobs,
+      message: message ?? this.message,
+    );
+  }
 }

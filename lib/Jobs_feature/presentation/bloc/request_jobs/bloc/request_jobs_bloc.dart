@@ -1,5 +1,5 @@
-
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
@@ -18,49 +18,74 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   final GetUserJobsUseCase getUserJobs;
   final GetOneJobUseCase getOneJob;
 
+  @override
   RequestJobsBloc({
     required this.getAllJobs,
     required this.getUserJobs,
     required this.getOneJob,
-  }) : super(RequestJobsInitial()) {
-    on<RequestJobsEvent>((event, emit) async {
-      emit(RequestJobLoading());
+  }) : super(const RequestJobsState()) {
+      on<RequestAllJobsEvent>(_onRequestAllJobsEvent,
+          transformer: sequential());
+      on<RefreshJobsEvent>(
+        _onRefreshJobsEvent,
+        transformer: sequential(),
+      );
+      on<RequestUserJobsEvent>(
+        _onRequestUserJobsEvent,
+        transformer: sequential(),
+      );
+      on<RequestOneJobEvent>(
+        _onGetOneJobEvent,
+        transformer: sequential(),
+      );
+   }
 
-      on<RequestAllJobsEvent>(_onRequestAllJobsEvent);
-      on<RefreshJobsEvent>(_onRefreshJobsEvent);
-      on<RequestUserJobsEvent>(_onRequestUserJobsEvent);
-      on<RequestOneJobEvent>(_onGetOneJobEvent);
-    });
-  }
-  void _onRequestAllJobsEvent(
+  //* All Jobs
+  Future<void> _onRequestAllJobsEvent(
       RequestAllJobsEvent event, Emitter<RequestJobsState> emit) async {
-    final response = await getAllJobs() as Either<Failure, List<JobEntity>>;
+//delay duration zero
+    emit(state.copyWith(status: RequestJobsStatus.loading));
+
+    final response = await getAllJobs.call();
     emit(_mapResponseToState(response));
   }
 
-  void _onRefreshJobsEvent(
+//*Refresh Jobs
+  Future<void> _onRefreshJobsEvent(
       RefreshJobsEvent event, Emitter<RequestJobsState> emit) async {
-    final response =
-        await getAllJobs.call() as Either<Failure, List<JobEntity>>;
-    emit(_mapResponseToState(response));
+    emit(state.copyWith(status: RequestJobsStatus.loading));
+
+    final response = getAllJobs.call();
+    emit(_mapResponseToState(await response));
   }
 
-  void _onRequestUserJobsEvent(
+  //* User Jobs
+
+  Future<void> _onRequestUserJobsEvent(
       RequestUserJobsEvent event, Emitter<RequestJobsState> emit) async {
+    emit(state.copyWith(status: RequestJobsStatus.loading));
+
     final response = await getUserJobs.call(event.userId)
         as Either<Failure, List<JobEntity>>;
     emit(_mapResponseToState(response));
   }
 
-  void _onGetOneJobEvent(
-      RequestOneJobEvent event, Emitter<RequestJobsState> emit) async {}
+  //* One Job
 
+  Future<void> _onGetOneJobEvent(
+      RequestOneJobEvent event, Emitter<RequestJobsState> emit) async {
+    //TODO implement this
+    throw UnimplementedError;
+  }
+
+//*helper methods
   RequestJobsState _mapResponseToState(
       Either<Failure, List<JobEntity>> either) {
     return either.fold(
-      (failure) => RequestJobError(message: _mapFailureToMessage(failure)),
-      (posts) => RequestJobLoaded(
-        posts: posts,
+      (failure) => state.copyWith(message: _mapFailureToMessage(failure)),
+      (jobs) => state.copyWith(
+        status: RequestJobsStatus.success,
+        jobs: jobs,
       ),
     );
   }
