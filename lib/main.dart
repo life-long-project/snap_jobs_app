@@ -14,7 +14,8 @@ import 'package:snap_jobs/Jobs_feature/presentation/pages/jobs_page.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
-import 'profile_feature/presentation/Screens/post_profile.dart';
+import 'profile_feature/presentation/Screens/profile_page.dart';
+
 
 
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: getThemeDtaLight(),
             title: 'Posts Job',
-            home: AddJobPage(isUpdateJob: false,));
+            home: ProfileScreen());
   }
 }
 

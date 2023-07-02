@@ -10,7 +10,7 @@ import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 import '../../../core/error/failure.dart';
 
 typedef UpdateOrAddJob = Future< Unit> Function();
-
+//
 class DataRepository implements BaseProfilerepo {
   final NetworkDataSource _networkDataSource;
   final CacheDataSource _cacheDataSource;

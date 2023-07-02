@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:shimmer/shimmer.dart';
+import 'package:snap_jobs/profile_feature/presentation/wedgets/Recent_Review.dart';
+import 'package:snap_jobs/profile_feature/presentation/wedgets/profile_img.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -26,7 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-       
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
@@ -40,8 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {},
               color: Colors.black,
             ),
-          ]
-      ),
+          ]),
       body: isLoading
           ? _buildLoadingState()
           : SingleChildScrollView(
@@ -49,12 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 60,
-                    // backgroundImage: CachedNetworkImageProvider(
-                    //   'https://example.com/profile_photo.jpg',
-                    // ),
-                  ),
+                  ProfileImg(),
                   SizedBox(height: 20),
                   Text(
                     'John Doe',
@@ -64,15 +60,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star, color: Colors.yellow),
-                      Icon(Icons.star, color: Colors.yellow),
-                      Icon(Icons.star, color: Colors.yellow),
-                      Icon(Icons.star_half, color: Colors.yellow),
-                      Icon(Icons.star_border, color: Colors.yellow),
-                    ],
+                  //rating
+                  RatingBar(
+                    initialRating: 3,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    ratingWidget: RatingWidget(
+                      full: Icon(Icons.point_of_sale, color: Colors.amber),
+                      half: Icon(Icons.star_half, color: Colors.amber),
+                      empty: Icon(Icons.star_border, color: Colors.amber),
+                    ),
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -108,48 +110,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
-                      itemBuilder: (context, index) => _buildReviewCard(),
+                      itemBuilder: (context, index) => const RecentReview(),
                     ),
                   ),
                 ],
               ),
             ),
-    );
-  }
-
-  Widget _buildReviewCard() {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.person),
-                SizedBox(width: 5),
-                Text('John Smith'),
-              ],
-            ),
-            SizedBox(height: 5),
-            Row(
-              children: [
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star_border, color: Colors.yellow),
-                Icon(Icons.star_border, color: Colors.yellow),
-              ],
-            ),
-            SizedBox(height: 5),
-            Text(
-              'Great service! Will definitely recommend.',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ),
     );
   }
 

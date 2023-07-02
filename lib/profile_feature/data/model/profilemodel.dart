@@ -10,9 +10,9 @@ class ProfileModel extends Profile {
       required super.rateAverage,
       required super.userImageUrl,
       required super.workImageUrl,
-     
+
       required super.sId,
-     
+    
       required super.userName,
       required super.bio,
       required super.age,
