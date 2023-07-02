@@ -163,7 +163,7 @@ class ServicesLocator {
 }
 
 class ServiceLocatorWithTokens {
-  init(String token) {
+  init(String token)  async {
     sl.registerSingleton(
       BaseHttpClient.addToken(token),
     );

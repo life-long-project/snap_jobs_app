@@ -32,7 +32,7 @@ class UserRepository {
   }
 
   Future<void> _getUserFromRemote() async {
-    var url = Uri.parse(getUserPath + _userId!);
+    var url = Uri.parse("$getUserPath${_userId!}/");
     final User response = await httpClient
         .get(url)
         .then((value) => User.fromJson(jsonDecode(value.body)["user"]))

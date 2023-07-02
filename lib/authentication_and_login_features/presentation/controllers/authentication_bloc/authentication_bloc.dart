@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/authentication_and_login_features/domain/usecases/get_user_use_case.dart';
 import 'package:snap_jobs/authentication_and_login_features/domain/usecases/log_out_use_case.dart';
+import 'package:snap_jobs/core/network/base_http_client.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -55,26 +58,40 @@ class AuthenticationBloc
           const AuthenticationState.unauthenticated(),
         );
       case AuthenticationStatus.authenticated:
-      //below commented code is for changing the baseClient singleton to
-      //include Token in the header of every request.
-      //but currently it's not working as expected
+        //below commented code is for changing the baseClient singleton to
+        //include Token in the header of every request.
+        //but currently it's not working as expected
         //TODO : fix this
 
-        //  await sl.unregister<BaseHttpClient>();
+         await sl.unregister<BaseHttpClient>();
 
-        // await ServiceLocatorWithTokens()
-        //     .init(await _authenticationRepository.token);
+          await ServiceLocatorWithTokens()
+            .init(await _authenticationRepository.token);
 
-        final user = await GetUserUsecase(_userRepository)
-            .call(await _authenticationRepository.token);
+        try {
+          final user = await GetUserUsecase(_userRepository)
+              .call(await _authenticationRepository.token);
 
-        return emit(
-          user != User.empty
-              ? AuthenticationState.authenticated(
-                  user,
-                )
-              : const AuthenticationState.unauthenticated(),
-        );
+          return emit(
+            user != User.empty
+                ? AuthenticationState.authenticated(
+                    user,
+                  )
+                : const AuthenticationState.unauthenticated(),
+          );
+        } catch (e) {
+          stderr.writeln(e);
+
+          ///in case of error, it's better to logout the user and start again.
+          _onAuthenticationLogoutRequested(
+            AuthenticationLogoutRequested(),
+            emit,
+          );
+          return emit(
+            const AuthenticationState.unauthenticated(),
+          );
+        }
+
       case AuthenticationStatus.unknown:
         return emit(
           const AuthenticationState.unknown(),
