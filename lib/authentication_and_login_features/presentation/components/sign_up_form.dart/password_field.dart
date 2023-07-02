@@ -32,7 +32,7 @@ class PasswordField extends StatelessWidget {
           ),
         ),
         hintText: "Atlas 8 characters long",
-        prefixIcon: Icon(Icons.lock),
+        prefixIcon: const Icon(Icons.lock),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

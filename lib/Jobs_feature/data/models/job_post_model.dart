@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
@@ -20,7 +21,7 @@ class JobModel extends JobEntity {
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
       jobId: (json['_id'] ?? "error") as String,
-      userId: '644e429ba22abc64180bcc02',
+      // userId: '644e429ba22abc64180bcc02',
       jobTitle: (json['job_name'] ?? "error") as String,
       jobDescription: json['job_description'] as String,
       // workerId: "6462e25fff14a736805e1382",
@@ -39,28 +40,28 @@ class JobModel extends JobEntity {
           : json['salary'],
       skills: (json['skills'] ?? []),
 
-      image: json['job_img_url'] != null
-          ? Image.network(json['job_img_url'])
-          : null,
+      image:(json['job_img_url'] ?? []).map((e) => Image.network(e) ).toList(),
+
+
+
     );
   }
 
   Map<String, dynamic> toJson() {
     final jsonBody = {
-      'job_name': jobTitle,
-      'job_description': jobDescription,
-      'skills': skills,
-      'job_type': jobType.toString(),
+      'title': jobTitle,
+      'description': jobDescription,
+      'skills':
+      skills,
+      'type': jobType.toString().split('.').last,
       'salary': salary.toString(),
+      'location' : 'tanta'
     };
 
     if (duration != null) {
       jsonBody.addEntries([MapEntry('duration', duration.toString())]);
     }
 
-    if (skills != null) {
-      jsonBody.addEntries([MapEntry('skills', skills)]);
-    }
 
     return jsonBody;
   }

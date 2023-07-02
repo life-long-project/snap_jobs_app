@@ -117,7 +117,7 @@ class HomePage extends StatelessWidget {
 
 
 
-            child: Expanded(
+            child: const Expanded(
               child: AllJobsPage(),
             ),
           ),

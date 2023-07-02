@@ -21,20 +21,18 @@ class BaseHttpClient extends http.BaseClient {
 
   BaseHttpClient.addToken(String token) {
     _addTokenToHeader(token);
-    // if (_tokenQuery != null) {
-    //   // _addTokenToQuery(token);
+      _addTokenToQuery(token);
 
+      profileId = json.decode(
+        ascii.decode(
+          base64.decode(
+            base64.normalize(
+              token.split(".")[1],
+            ),
+          ),
+        ),
+      )["user"]["profile_id"];
 
-    //   profileId = json.decode(
-    //     ascii.decode(
-    //       base64.decode(
-    //         base64.normalize(
-    //           token.split(".")[1],
-    //         ),
-    //       ),
-    //     ),
-    //   )["user"]["profile_id"];
-    // }
   }
 
   _addTokenToHeader(String token) {
@@ -54,16 +52,27 @@ class BaseHttpClient extends http.BaseClient {
   Map<String, String> _mergedHeaders(Map<String, String> headers) =>
       {..._defaultHeaders, ...headers};
 
-  Uri _mergedQuery(Uri url) {
-    url.queryParameters.addAll(_tokenQuery!);
+
+//* merge token and query params
+
+  Uri _mergedQuery(Uri url, Map<String, String>? queryParams) {
+
+Map<String, String>? resultedQueryParams;
+_tokenQuery!=null ? resultedQueryParams = _tokenQuery :DoNothingAction() ;
+queryParams != null ? resultedQueryParams != null ? resultedQueryParams.addAll(queryParams) : resultedQueryParams = queryParams : DoNothingAction();
+
+
+    final bothNull = resultedQueryParams == null ;
+
+   bothNull ? DoNothingAction()  : url.hasQuery?  url.queryParameters.addAll(resultedQueryParams) : url = url.replace(queryParameters: resultedQueryParams);
     return url;
   }
 
+
+
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
-    _tokenQuery != null
-        ? request = Request(request.method, _mergedQuery(request.url))
-        : DoNothingAction();
+  Future<http.StreamedResponse> send(http.BaseRequest request,{Map<String, String>? queryParams}) {
+    request =  Request(request.method, _mergedQuery(request.url , queryParams));
 
     return _httpClient.send(request).then((response) async {
       _checkError(await http.Response.fromStream(response));
@@ -73,8 +82,12 @@ class BaseHttpClient extends http.BaseClient {
   }
 
   @override
-  Future<Response> get(url, {Map<String, String>? headers}) {
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+  Future<Response> get(url,
+      {Map<String, String>? queryParams, Map<String, String>? headers}) {
+
+url = _mergedQuery(url, queryParams);
+
+
 
     return _httpClient
         .get(url,
@@ -85,8 +98,9 @@ class BaseHttpClient extends http.BaseClient {
 
   @override
   Future<Response> post(url,
-      {Map<String, String>? headers, dynamic body, Encoding? encoding}) {
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+      {Map<String, String>? queryParams,
+      Map<String, String>? headers, dynamic body, Encoding? encoding}) {
+url = _mergedQuery(url, queryParams);
     return _httpClient
         .post(url,
             headers:
@@ -98,10 +112,9 @@ class BaseHttpClient extends http.BaseClient {
 
   @override
   Future<Response> patch(url,
-      {Map<String, String>? headers, dynamic body, Encoding? encoding}) {
-
-
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+      {Map<String, String>? queryParams,
+      Map<String, String>? headers, dynamic body, Encoding? encoding}) {
+url = _mergedQuery(url, queryParams);
     return _httpClient
         .patch(url,
             headers:
@@ -113,8 +126,9 @@ class BaseHttpClient extends http.BaseClient {
 
   @override
   Future<Response> put(url,
-      {Map<String, String>? headers, dynamic body, Encoding? encoding}) {
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+      {Map<String, String>? queryParams,
+      Map<String, String>? headers, dynamic body, Encoding? encoding}) {
+url = _mergedQuery(url, queryParams);
     return _httpClient
         .put(url,
             headers:
@@ -125,8 +139,8 @@ class BaseHttpClient extends http.BaseClient {
   }
 
   @override
-  Future<Response> head(url, {Map<String, String>? headers}) {
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+  Future<Response> head(url, {Map<String, String>? queryParams, Map<String, String>? headers}) {
+url = _mergedQuery(url, queryParams);
     return _httpClient
         .head(url,
             headers:
@@ -136,8 +150,9 @@ class BaseHttpClient extends http.BaseClient {
 
   @override
   Future<Response> delete(url,
-      {Map<String, String>? headers, Object? body, Encoding? encoding}) {
-    _tokenQuery != null ? url = _mergedQuery(url) : DoNothingAction();
+      {Map<String, String>? queryParams,
+      Map<String, String>? headers, Object? body, Encoding? encoding}) {
+url = _mergedQuery(url, queryParams);
     return _httpClient
         .delete(url,
             headers:
@@ -147,7 +162,7 @@ class BaseHttpClient extends http.BaseClient {
   }
 
   Response _checkError(Response response) {
-    final int? statusCode = response.statusCode;
+    final int statusCode = response.statusCode;
 
     if (statusCode == null) {
       throw const ServerException(

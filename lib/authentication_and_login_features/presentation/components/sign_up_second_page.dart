@@ -5,6 +5,8 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/compone
 import 'package:snap_jobs/authentication_and_login_features/presentation/components/sign_up_form.dart/past_experinces_field.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/sign_up_bloc/sign_up_bloc.dart';
 
+import 'sign_up_form.dart/age_field.dart';
+
 class SignUpSecondPage extends StatefulWidget {
   const SignUpSecondPage({super.key});
 
@@ -13,10 +15,8 @@ class SignUpSecondPage extends StatefulWidget {
 }
 
 class _SignUpSecondPageState extends State<SignUpSecondPage> {
-  final _ages = List.generate(100 - 18, (index) => index + 18, growable: false);
-  int? _age;
+//TODO : Extract skill widget to diffrent file
   static List<String> skillsList = [""];
-
   List<Widget> _getSkills() {
     List<Widget> skillsTextFieldsList = [];
     for (int i = 0; i < skillsList.length; i++) {
@@ -32,7 +32,7 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
             _addRemoveButton(i == skillsList.length - 1, i),
           ],
         ),
-      ));
+      ),);
     }
     return skillsTextFieldsList;
   }
@@ -76,34 +76,7 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
         const CityField(),
 
         //*Age
-        FormField<int>(
-          builder: (FormFieldState<int> state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                labelText: 'Age',
-                errorText: state.hasError ? state.errorText : null,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<int>(
-                  value: _age,
-                  onChanged: (int? newValue) {
-                    context.read<SignUpBloc>().add(AgeChanged(newValue!));
-                    setState(() {
-                      _age = newValue;
-                    });
-                  },
-                  items: _ages.map((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(value.toString()),
-                    );
-                  }).toList(),
-                ),
-              ),
-            );
-          },
-          validator: (_) => null,
-        ),
+        const AgeField(),
 
         //*past experiences
 
@@ -131,10 +104,10 @@ class SkillsTextFields extends StatefulWidget {
   final int index;
   const SkillsTextFields(this.index, {super.key});
   @override
-  _SkillsTextFieldsState createState() => _SkillsTextFieldsState();
+  SkillsTextFieldsState createState() => SkillsTextFieldsState();
 }
 
-class _SkillsTextFieldsState extends State<SkillsTextFields> {
+class SkillsTextFieldsState extends State<SkillsTextFields> {
   TextEditingController? _skillController;
   @override
   void initState() {
@@ -151,8 +124,7 @@ class _SkillsTextFieldsState extends State<SkillsTextFields> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _skillController?.text =
-          _SignUpSecondPageState.skillsList[widget.index] ;
+      _skillController?.text = _SignUpSecondPageState.skillsList[widget.index];
     });
     return TextFormField(
       controller: _skillController,

@@ -7,7 +7,6 @@
 
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:test/test.dart';
-import 'package:bloc_test/bloc_test.dart';
 
 void main() {
   //TODO: fix this test

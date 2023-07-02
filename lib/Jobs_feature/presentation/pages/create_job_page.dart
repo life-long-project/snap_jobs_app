@@ -8,7 +8,7 @@ import '../../domain/entities/job_entity.dart';
 
 import 'package:snap_jobs/core/widgets/loading_widget.dart';
 
-import '../widgets/add_job/form_widget.dart';
+import '../widgets/add_job/add_job_form_widget.dart';
 
 class AddJobPage extends StatelessWidget {
   final JobEntity? job;
@@ -23,6 +23,7 @@ class AddJobPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: _buildAppBar(),
       body: _buildBody(),
     );
@@ -67,7 +68,7 @@ class AddJobPage extends StatelessWidget {
                   return const LoadingWidget();
                 }
 
-                return FormWidget(post: isUpdateJob ? job : null);
+                return AddJobFormWidget(post: isUpdateJob ? job : null);
               },
             )),
       ),

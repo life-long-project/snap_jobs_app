@@ -14,7 +14,7 @@ class JobEntity extends Equatable {
   final int salary;
   final List<String>? skills;
   final int? duration;
-  final Image? image;
+  final List<String>? image;
 
   const JobEntity({
      this.userId,

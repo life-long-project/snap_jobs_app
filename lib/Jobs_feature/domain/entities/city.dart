@@ -1,0 +1,30 @@
+enum City {
+
+
+  alexandria,
+port_said,
+suez,
+ismailia,
+kafr_lsheikh,
+gharbia,
+monufia,
+dakahlia,
+damietta,
+sharqia,
+north_sinai,
+south_sinai,
+fayoum,
+minya,
+beni_suef,
+asyut,
+new_valley,
+sohag,
+qena,
+luxor,
+aswan,
+red_sea,
+beheira,
+helwan,
+giza,
+
+}

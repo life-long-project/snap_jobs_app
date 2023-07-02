@@ -9,9 +9,8 @@ import '../data_sources/local_data_source.dart';
 import '../data_sources/job_remote_data_source.dart';
 import '../models/job_post_model.dart';
 
-
 class JobsRepositoryImpl extends JobsRepository {
-    final JobsLocalDataSource localDataSource;
+  final JobsLocalDataSource localDataSource;
   final JobRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
@@ -27,6 +26,7 @@ class JobsRepositoryImpl extends JobsRepository {
       image: job.image,
       jobDescription: job.jobDescription,
       jobId: job.jobId,
+      skills: job.skills,
       jobTitle: job.jobTitle,
       jobType: job.jobType,
       salary: job.salary,
@@ -86,12 +86,10 @@ class JobsRepositoryImpl extends JobsRepository {
 
   @override
   Future<Either<Failure, JobEntity>> getOneJob(String jobId) async {
-
-  final response= await remoteDataSource.getOneJob(jobId);
+    final response = await remoteDataSource.getOneJob(jobId);
     return Right(response);
-
-
   }
+
 //* getUserJobs
   @override
   Future<Either<Failure, List<JobEntity>>> getUserJobs(String userId) {
@@ -101,8 +99,7 @@ class JobsRepositoryImpl extends JobsRepository {
 
   //* helper method
 
-  Future<Either<Failure, Unit>> _getMessage(
-      Function request) async {
+  Future<Either<Failure, Unit>> _getMessage(Function request) async {
     if (await networkInfo.isConnected) {
       try {
         await request();

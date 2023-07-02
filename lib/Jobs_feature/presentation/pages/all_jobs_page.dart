@@ -18,8 +18,8 @@ class AllJobsPage extends StatefulWidget {
 
 class _AllJobsPageState extends State<AllJobsPage> {
   Future<void> _onStart(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 1));
-    BlocProvider.of<RequestJobsBloc>(context).add(RequestAllJobsEvent());
+    await Future.delayed(const Duration(seconds: 1));
+    BlocProvider.of<RequestJobsBloc>(context).add(const RequestAllJobsEvent());
   }
 
   @override
@@ -82,10 +82,10 @@ class initial extends StatelessWidget {
 */
 
     BlocProvider.of<RequestJobsBloc>(context).add(
-      RequestAllJobsEvent(),
+      const RequestAllJobsEvent(),
     );
 
-    return Center(
+    return const Center(
         child: Text(
       'initial',
       style: TextStyle(fontSize: 20),
