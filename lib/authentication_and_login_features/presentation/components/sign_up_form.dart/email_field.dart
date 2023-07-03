@@ -42,7 +42,7 @@ class EmailField extends StatelessWidget {
             ],
           ),
         ),
-        prefixIcon: Icon(Icons.email),
+        prefixIcon: const Icon(Icons.email),
       ),
       onChanged: (value) {
         context.read<SignUpBloc>().add(EmailChanged(value));

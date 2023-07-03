@@ -13,9 +13,9 @@ class BaseOutlinedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
         onPressed: onPressed,
-        child: Text(text),
         style: OutlinedButton.styleFrom(
-          fixedSize: Size.fromWidth(110),
-        ));
+          fixedSize: const Size.fromWidth(110),
+        ),
+        child: Text(text));
   }
 }

@@ -18,7 +18,7 @@ class SignUpPages extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           SignUpBloc(signUpRepository: sl<BaseSignUpRepository>()),
-      child: SignUpStepper(),
+      child: const SignUpStepper(),
     );
   }
 }

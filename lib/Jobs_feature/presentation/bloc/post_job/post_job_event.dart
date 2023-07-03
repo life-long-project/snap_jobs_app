@@ -1,14 +1,14 @@
 part of 'post_job_bloc.dart';
 
-abstract class AddDeleteUpdateJobsEvent extends Equatable {
-  const AddDeleteUpdateJobsEvent();
+abstract class PostJobEvent extends Equatable {
+  const PostJobEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class AddJobEvent extends AddDeleteUpdateJobsEvent {
-  final JobPost post;
+class AddJobEvent extends PostJobEvent {
+  final JobEntity post;
 
   const AddJobEvent({required this.post});
 
@@ -16,8 +16,8 @@ class AddJobEvent extends AddDeleteUpdateJobsEvent {
   List<Object> get props => [post];
 }
 
-class UpdateJobEvent extends AddDeleteUpdateJobsEvent {
-  final JobPost post;
+class UpdateJobEvent extends PostJobEvent {
+  final JobEntity post;
 
   const UpdateJobEvent({required this.post});
 
@@ -25,7 +25,7 @@ class UpdateJobEvent extends AddDeleteUpdateJobsEvent {
   List<Object> get props => [post];
 }
 
-class DeleteJobEvent extends AddDeleteUpdateJobsEvent {
+class DeleteJobEvent extends PostJobEvent {
   final String jobId;
 
   const DeleteJobEvent({required this.jobId});

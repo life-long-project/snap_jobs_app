@@ -17,7 +17,7 @@ class BaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
+      child: SizedBox(
         width: 239,
         height: 119,
         child: Row(
@@ -48,31 +48,31 @@ class BaseCard extends StatelessWidget {
                     height: 12.78,
                     child: Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.64),
+                  const SizedBox(height: 10.64),
                   SizedBox(
                     width: 104,
                     height: 8.79,
                     child: Text(
                       subTitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.64),
+                  const SizedBox(height: 10.64),
                   SizedBox(
                     width: 164,
                     height: 29.55,
                     child: Text(
                       description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xff5dfdcb),
                         fontSize: 10,
                         fontFamily: "Poppins",
@@ -80,8 +80,8 @@ class BaseCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.64),
-                  SizedBox(
+                  const SizedBox(height: 10.64),
+                  const SizedBox(
                     width: 48,
                     height: 8.79,
                     child: Text(

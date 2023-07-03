@@ -13,21 +13,21 @@ class DeleteDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Are you Sure ?"),
+      title: const Text("Are you Sure ?"),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(
+          child: const Text(
             "No",
           ),
         ),
         TextButton(
           onPressed: () {
-            BlocProvider.of<AddDeleteUpdateJobBloc>(context).add(
+            BlocProvider.of<PostJobBloc>(context).add(
               DeleteJobEvent(jobId: jobId),
             );
           },
-          child: Text("Yes"),
+          child: const Text("Yes"),
         ),
       ],
     );

@@ -42,7 +42,7 @@ class PhoneNumberField extends StatelessWidget {
           ),
         ),
         hintText: "Enter your phone number",
-        prefixIcon: Icon(Icons.phone),
+        prefixIcon: const Icon(Icons.phone),
       ),
       onChanged: (value) {
         context.read<SignUpBloc>().add(PhoneNumberChanged(value));

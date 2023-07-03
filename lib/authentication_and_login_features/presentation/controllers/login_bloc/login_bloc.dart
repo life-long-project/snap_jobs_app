@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:snap_jobs/authentication_and_login_features/domain/entities/login_credentials.dart';
-import 'package:snap_jobs/authentication_and_login_features/domain/usecases/login_usecase.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/login_use_case.dart';
 
 
 part 'login_event.dart';

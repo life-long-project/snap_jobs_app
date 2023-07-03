@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
 import '../widgets/job_detail_page/job_detail.dart';
 
 class JobDetailPage extends StatelessWidget {
-  final JobPost post;
+  final JobEntity post;
   const JobDetailPage({
     Key? key,
     required this.post,
@@ -20,7 +20,7 @@ class JobDetailPage extends StatelessWidget {
 
   AppBar _buildAppbar() {
     return AppBar(
-      title: Text("Job Detail"),
+      title: const Text("Job Detail"),
     );
   }
 

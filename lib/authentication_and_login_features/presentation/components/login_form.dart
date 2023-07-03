@@ -68,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  LoginButton(),
+                  const LoginButton(),
                   _SignUpButton(),
                 ],
               ),

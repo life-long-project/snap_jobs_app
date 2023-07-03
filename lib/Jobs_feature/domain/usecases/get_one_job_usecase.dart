@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/error/failure.dart';
-import '../repositiries/jobs_repository.dart';
+import '../repositories/jobs_repository.dart';
 
-class GetAllJobsUseCase {
+class GetOneJobUseCase {
   final JobsRepository repository;
 
-  GetAllJobsUseCase(this.repository);
+  GetOneJobUseCase(this.repository);
 
   Future<Either<Failure, List>> call() async {
     return await repository.getAllJobs();

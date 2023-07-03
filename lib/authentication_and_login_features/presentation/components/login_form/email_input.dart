@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/login_bloc/login_bloc.dart';
 
 class EmailInput extends StatefulWidget {
-  EmailInput({required this.focusNode, super.key, });
+  const EmailInput({required this.focusNode, super.key, });
   final FocusNode focusNode;
 
 

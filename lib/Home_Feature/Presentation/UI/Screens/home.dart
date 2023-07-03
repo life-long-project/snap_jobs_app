@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authenttication_bloc/authentication_bloc.dart';
-import 'package:user_repository/user_repository.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -28,14 +30,14 @@ class HomePage extends StatelessWidget {
               image: AssetImage('assets/images/blue_logo_black_text.png'),
             )),
             Center(
-              child: Container(
+              child: SizedBox(
                 //304 is the e default width of the drawer
                 width: (304 / 3),
 
                 child: Column(
                   children: [
                     ListTile(
-                      title: Text(
+                      title: const Text(
                         'Settings',
                       ),
                       onTap: () {
@@ -44,7 +46,7 @@ class HomePage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text(
+                      title: const Text(
                         'About us',
                       ),
                       onTap: () {
@@ -97,8 +99,27 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Expanded(
-            child: AllJobsPage(),
+         MultiBlocProvider(
+
+
+      providers: [
+        BlocProvider<RequestJobsBloc>(
+            lazy: false,
+            create: (context) {
+              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
+
+              return sl<RequestJobsBloc>();
+            }),
+        BlocProvider(create: (_) => sl<PostJobBloc>(),
+        ),
+      ],
+
+
+
+
+            child: const Expanded(
+              child: AllJobsPage(),
+            ),
           ),
         ],
       ),
