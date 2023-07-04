@@ -1,35 +1,171 @@
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snap_jobs/Jobs_feature/data/data_sources/local_data_source.dart';
+import 'package:snap_jobs/Jobs_feature/data/data_sources/job_remote_data_source.dart';
+import 'package:snap_jobs/Jobs_feature/data/repositories/jobs_repository_impl.dart';
+import 'package:snap_jobs/Jobs_feature/domain/repositories/jobs_repository.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/data/data_source/sign_up_data_source.dart';
+import 'package:snap_jobs/authentication_and_login_features/data/repository/sign_up_repository.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/repository/base_sign_up_repository.dart';
+import 'package:snap_jobs/authentication_and_login_features/domain/usecases/sign_up_use_case.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/login_bloc/login_bloc.dart';
+import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/sign_up_bloc/sign_up_bloc.dart';
+import 'package:snap_jobs/core/network/api_constants.dart';
+import 'package:snap_jobs/core/network/base_http_client.dart';
+import 'package:snap_jobs/core/network/network_info.dart';
+import 'package:user_repository/user_repository.dart';
 
-import '../../Jobs_feature/presentation/controller/cubit/jobs_cubit.dart';
-import '../../Jobs_feature/presentation/controller/cubit/search_cubit.dart';
-import '../../Jobs_feature/data/dataSource/get_jobs.dart';
-import '../../Jobs_feature/data/repository/data_repo_jobs.dart';
-import '../../Jobs_feature/domain/repository/job_feature.dart';
-import '../../Jobs_feature/domain/use_case/get_job.dart';
-import '../../Jobs_feature/domain/use_case/search_use_case.dart';
+import '../use_case/base_usecase_with_dartz.dart';
 
 final sl = GetIt.instance;
 
 class ServicesLocator {
-  void init() {
-    //services of job feature
-    ///bloc
+  Future<void> init() async {
+    // GetIt.I.allowReassignment = true;
+//*core services
+    sl.registerSingleton<BaseHttpClient>(
+      BaseHttpClient(),
+    );
+    sl.registerSingletonAsync<SharedPreferences>(() async {
+      return await SharedPreferences.getInstance();
+    });
 
-    sl.registerFactory(() => JobsCubit(sl()));
-    sl.registerFactory(() => SearchCubit(sl()));
+    await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
-    /// Use Cases
-    sl.registerLazySingleton(() => GEtAllJopUseCase(sl()));
-    sl.registerLazySingleton(() => SearchJobUseCase(sl()));
+    //*bloc
 
-    ///DataSource
-    sl.registerLazySingleton<BaseDataSource>(() => DataSource());
+    sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
+          authenticationRepository: sl<AuthenticationRepository>(),
+          userRepository: sl<UserRepository>(),
+        ));
+    sl.registerFactory<SignUpBloc>(() => SignUpBloc(
+          signUpRepository: sl<BaseSignUpRepository>(),
+        ));
+    sl.registerFactory<LoginBloc>(
+      () => LoginBloc(
+        authenticationRepository: sl<AuthenticationRepository>(),
+      ),
+    );
 
-    /// repository
-    sl.registerLazySingleton<BaseJobsRepository>(() => JobRepository(sl()));
+    sl.registerFactory<PostJobBloc>(
+      () => PostJobBloc(
+        addJob: sl<AddJobUseCase>(),
+        updateJob: sl<UpdateJobUseCase>(),
+        deleteJob: sl<DeleteJobUseCase>(),
+      ),
+    );
 
-    ///
+    sl.registerFactory<RequestJobsBloc>(
+      () => RequestJobsBloc(
+        getAllJobs: sl<GetAllJobsUseCase>(),
+        getUserJobs: sl<GetUserJobsUseCase>(),
+        getOneJob: sl<GetOneJobUseCase>(),
+      ),
+    );
 
-    //sl.registerLazySingleton<NoParameters>(() => NoParameters());
+    // *Use Cases
+
+    sl.registerLazySingleton(() => SignUpUseCase(sl()));
+
+    //*Jobs  Usecases
+    sl.registerLazySingleton(
+      () => GetAllJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
+    sl.registerLazySingleton(
+      () => GetUserJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => GetOneJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
+    sl.registerLazySingleton(
+      () => AddJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => DeleteJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => UpdateJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
+    //*DataSource
+    sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
+
+    //* repository
+    sl.registerLazySingleton<BaseSignUpRepository>(
+      () => SignUpRepository(
+        sl<BaseSignUpDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<AuthenticationRepository>(
+        () => AuthenticationRepository(
+              sl<BaseHttpClient>(),
+              sl<SharedPreferences>(),
+            ));
+
+    sl.registerSingleton<UserRepository>(
+      UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
+    );
+    sl.registerLazySingleton<JobsRepository>(
+      () => JobsRepositoryImpl(
+        remoteDataSource: sl<JobRemoteDataSource>(),
+        networkInfo: sl<NetworkInfo>(),
+        localDataSource: sl<JobsLocalDataSource>(),
+      ),
+    );
+
+    //! Core
+
+    sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(
+        sl<Connectivity>(),
+      ),
+    );
+
+    sl.registerLazySingleton<Connectivity>(() => Connectivity());
+
+    // *Datasources
+
+    sl.registerLazySingleton<JobRemoteDataSource>(
+        () => PostJobRemoteDataSourceImpl(client: sl()));
+    sl.registerLazySingleton<JobsLocalDataSource>(
+      () => JobsLocalDataSourceImpl(
+        sharedPreferences: sl<SharedPreferences>(),
+      ),
+    );
+
+    sl.registerLazySingleton<NoParameters>(() => const NoParameters());
+  }
+}
+
+class ServiceLocatorWithTokens {
+  init(String token)  async {
+    sl.registerSingleton(
+      BaseHttpClient.addToken(token),
+    );
   }
 }

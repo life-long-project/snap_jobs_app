@@ -5,26 +5,27 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'package:snap_jobs/main.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
+import 'package:test/test.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  //TODO: fix this test
+  group('requestJobBloc', () {
+    late RequestJobsBloc requestJobsBloc;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    setUp(
+      () {
+        requestJobsBloc = RequestJobsBloc(
+          getAllJobs: requestJobsBloc.getAllJobs,
+          getOneJob: requestJobsBloc.getOneJob,
+          getUserJobs: requestJobsBloc.getUserJobs,
+        );
+      },
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('initial state is initial', () {
+      expect(
+          requestJobsBloc.state.requestJobsStatus, RequestJobsStatus.initial);
+    });
   });
 }
