@@ -12,7 +12,7 @@ class _ProfileImgState extends State<ProfileImg> {
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedImage = await picker.getImage(source: source);
+    final pickedImage = await picker.pickImage(source: source);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
@@ -32,16 +32,17 @@ class _ProfileImgState extends State<ProfileImg> {
             backgroundImage: _image != null ? FileImage(_image!) : null,
             child: _image == null
                 ? Icon(
-                    Icons.image,
-                    size: 80,
+                    Icons.person_2_sharp,
+                    size: 50,
                     color: Colors.white,
                   )
                 : null,
           ),
           Positioned(
-            bottom: 25,
-            right: 25,
+            bottom: 10,
+            right: 10,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(shape: CircleBorder()),
               onPressed: () {
                 showDialog(
                   context: context,

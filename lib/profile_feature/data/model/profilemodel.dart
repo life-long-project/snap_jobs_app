@@ -34,6 +34,6 @@ class ProfileModel extends Profile {
         age: json['age'],
         bio: json['bio'],
         location: json['location'],
-        userName: json['user_name'],
+        userName: json['full_name'],
       );
 }

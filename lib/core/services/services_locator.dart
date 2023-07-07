@@ -27,6 +27,7 @@ import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.d
 import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/getbrofile_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -112,7 +113,8 @@ class ServicesLocator {
     sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl(),sl()));
 
     ///ProfilenetDataSource
-    sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());
+    //sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());
+   sl.registerLazySingleton <NetworkDataSource>(()=>NetworkDataSource());
 
     ///profilecasheDataSource
     sl.registerLazySingleton<CacheDataSource>(() => CacheDataSourceImpl());
@@ -123,6 +125,7 @@ class ServicesLocator {
   
   
   ///bloc
+  sl.registerFactory<GetProgileBloc>(() => GetProgileBloc(getoneprofileusecase: sl()));
   }
 }
 

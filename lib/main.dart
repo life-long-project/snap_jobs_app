@@ -2,6 +2,7 @@
 // import 'package:snap_jobs/app.dart';
 // import 'core/services/services_locator.dart';
 
+
 // void main() {
 //   //WidgetsFlutterBinding.ensureInitialized();
 
@@ -10,12 +11,12 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/create_job_page.dart';
 
-import 'package:snap_jobs/Jobs_feature/presentation/pages/jobs_page.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
+import 'profile_feature/data/model/profilecasheddata.dart';
 import 'profile_feature/presentation/Screens/profile_page.dart';
-
+import 'package:hive_flutter/adapters.dart';
 
 
 
@@ -24,6 +25,10 @@ import 'profile_feature/presentation/Screens/profile_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ServicesLocator().init();
+  await Hive.initFlutter();
+   //Hive.registerAdapter(ProfileHiveModelAdapter());
+  await Hive.openBox('profile');
+
   runApp(const MyApp());
 }
 
