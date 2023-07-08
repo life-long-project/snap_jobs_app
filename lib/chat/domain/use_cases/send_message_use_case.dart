@@ -9,7 +9,7 @@ class SendMessageUseCase {
 
   SendMessageUseCase(this.repository);
 
-  Future<Either<Failure, Unit>> call(String senderId, String conversationId, String text, String authToken) async {
-    return await repository.sendMessage(senderId, conversationId, text, authToken);
+  Future<Either<Failure, Unit>> call(String senderId, String conversationId, String message, ) async {
+    return await repository.sendMessage(senderId, conversationId, message);
   }
 }

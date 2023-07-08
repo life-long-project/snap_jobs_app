@@ -72,7 +72,7 @@ queryParams != null ? resultedQueryParams != null ? resultedQueryParams.addAll(q
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request,{Map<String, String>? queryParams}) {
-    request =  Request(request.method, _mergedQuery(request.url , queryParams));
+    request =  Request(request.method, _mergedQuery(request.url , queryParams ) );
 
     return _httpClient.send(request).then((response) async {
       _checkError(await http.Response.fromStream(response));

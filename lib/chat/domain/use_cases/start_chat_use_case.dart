@@ -8,7 +8,10 @@ class StartChatUseCase {
 
   StartChatUseCase(this.repository);
 
-  Future<Either<Failure, Unit>> call(String senderId, String receiverId, String text) async {
-    return await repository.startChat(senderId, receiverId, text);
+  Future<Either<Failure, String>> call(
+      String senderId, String receiverId, String text) async {
+    final chatId =
+        await repository.getChatIdAndStart(senderId, receiverId, text);
+    return chatId;
   }
 }
