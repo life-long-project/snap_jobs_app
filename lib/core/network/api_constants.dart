@@ -6,6 +6,8 @@ class ApiConstants {
   static const String deleteJobPath = "$baseUrl/jobs/";
   static const String getOneJobPath = "$baseUrl/jobs/";
   static const String searchJobsPath = "$baseUrl/jobs/?search=";
+  static const String startChatPath = "$baseUrl/conversation/first_message";
+  static const String sendMessageToConversationPath = "$baseUrl/conversation/new_message";
 
   static const String getUserByID = "$baseUrl/user/";
 

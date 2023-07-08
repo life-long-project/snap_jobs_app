@@ -2,34 +2,40 @@
 
 import '../../domain/entites/messeage_entity.dart';
 
+
+
 class ChatMessageModel extends ChatMessageEntity {
-  ChatMessageModel({
+  const ChatMessageModel({
     required String conversationId,
     required String text,
-    required String sender,
-    required String id,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-    required int v,
+    required String senderId,
+    required String receiverId,
+    required DateTime time,
   }) : super(
           conversationId: conversationId,
           text: text,
-          sender: sender,
-          id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-          v: v,
+          senderId: senderId,
+          receiverId: receiverId,
+          time: time,
         );
 
   factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
     return ChatMessageModel(
-      conversationId: json['conversationId'],
-      text: json['text'],
-      sender: json['sender'],
-      id: json['_id'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      v: json['__v'],
+      conversationId: json['conversationId'] as String,
+      text: json['text'] as String,
+      senderId: json['sender'] as String,
+       
+      time: DateTime.parse(json['createdAt'] as String),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'conversationId': conversationId,
+      'text': text,
+      'sender': senderId,
+      'receiver': receiverId, 
+      'createdAt': time.toIso8601String(),
+    };
   }
 }

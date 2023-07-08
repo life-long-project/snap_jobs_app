@@ -44,3 +44,4 @@ class JobEntity extends Equatable {
         image,
       ];
 }
+  
