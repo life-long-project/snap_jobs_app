@@ -23,6 +23,8 @@ class JobsRepositoryImpl extends JobsRepository {
   @override
   Future<Either<Failure, Unit>> addJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
+
+dateTime: job.dateTime,
       image: job.image,
       jobDescription: job.jobDescription,
       jobId: job.jobId,
@@ -49,6 +51,7 @@ class JobsRepositoryImpl extends JobsRepository {
   @override
   Future<Either<Failure, Unit>> updateJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
+     dateTime: job.dateTime,
         jobTitle: job.jobTitle,
         image: job.image,
         jobDescription: job.jobDescription,

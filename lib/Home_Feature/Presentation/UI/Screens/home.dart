@@ -16,8 +16,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userName = context.select((AuthenticationBloc bloc) {
-      final user = bloc.state.user;
-      return user.firstName;
+      return "eltestawy";
+      // final user = bloc.state.user;
+      // return user.firstName;
     });
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -99,24 +100,19 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-         MultiBlocProvider(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider<RequestJobsBloc>(
+                  lazy: false,
+                  create: (context) {
+                    // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
 
-
-      providers: [
-        BlocProvider<RequestJobsBloc>(
-            lazy: false,
-            create: (context) {
-              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
-
-              return sl<RequestJobsBloc>();
-            }),
-        BlocProvider(create: (_) => sl<PostJobBloc>(),
-        ),
-      ],
-
-
-
-
+                    return sl<RequestJobsBloc>();
+                  }),
+              BlocProvider(
+                create: (_) => sl<PostJobBloc>(),
+              ),
+            ],
             child: const Expanded(
               child: AllJobsPage(),
             ),

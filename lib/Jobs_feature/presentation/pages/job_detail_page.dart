@@ -1,20 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 
 import '../widgets/job_detail_page/job_detail.dart';
 
 class JobDetailPage extends StatelessWidget {
-  final JobEntity post;
-  const JobDetailPage({
+  late JobEntity post;
+  final String jobId;
+
+  JobDetailPage({
     Key? key,
-    required this.post,
+    required this.jobId,
   }) : super(key: key);
+
+  Future<JobEntity> _getJob(String jobId) async {
+    final response =  await sl<GetOneJobUseCase>().call(jobId);
+
+    return response.fold(
+      (failure) => throw Exception(failure.message),
+      (job) => job,
+    );
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppbar(),
-      body: _buildBody(),
+      body: FutureBuilder(
+        future: _getJob(jobId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _buildBody(snapshot.data! );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 
@@ -24,12 +47,9 @@ class JobDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(JobEntity job) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: JobDetailWidget(post: post),
-      ),
+      child: JobDetailWidget(job: job),
     );
   }
 }

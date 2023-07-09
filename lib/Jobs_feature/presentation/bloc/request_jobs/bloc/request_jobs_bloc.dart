@@ -13,6 +13,8 @@ import '../../../../../core/network/error_message_model.dart';
 part 'request_jobs_event.dart';
 part 'request_jobs_state.dart';
 
+
+///This BLOC is used for any thing using of  get request
 class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   final GetAllJobsUseCase getAllJobs;
   final GetUserJobsUseCase getUserJobs;

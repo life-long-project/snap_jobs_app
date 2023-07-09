@@ -1,11 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
+import 'package:snap_jobs/offers_feature/data/models/offer_model.dart';
+import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 
 class JobModel extends JobEntity {
   const JobModel({
     super.userId,
+    super.userName,
+    required super.dateTime,
     required super.jobTitle,
+    super.offers,
     required super.jobDescription,
     required super.jobType,
     required super.salary,
@@ -13,13 +17,26 @@ class JobModel extends JobEntity {
     super.isActive = false,
     super.workerId,
     super.duration,
-    super.image,
+    required super.image,
     super.jobId = "0",
   });
 
   //TODO: add LOCATION and user id after backend finish
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
+      // userName: (((json["user"]['f_name']) + " " + (json["user"]?['l_name'])) ?? "error")
+      //     as String,
+      userName:
+          (json["user"]["f_name"] + " " + json["user"]["l_name"]) as String,
+
+      userId: (json["posted_by_id"] ?? "error") as String,
+      offers: json["offers"]?.isEmpty ?? true
+          ?null
+          : json["offers"].map<OfferEntity>((value) => OfferModel.fromJson(value).toEntity()).toList()
+ ,
+
+      dateTime: DateTime.parse(json['createdAt'] as String),
+
       jobId: (json['_id'] ?? "error") as String,
       // userId: '644e429ba22abc64180bcc02',
       jobTitle: (json['job_name'] ?? "error") as String,
@@ -40,10 +57,9 @@ class JobModel extends JobEntity {
           : json['salary'],
       skills: (json['skills'] ?? []),
 
-      image:(json['job_img_url'] ?? []).map((e) => Image.network(e) ).toList(),
-
-
-
+      image: (json['job_img_url'] ?? []).isEmpty
+          ? <String>[]
+          : [json['job_img_url']],
     );
   }
 
@@ -51,17 +67,15 @@ class JobModel extends JobEntity {
     final jsonBody = {
       'title': jobTitle,
       'description': jobDescription,
-      'skills':
-      skills,
+      'skills': skills,
       'type': jobType.toString().split('.').last,
       'salary': salary.toString(),
-      'location' : 'tanta'
+      'location': 'tanta'
     };
 
     if (duration != null) {
       jsonBody.addEntries([MapEntry('duration', duration.toString())]);
     }
-
 
     return jsonBody;
   }

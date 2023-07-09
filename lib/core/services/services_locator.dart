@@ -24,6 +24,12 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/control
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
+import 'package:snap_jobs/offers_feature/data/data_sources/offers_remote_data_source.dart';
+import 'package:snap_jobs/offers_feature/data/repositories/offer_repository_impl.dart';
+import 'package:snap_jobs/offers_feature/domain/repositories/offer_repository.dart';
+import 'package:snap_jobs/offers_feature/domain/usecases/apply_offer_use_case.dart';
+import 'package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart';
+import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -73,6 +79,11 @@ class ServicesLocator {
         getOneJob: sl<GetOneJobUseCase>(),
       ),
     );
+    sl.registerFactory<OfferBloc>(
+      () => OfferBloc(
+        sl<ApplyOfferUseCase>(),
+      ),
+    );
 
     // *Use Cases
 
@@ -111,9 +122,27 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
+    //* offer usecases
 
+    sl.registerLazySingleton(
+      () => ApplyOfferUseCase(
+        sl<OfferRepository>(),
+      ),
+    );
+
+sl.registerLazySingleton(
+      () => AcceptOfferUseCase(
+        sl<OfferRepository>(),
+      ),
+    );
     //*DataSource
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
+
+    sl.registerLazySingleton<OffersRemoteDataSource>(
+      () => OffersRemoteDataSourceImpl(
+        sl<BaseHttpClient>(),
+      ),
+    );
 
     //* repository
     sl.registerLazySingleton<BaseSignUpRepository>(
@@ -135,6 +164,11 @@ class ServicesLocator {
         remoteDataSource: sl<JobRemoteDataSource>(),
         networkInfo: sl<NetworkInfo>(),
         localDataSource: sl<JobsLocalDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<OfferRepository>(
+      () => OfferRepositoryImpl(
+        sl<OffersRemoteDataSource>(),
       ),
     );
 
@@ -163,7 +197,7 @@ class ServicesLocator {
 }
 
 class ServiceLocatorWithTokens {
-  init(String token)  async {
+  init(String token) async {
     sl.registerSingleton(
       BaseHttpClient.addToken(token),
     );

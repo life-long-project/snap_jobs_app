@@ -13,6 +13,8 @@ import '../../../domain/usecases/update_job_use_case.dart';
 part 'post_job_event.dart';
 part 'post_jobs_state.dart';
 
+
+///This BLOC is used for any thing related of  post , patch or delete request
 class PostJobBloc extends Bloc<PostJobEvent, PostJobState> {
   final AddJobUseCase addJob;
   final DeleteJobUseCase deleteJob;

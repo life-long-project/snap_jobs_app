@@ -7,9 +7,12 @@ class ApiConstants {
   static const String getOneJobPath = "$baseUrl/jobs/";
   static const String searchJobsPath = "$baseUrl/jobs/?search=";
 
+  static const String applyOfferPath = "$baseUrl/offer/apply/";
+  static const String acceptOfferPath = "$baseUrl/offer/accept/";
+
   static const String getUserByID = "$baseUrl/user/";
 
-  static const String signUpPath = "$baseUrl/signup/";
+  static const String signUpPath = "$baseUrl/signUp/";
   static const String loginPath = "$baseUrl/login/";
 
   static const String baseImageUrl =

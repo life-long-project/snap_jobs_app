@@ -143,6 +143,7 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
 
   void updateOrAddPost() {
     final post = JobEntity(
+      dateTime: DateTime.now(),
       jobTitle: _jobNameController.text,
       jobDescription: _jobDescriptionController.text,
       jobType: _jobTypeController.text == "fullTime"
@@ -152,7 +153,7 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
               : JobType.service,
       jobId: '',
       skills: skillsList,
-      image: null,
+      image: const [],
       salary: int.parse(_salaryController.text),
     );
 

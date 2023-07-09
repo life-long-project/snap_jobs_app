@@ -89,7 +89,7 @@ class JobCardWithoutPic extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => JobDetailPage(post: job),
+                        builder: (_) => JobDetailPage(jobId: job.jobId),
                       ),
                     );
                   },
