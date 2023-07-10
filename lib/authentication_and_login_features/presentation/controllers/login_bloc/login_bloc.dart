@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
@@ -19,11 +20,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   })  : _authenticationRepository = authenticationRepository,
         super(const LoginState()) {
-    on<LoginEmailChanged>(_onEmailChanged);
+    on<LoginEmailChanged>(_onEmailChanged , );
     on<LoginPasswordChanged>(_onPasswordChanged);
 
 
-    on<LoginSubmitted>(_onSubmitted);
+    on<LoginSubmitted>(_onSubmitted,
+        transformer: droppable(),
+
+    );
   }
 
   final AuthenticationRepository _authenticationRepository;

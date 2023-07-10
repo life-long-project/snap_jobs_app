@@ -15,7 +15,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.isValid != current.isValid,
+      buildWhen: (previous, current) => (previous.isValid != current.isValid),
       builder: (context, state) {
         return state.submissionStatus == SubmissionStatus.inProgress
             ? const CircularProgressIndicator()

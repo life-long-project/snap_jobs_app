@@ -152,6 +152,7 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
               ? JobType.partTime
               : JobType.service,
       jobId: '',
+      isFinished: false,
       skills: skillsList,
       image: const [],
       salary: int.parse(_salaryController.text),

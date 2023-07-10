@@ -14,6 +14,7 @@ class JobEntity extends Equatable {
   final List<OfferEntity>? offers;
   final String jobTitle;
   final String? workerId;
+  final bool isFinished ;
   final bool isActive;
   final JobType jobType;
   final String jobDescription;
@@ -26,13 +27,15 @@ class JobEntity extends Equatable {
     required this.dateTime,
     this.userId,
     this.offers,
-     this.userName,
+    this.userName,
     required this.jobTitle,
     required this.jobDescription,
     required this.jobType,
     required this.salary,
     this.skills,
     this.isActive = true,
+    required this.isFinished ,
+
     this.workerId,
     this.duration,
     required this.image,
@@ -47,6 +50,7 @@ class JobEntity extends Equatable {
         userName,
         isActive,
         duration,
+        isFinished,
         jobTitle,
         jobDescription,
         jobType,

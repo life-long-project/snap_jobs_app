@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/error_message_model.dart';
@@ -13,16 +14,20 @@ import '../../../domain/usecases/update_job_use_case.dart';
 part 'post_job_event.dart';
 part 'post_jobs_state.dart';
 
-
 ///This BLOC is used for any thing related of  post , patch or delete request
 class PostJobBloc extends Bloc<PostJobEvent, PostJobState> {
   final AddJobUseCase addJob;
   final DeleteJobUseCase deleteJob;
+  final FinishJobUseCase finishJob;
   final UpdateJobUseCase updateJob;
-  PostJobBloc(
-      {required this.addJob, required this.deleteJob, required this.updateJob})
-      : super(PostJobInitial()) {
+  PostJobBloc({
+    required this.addJob,
+    required this.deleteJob,
+    required this.updateJob,
+    required this.finishJob,
+  }) : super(PostJobInitial()) {
     on<PostJobEvent>((event, emit) async {
+      //TODO change if to switch
       if (event is AddJobEvent) {
         emit(PostJobLoading());
 
@@ -48,6 +53,15 @@ class PostJobBloc extends Bloc<PostJobEvent, PostJobState> {
         emit(
           _eitherDoneMessageOrErrorState(
               failureOrDoneMessage, deleteSuccessMessage),
+        );
+      } else if (event is FinishJobEvent) {
+        emit(PostJobLoading());
+
+        final failureOrDoneMessage = await finishJob(event.jobId);
+
+        emit(
+          _eitherDoneMessageOrErrorState(
+              failureOrDoneMessage, finishSuccessMessage),
         );
       }
     });

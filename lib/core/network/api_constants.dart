@@ -6,6 +6,10 @@ class ApiConstants {
   static const String deleteJobPath = "$baseUrl/jobs/";
   static const String getOneJobPath = "$baseUrl/jobs/";
   static const String searchJobsPath = "$baseUrl/jobs/?search=";
+  static const String finishJobPath = "$baseUrl/jobs/update_status/";
+
+
+  static const String getProfile = "$baseUrl/user/profile/";
 
   static const String applyOfferPath = "$baseUrl/offer/apply/";
   static const String acceptOfferPath = "$baseUrl/offer/accept/";

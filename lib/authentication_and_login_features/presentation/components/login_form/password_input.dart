@@ -30,12 +30,19 @@ class PasswordInputState extends State<PasswordInput> {
   }
 
   onPasswordChanged(String password, BuildContext context) {
-    if (debounce?.isActive ?? false) debounce!.cancel();
-    debounce = Timer(
-        const Duration(milliseconds: 500),
-        () => context
+         context
             .read<LoginBloc>()
-            .add(LoginPasswordChanged(password, Form.of(context).validate() && !_isPasswordFieldPure)));
+            .add(LoginPasswordChanged(password, Form.of(context).validate() && !_isPasswordFieldPure));
+
+//* debounce function caused that last state is ignore and
+//TODO fix this
+
+    // if (debounce?.isActive ?? false) debounce!.cancel();
+    // debounce = Timer(
+    //     const Duration(milliseconds: 500),
+    //     () => context
+    //         .read<LoginBloc>()
+    //         .add(LoginPasswordChanged(password, Form.of(context).validate() && !_isPasswordFieldPure)));
   }
 
   @override

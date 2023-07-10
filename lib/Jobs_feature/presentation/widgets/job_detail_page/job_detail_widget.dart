@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
 import 'package:snap_jobs/offers_feature/presentation/pages/Add_offer_dialog.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/update_job_button.dart';
+import 'package:snap_jobs/offers_feature/presentation/widgets/offer_card.dart';
 import 'package:snap_jobs/offers_feature/presentation/widgets/offers_list.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -25,10 +27,10 @@ class JobDetailWidget extends StatelessWidget {
         MediaQuery.of(context).padding.along(Axis.vertical) -
         kToolbarHeight -
         kBottomNavigationBarHeight);
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: deviceHeight * 0.9,
-        width: deviceWidth * 0.9,
+    return SizedBox(
+      height: deviceHeight * 0.9,
+      width: deviceWidth * 0.9,
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,32 +211,68 @@ class JobDetailWidget extends StatelessWidget {
                     ),
                   ]),
             ),
-            //* Actions
-            RepositoryProvider.of<UserRepository>(context).user.id == job.userId
-                ? SizedBox(
-                    height: deviceHeight * 0.2,
-                    width: deviceWidth * 0.9,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            UpdateJobBtnWidget(post: job),
-                            DeleteJobBtnWidget(jobId: job.jobId),
-                          ],
-                        ),
-                        job.offers?.isEmpty ?? true
-                            ? Container()
-                            : OffersListWidget(offers: job.offers!)
-                      ],
-                    ),
-                  )
-                : ElevatedButton(
-                    onPressed: () => _addOfferDialogBuilder(context),
-                    child: Text("Apply"),
-                  ),
+            //* Actions
+
+            !job.isFinished
+                ? RepositoryProvider.of<UserRepository>(context).user.id ==
+                        job.userId
+                    ? job.isActive
+                        ?
+                        //job is active and by the user, the user
+                        // should see options add, delete and list of offers to
+                        //choose from
+                        SizedBox(
+                            height: deviceHeight * 0.3,
+                            width: deviceWidth * 0.9,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    UpdateJobBtnWidget(post: job),
+                                    DeleteJobBtnWidget(jobId: job.jobId),
+                                  ],
+                                ),
+                                job.offers?.isEmpty ?? true
+                                    ? const SizedBox.shrink()
+                                    : OffersListWidget(offers: job.offers!)
+                              ],
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              job.offers?.isEmpty ?? true
+                                  ? const SizedBox.shrink()
+                                  : offerCard(
+                                      job.offers!.firstWhere(
+                                          (element) => element.isAccepted),
+                                      context),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  BlocProvider.of<PostJobBloc>(context)
+                                      .add(FinishJobEvent(jobId: job.jobId));
+
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: SnackBar(
+                                        content:
+                                            Text('Thanks for using SnapJobs')),
+                                  ));
+                                },
+                                child: const Text("Finish Job "),
+                              )
+                            ],
+                          )
+                    : ElevatedButton(
+                        onPressed: () => _addOfferDialogBuilder(context),
+                        child: Text("Apply"),
+                      )
+                :
+                //if job is finished there are no actions for now
+                const SizedBox.shrink(),
           ],
         ),
       ),

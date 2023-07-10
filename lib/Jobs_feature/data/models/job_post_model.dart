@@ -15,6 +15,7 @@ class JobModel extends JobEntity {
     required super.salary,
     super.skills,
     super.isActive = false,
+    super.isFinished = true,
     super.workerId,
     super.duration,
     required super.image,
@@ -46,6 +47,7 @@ class JobModel extends JobEntity {
           ? int.tryParse(json['job_duration']) ?? json['job_duration']
           : json['job_duration'],
       isActive: (json['is_active'] ?? false) as bool,
+      isFinished: (json['is_finished'] ?? true) as bool,
 
       jobType: (json['job_type'] ?? "service") == "part-time"
           ? JobType.partTime

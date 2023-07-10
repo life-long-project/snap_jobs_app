@@ -47,6 +47,7 @@ class OffersRemoteDataSourceImpl extends OffersRemoteDataSource {
       final Uri url = Uri.parse("${ApiConstants.acceptOfferPath}$offerId/");
       final response = await client.post(
         url,
+        body: {"offer_id": offerId},
       );
     } catch (e) {
       stderr.writeln(e);

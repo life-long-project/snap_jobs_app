@@ -126,6 +126,7 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                     child: const Text('Add Offer'),
                     onPressed: () {
                       final offer = OfferEntity(
+                        isAccepted: false,
                           offerId: '',
                           jobId: widget.job.jobId,
                           salary: int.parse(priceFieldController.text),

@@ -19,8 +19,26 @@ class OfferModel extends OfferEntity {
 
   @override
   @JsonKey(
-      required: true, name: "price", toJson: _toString, fromJson: _fromJson)
+      required: true, name: "price", toJson: _toString, fromJson: _fromJson,)
   int get salary => super.salary;
+
+@override
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+    defaultValue: false,
+    includeToJson: false,
+    name: "status",
+    fromJson: _isAcceptedFromJson,
+
+  )
+
+  bool get isAccepted => super.isAccepted;
+
+     static  bool  _isAcceptedFromJson(String value) {
+      return value == "accepted" ? true : false;
+    }
+
 
   @override
   @JsonKey(
@@ -47,6 +65,7 @@ class OfferModel extends OfferEntity {
   String? get offerId => super.offerId;
 OfferEntity   toEntity() {
     return OfferEntity(
+      isAccepted: isAccepted,
       offerId: offerId,
       jobId: jobId,
       applicantId :applicantId,
@@ -58,10 +77,11 @@ OfferEntity   toEntity() {
       {String? offerId,
       String? applicantId,
       required String jobId,
+      bool isAccepted = false,
 
       required int salary,
       String? message})
-      : super(offerId: offerId, jobId: jobId, salary: salary, message: message , applicantId: applicantId);
+      : super(offerId: offerId, jobId: jobId, salary: salary, message: message , applicantId: applicantId , isAccepted: isAccepted );
 
   factory OfferModel.fromJson(Map<String, dynamic> json) =>
       _$OfferModelFromJson(json);

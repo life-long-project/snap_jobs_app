@@ -8,8 +8,10 @@ import 'package:snap_jobs/Jobs_feature/data/repositories/jobs_repository_impl.da
 import 'package:snap_jobs/Jobs_feature/domain/repositories/jobs_repository.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
@@ -66,6 +68,7 @@ class ServicesLocator {
 
     sl.registerFactory<PostJobBloc>(
       () => PostJobBloc(
+        finishJob:sl<FinishJobUseCase>() ,
         addJob: sl<AddJobUseCase>(),
         updateJob: sl<UpdateJobUseCase>(),
         deleteJob: sl<DeleteJobUseCase>(),
@@ -74,9 +77,10 @@ class ServicesLocator {
 
     sl.registerFactory<RequestJobsBloc>(
       () => RequestJobsBloc(
+        getUserActiveJobs: sl<GetUserActiveJobsUseCase>(),
         getAllJobs: sl<GetAllJobsUseCase>(),
-        getUserJobs: sl<GetUserJobsUseCase>(),
         getOneJob: sl<GetOneJobUseCase>(),
+
       ),
     );
     sl.registerFactory<OfferBloc>(
@@ -87,7 +91,7 @@ class ServicesLocator {
 
     // *Use Cases
 
-    sl.registerLazySingleton(() => SignUpUseCase(sl()));
+    sl.registerLazySingleton(() => SignUpUseCase(sl<BaseSignUpRepository>()));
 
     //*Jobs  Usecases
     sl.registerLazySingleton(
@@ -96,6 +100,12 @@ class ServicesLocator {
       ),
     );
 
+
+    sl.registerLazySingleton(
+      () => GetUserActiveJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
     sl.registerLazySingleton(
       () => GetUserJobsUseCase(
         sl<JobsRepository>(),
@@ -122,6 +132,13 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
+
+    sl.registerLazySingleton(
+      () => FinishJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
     //* offer usecases
 
     sl.registerLazySingleton(
@@ -130,7 +147,7 @@ class ServicesLocator {
       ),
     );
 
-sl.registerLazySingleton(
+    sl.registerLazySingleton(
       () => AcceptOfferUseCase(
         sl<OfferRepository>(),
       ),

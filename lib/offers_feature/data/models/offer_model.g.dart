@@ -15,6 +15,9 @@ OfferModel _$OfferModelFromJson(Map<String, dynamic> json) {
     offerId: json['_id'] as String?,
     applicantId: json['applicant_id'] as String?,
     jobId: json['job_post_id'] as String,
+    isAccepted: json['status'] == null
+        ? false
+        : OfferModel._isAcceptedFromJson(json['status'] as String),
     salary: OfferModel._fromJson(json['price']),
     message: json['message'] as String?,
   );

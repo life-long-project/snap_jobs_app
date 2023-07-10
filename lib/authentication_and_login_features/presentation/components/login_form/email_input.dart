@@ -18,13 +18,21 @@ class _EmailInputState extends State<EmailInput> {
   //debounce means only emit an item from an Observable if a particular time span
   Timer? _debounce;
 
+
+
   _onEmailChanged(String email, BuildContext context) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(
-        const Duration(milliseconds: 500),
-        () => context
-            .read<LoginBloc>()
-            .add(LoginEmailChanged(email, Form.of(context).validate() && !_isEmailFieldPure )));
+
+context.read<LoginBloc>()
+            .add(LoginEmailChanged(email, Form.of(context).validate() && !_isEmailFieldPure ));
+
+//* debounce function caused that last state is ignore and
+//TODO fix this
+    // if (_debounce?.isActive ?? false) _debounce!.cancel();
+    // _debounce = Timer(
+    //     const Duration(milliseconds: 500),
+    //     () => context
+    //         .read<LoginBloc>()
+    //         .add(LoginEmailChanged(email, Form.of(context).validate() && !_isEmailFieldPure )));
 
   }
 

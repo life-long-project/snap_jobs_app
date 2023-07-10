@@ -1,6 +1,6 @@
 part of 'post_job_bloc.dart';
 
-abstract class PostJobEvent extends Equatable {
+sealed class PostJobEvent extends Equatable {
   const PostJobEvent();
 
   @override
@@ -29,6 +29,16 @@ class DeleteJobEvent extends PostJobEvent {
   final String jobId;
 
   const DeleteJobEvent({required this.jobId});
+
+  @override
+  List<Object> get props => [jobId];
+}
+
+
+class FinishJobEvent extends PostJobEvent {
+  final String jobId;
+
+  const FinishJobEvent({required this.jobId});
 
   @override
   List<Object> get props => [jobId];

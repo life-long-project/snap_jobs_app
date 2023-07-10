@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 import "package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart";
@@ -14,7 +15,9 @@ class OfferBloc extends Bloc<OfferEvent, OfferState> {
   final ApplyOfferUseCase applyOfferUSerCase;
 
   OfferBloc(this.applyOfferUSerCase) : super(OfferState()) {
-    on<OfferApplyRequested>(_onApplyOffer);
+    on<OfferApplyRequested>(_onApplyOffer,
+    transformer: droppable(),
+    );
   }
 
   FutureOr<void> _onApplyOffer(

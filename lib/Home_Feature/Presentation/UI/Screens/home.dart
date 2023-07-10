@@ -16,9 +16,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userName = context.select((AuthenticationBloc bloc) {
-      return "eltestawy";
-      // final user = bloc.state.user;
-      // return user.firstName;
+      final user = bloc.state.user;
+      return user.firstName;
     });
     return Scaffold(
       resizeToAvoidBottomInset: false,

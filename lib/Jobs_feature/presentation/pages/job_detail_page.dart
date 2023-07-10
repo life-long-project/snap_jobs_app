@@ -3,7 +3,7 @@ import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 
-import '../widgets/job_detail_page/job_detail.dart';
+import '../widgets/job_detail_page/job_detail_widget.dart';
 
 class JobDetailPage extends StatelessWidget {
   late JobEntity post;
