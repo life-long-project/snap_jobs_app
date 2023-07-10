@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class ProfileImg extends StatefulWidget {
+class ProfileImgnobloc extends StatefulWidget {
   @override
-  _ProfileImgState createState() => _ProfileImgState();
+  _ProfileImgnoblocState createState() => _ProfileImgnoblocState();
 }
 
-class _ProfileImgState extends State<ProfileImg> {
+class _ProfileImgnoblocState extends State<ProfileImgnobloc> {
   File? _image;
 
   Future<void> _pickImage(ImageSource source) async {

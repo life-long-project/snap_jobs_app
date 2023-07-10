@@ -5,13 +5,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/jobs_page/message_display_widget.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/widgets/loading_widget.dart';
-import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/getbrofile_state.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 import 'package:snap_jobs/profile_feature/presentation/wedgets/Recent_Review.dart';
 import 'package:snap_jobs/profile_feature/presentation/wedgets/profile_img.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:snap_jobs/profile_feature/presentation/wedgets/rating.dart';
-
-import '../controlers/bloc/getbrofile_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   bool showMoreText = false;
@@ -47,10 +46,10 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 20),
-                      ProfileImg(),
+                      ProfileImgnobloc(),
                       SizedBox(height: 20),
                       Text(
-                       state.profilemodel.userName,
+                        state.profilemodel.userName,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -66,10 +65,8 @@ class ProfileScreen extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              
-                                   state.profilemodel.bio,
-                                  
-                              maxLines:  3,
+                              state.profilemodel.bio,
+                              maxLines: 3,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -108,11 +105,10 @@ class ProfileScreen extends StatelessWidget {
               );
             } else if (state is GetProfileLoading) {
               return const LoadingWidget();
+            } else if (state is GetProfileFailure) {
+              return MessageDisplayWidget(message: state.message);
             }
-            else if (state is GetProfileFailure){
-               return MessageDisplayWidget(message: state.message);
-            }
-           return const LoadingWidget();
+            return const LoadingWidget();
           },
         ));
   }

@@ -23,11 +23,14 @@ import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/cashedatasource.dart';
+import 'package:snap_jobs/profile_feature/data/data%20source/imgdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
-import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/getbrofile_bloc.dart';
+import 'package:snap_jobs/profile_feature/domain/usecase/imgupload.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -110,22 +113,26 @@ class ServicesLocator {
 
 ///$$$
     ///Profile repo
-    sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl(),sl()));
+    sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl()));
 
     ///ProfilenetDataSource
     //sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());
    sl.registerLazySingleton <NetworkDataSource>(()=>NetworkDataSource());
-
+//ImageUploadRemoteDataSource
+ sl.registerLazySingleton <ImageUploadRemoteDataSource>(()=>HttpImageUploadRemoteDataSource());
     ///profilecasheDataSource
-    sl.registerLazySingleton<CacheDataSource>(() => CacheDataSourceImpl());
+    //sl.registerLazySingleton<CacheDataSource>(() => CacheDataSourceImpl());
 
     ///usecase
     sl.registerLazySingleton(() =>  GetProfileUseCase( baserepo: (sl())));
+    sl.registerLazySingleton(() =>  UploadImage(  (sl())));
+
   
   
   
   ///bloc
   sl.registerFactory<GetProgileBloc>(() => GetProgileBloc(getoneprofileusecase: sl()));
+  sl.registerFactory<ImageUploadBloc>(() => ImageUploadBloc(sl()));
   }
 }
 

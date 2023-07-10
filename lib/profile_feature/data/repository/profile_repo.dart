@@ -13,27 +13,28 @@ typedef UpdateOrAddJob = Future< Unit> Function();
 //
 class DataRepository implements BaseProfilerepo {
   final NetworkDataSource _networkDataSource;
-  final CacheDataSource _cacheDataSource;
+  //final CacheDataSource _cacheDataSource;
   final NetworkInfo _networkInfo;
 
   DataRepository(
-      this._networkDataSource, this._cacheDataSource, this._networkInfo);
+      this._networkDataSource,  this._networkInfo);
 
   @override
   Future<Either<Failure, ProfileModel?>> getoneProfile(String id) async {
     // Check if profile is cached
-    final cachedProfile = await _cacheDataSource.getProfile();
-    if (cachedProfile != null) {
-      return cachedProfile;
-    }
+    // final cachedProfile = await _cacheDataSource.getProfile();
+    // if (cachedProfile != null) {
+    //   return cachedProfile;
+    // }
 
     // If not cached, fetch profile from network
     final networkProfile = await _networkDataSource.getoneProfile(id);
 
     // Cache the fetched profile
-    await _cacheDataSource.saveProfile(networkProfile as ProfileModel );
+    //await _cacheDataSource.saveProfile(networkProfile as ProfileModel );
 
     return right(networkProfile) ;
+     //return const Left(ServerFailure(""));
   }
 
   @override
@@ -58,7 +59,7 @@ class DataRepository implements BaseProfilerepo {
       return _networkDataSource.postprofile(postprofileModel);
     });
     // Clear the cached profile after posting
-   return ( await _cacheDataSource.saveProfile(profileModel));
+  // return ( await _cacheDataSource.saveProfile(profileModel));
   }
 
   @override
@@ -83,7 +84,7 @@ class DataRepository implements BaseProfilerepo {
     return _networkDataSource.updaterofile(updateprofileModel);
   });
 } finally {
-   await _cacheDataSource.saveProfile(profileModel);
+   //await _cacheDataSource.saveProfile(profileModel);
 }
 
     // Clear the cached profile after updating

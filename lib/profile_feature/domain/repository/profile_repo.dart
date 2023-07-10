@@ -6,4 +6,6 @@ abstract class BaseProfilerepo {
    Future<Either<Failure, ProfileModel?>> getoneProfile(String id);
    Future<Either<Failure, Unit>> postProfile(ProfileModel profileModel);
    Future<Either<Failure, Unit>> updateProfile(ProfileModel profileModel);
+   //Future<Either<Failure, String>> uploadImage(String imagePath, String token);
+
 }

@@ -6,7 +6,7 @@ import 'package:snap_jobs/core/error/failure.dart';
 import 'package:snap_jobs/core/network/error_message_model.dart';
 import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
-import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/getbrofile_state.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 
 part 'getbrofile_event.dart';
 
