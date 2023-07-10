@@ -30,7 +30,7 @@ class JobListWidget extends StatelessWidget {
         );
       },
 
-      // separatorBuilder: (context, index) => const Divider(thickness: 1 , color: Colors.transparent),
+      separatorBuilder: (context, index) => const Divider(thickness: 0 , color: Colors.transparent),
     );
   }
 }
