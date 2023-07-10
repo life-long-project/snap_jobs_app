@@ -7,7 +7,7 @@ abstract class Profile extends Equatable {
      this.feedBack,
     required this.pastJobs,
      this.rateQuantity,
-    required this.rateAverage,
+    required this.rating,
     required this.userImageUrl,
     required this.workImageUrl,
     
@@ -25,7 +25,7 @@ abstract class Profile extends Equatable {
   final List<String>? feedBack;
  final  List<String> pastJobs;
   final double ?rateQuantity;
- final double rateAverage;
+ final double rating;
  final String userImageUrl;
  final String workImageUrl;
  
@@ -45,7 +45,7 @@ abstract class Profile extends Equatable {
         feedBack,
         pastJobs,
         rateQuantity,
-        rateAverage,
+        rating,
         userImageUrl,
         workImageUrl,
        

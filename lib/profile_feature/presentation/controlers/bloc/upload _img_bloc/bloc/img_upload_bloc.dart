@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_event.dart';
@@ -22,7 +21,7 @@ import 'package:path/path.dart' as p;
 class ImageUploadBloc extends Bloc<ImageUploadEvent, ImageUploadState> {
   final UploadImage uploadImage;
 
-  ImageUploadBloc(this.uploadImage) : super(ImageUploadState());
+  ImageUploadBloc(this.uploadImage) : super(const ImageUploadState());
 
   @override
   Stream<ImageUploadState> mapEventToState(ImageUploadEvent event) async* {

@@ -26,7 +26,7 @@ class JobsPage extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppbar() => AppBar(title: Text('Jobs'));
+  AppBar _buildAppbar() => AppBar(title: const Text('Jobs'));
 
   Widget _buildBody() {
     return Padding(
@@ -58,11 +58,11 @@ class JobsPage extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => AddJobPage(
+                builder: (_) => const AddJobPage(
                       isUpdateJob: false,
                     )));
       },
-      child: Icon(Icons.add),
+      child: const Icon(Icons.add),
     );
   }
 }

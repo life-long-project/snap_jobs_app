@@ -16,7 +16,7 @@ class ApiConstants {
 
   ///path=Test-Logo.svg/783px-Test-Logo.svg.png
   static String imageUrl(String path) => '$baseImageUrl$path';
-  static const String profileUrl= "$baseUrl/profile";
-   static const String getprofileUrl= "$baseUrl/profile/64a37fe71eb603da27a61e72";
+  static const String profileUrl= "$baseUrl/user/profile";
+   static const String getprofileUrl= "$baseUrl/profile/64a16604493228d42c997761";
   
 }

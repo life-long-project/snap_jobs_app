@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shimmer/shimmer.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/jobs_page/message_display_widget.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/widgets/loading_widget.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 import 'package:snap_jobs/profile_feature/presentation/wedgets/Recent_Review.dart';
-import 'package:snap_jobs/profile_feature/presentation/wedgets/profile_img.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:snap_jobs/profile_feature/presentation/wedgets/rating.dart';
+import 'package:snap_jobs/profile_feature/presentation/wedgets/upload_profile_img.dart';
 
 class ProfileScreen extends StatelessWidget {
   bool showMoreText = false;
@@ -45,32 +43,32 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
-                      ProfileImgnobloc(),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      const ProfileImg(),
+                      const SizedBox(height: 20),
                       Text(
                         state.profilemodel.userName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       //rating
                       const Rating(),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       StatefulBuilder(builder:
                           (BuildContext context, StateSetter setState) {
                         return Column(children: [
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
                               state.profilemodel.bio,
                               maxLines: 3,
                               textAlign: TextAlign.center,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -82,16 +80,16 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ]);
                       }),
-                      SizedBox(height: 20),
-                      Text(
+                      const SizedBox(height: 20),
+                      const Text(
                         'Recent Reviews',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Container(
+                      const SizedBox(height: 10),
+                      SizedBox(
                         height: 120,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,

@@ -22,7 +22,6 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/control
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
-import 'package:snap_jobs/profile_feature/data/data%20source/cashedatasource.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/imgdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
@@ -49,7 +48,6 @@ class ServicesLocator {
     await GetIt.instance.isReady<SharedPreferences>(); // Add this line
 
     //*bloc
-    ;
 
     sl.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(
           authenticationRepository: sl<AuthenticationRepository>(),

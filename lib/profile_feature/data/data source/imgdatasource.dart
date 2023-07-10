@@ -21,19 +21,19 @@ class HttpImageUploadRemoteDataSource implements ImageUploadRemoteDataSource {
       final response = await http.Response.fromStream(await request.send());
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final imageUrl = responseData['imageUrl']; // Assuming the JSON field name is 'imageUrl'
+        final imageUrl = responseData['profile_url']; // Assuming the JSON field name is 'imageUrl'
         if (imageUrl != null) {
           return Right(imageUrl);
         } else {
-          return Left(ServerFailure(
+          return const Left(ServerFailure(
             'Image URL not found in API response.'
             ));
         }
       } else {
-        return Left(ServerFailure('Image upload failed.'));
+        return const Left(ServerFailure('Image upload failed.'));
       }
     } catch (e) {
-      return Left(ServerFailure('An error occurred during image upload.'));
+      return const Left(ServerFailure('An error occurred during image upload.'));
     }
   }
 }

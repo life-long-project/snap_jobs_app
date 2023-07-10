@@ -31,7 +31,7 @@ class ConfirmPasswordField extends StatelessWidget {
             ],
           ),
         ),
-        prefixIcon: Icon(Icons.lock),
+        prefixIcon: const Icon(Icons.lock),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

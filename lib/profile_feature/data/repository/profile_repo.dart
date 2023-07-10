@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/core/error/exceptions.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
-import 'package:snap_jobs/profile_feature/data/data%20source/cashedatasource.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
 
@@ -46,13 +45,14 @@ class DataRepository implements BaseProfilerepo {
       feedBack: profileModel.feedBack,
       location: profileModel.location,
       pastJobs: profileModel.pastJobs,
-      rateAverage: profileModel.rateAverage,
+     
       sId: profileModel.sId,
       userName: profileModel.userName,
       workImageUrl: profileModel.workImageUrl,
       userImageUrl: profileModel.userImageUrl,
       skills: profileModel.skills,
       rateQuantity: null,
+       rating: profileModel.rating,
     );
 
     return await _getMessage(() {
@@ -70,13 +70,14 @@ class DataRepository implements BaseProfilerepo {
       feedBack: profileModel.feedBack,
       location: profileModel.location,
       pastJobs: profileModel.pastJobs,
-      rateAverage: profileModel.rateAverage,
+      
       sId: profileModel.sId,
       userName: profileModel.userName,
       workImageUrl: profileModel.workImageUrl,
       userImageUrl: profileModel.userImageUrl,
       skills: profileModel.skills,
       rateQuantity: null,
+       rating: profileModel.rating,
     );
     await _networkDataSource.updaterofile(profileModel);
     try {

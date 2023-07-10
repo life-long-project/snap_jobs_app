@@ -19,7 +19,7 @@ class AllJobsBloc extends Bloc<AllJobsEvent, GetAllJobsState> {
       if (event is GetAllJobsEvent || event is RefreshJobsEvent) {
         emit(LoadingJobsState());
 
-        final failureOrPosts = await getAllJobs as Either<Failure, List<JobPost>>;
+        final failureOrPosts = getAllJobs as Either<Failure, List<JobPost>>;
         emit(_mapFailureOrPostsToState(failureOrPosts));
       }
     });

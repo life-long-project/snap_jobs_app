@@ -23,8 +23,8 @@ class DeleteJobBtnWidget extends StatelessWidget {
         ),
       ),
       onPressed: () => deleteDialog(context, jobId),
-      icon: Icon(Icons.delete_outline),
-      label: Text("Delete"),
+      icon: const Icon(Icons.delete_outline),
+      label: const Text("Delete"),
     );
   }
 
@@ -41,7 +41,7 @@ class DeleteJobBtnWidget extends StatelessWidget {
 
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
-                      builder: (_) => JobsPage(),
+                      builder: (_) => const JobsPage(),
                     ),
                     (route) => false);
               } else if (state is ErrorAddDeleteUpdateJobsState) {
@@ -52,7 +52,7 @@ class DeleteJobBtnWidget extends StatelessWidget {
             },
             builder: (context, state) {
               if (state is LoadingAddDeleteUpdateJobsState) {
-                return AlertDialog(
+                return const AlertDialog(
                   title: LoadingWidget(),
                 );
               }

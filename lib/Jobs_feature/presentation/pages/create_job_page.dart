@@ -30,7 +30,7 @@ class AddJobPage extends StatelessWidget {
   Widget _buildBody() {
     return Center(
       child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: BlocConsumer<AddDeleteUpdateJobBloc, AddDeleteUpdateJobsState>(
             listener: (context, state) {
               if (state is MessageAddDeleteUpdateJobsState) {
@@ -43,7 +43,7 @@ class AddJobPage extends StatelessWidget {
             },
             builder: (context, state) {
               if (state is LoadingAddDeleteUpdateJobsState) {
-                return LoadingWidget();
+                return const LoadingWidget();
               }
 
               return FormWidget(

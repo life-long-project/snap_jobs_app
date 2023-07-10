@@ -10,7 +10,7 @@ import '../../domain/repositiries/jobs_repository.dart';
 import '../data_sources/local_data_source.dart';
 import '../data_sources/post_job_remote_data_source.dart';
 import '../models/job_post_model.dart';
-typedef Future<Unit> DeleteOrUpdateOrAddJob();
+typedef DeleteOrUpdateOrAddJob = Future<Unit> Function();
 class JobsRepositoryImpl extends JobsRepository {
   final PostJobRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
@@ -53,10 +53,10 @@ class JobsRepositoryImpl extends JobsRepository {
         await deleteOrUpdateOrAddPost();
         return const Right(unit);
       } on ServerException {
-        return Left(ServerFailure(""));
+        return const Left(ServerFailure(""));
       }
     } else {
-      return Left(OfflineFailure());
+      return const Left(OfflineFailure());
     }
   }
 
@@ -68,14 +68,14 @@ class JobsRepositoryImpl extends JobsRepository {
         localDataSource.cacheJobs(remoteJobs);
         return Right(remoteJobs);
       } on ServerException {
-        return Left(ServerFailure(""));
+        return const Left(ServerFailure(""));
       }
     } else {
       try {
         final localJobs = await localDataSource.getCachedJobs();
         return Right(localJobs);
       } on EmptyCacheException {
-        return Left(EmptyCacheFailure());
+        return const Left(EmptyCacheFailure());
       }
     }
   }

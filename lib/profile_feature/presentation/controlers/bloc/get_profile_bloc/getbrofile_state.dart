@@ -22,7 +22,7 @@ class GetProfileSuccess extends GetProfileState {
   });
 
 @override
-List<Object> get props => [profilemodel!];
+List<Object> get props => [profilemodel];
   GetProfileSuccess copyWith({
     ValueGetter<ProfileModel>? profilemodel    
   }) {

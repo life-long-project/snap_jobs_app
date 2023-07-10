@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_bloc.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_event.dart';
 
 import '../controlers/bloc/upload _img_bloc/bloc/img_upload_state.dart';
 
 class ProfileImg extends StatelessWidget {
+  const ProfileImg({super.key});
+
   
   
   //final ImageUploadBloc imageUploadBloc = sl<ImageUploadBloc>();
@@ -30,7 +31,7 @@ class ProfileImg extends StatelessWidget {
                       ? FileImage(File(state.imagePath!))
                       : null,
                   child: state.imagePath == null
-                      ? Icon(
+                      ? const Icon(
                           Icons.person_2_sharp,
                           size: 50,
                           color: Colors.white,
@@ -41,19 +42,19 @@ class ProfileImg extends StatelessWidget {
                   bottom: 10,
                   right: 10,
                   child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(shape: CircleBorder()),
+                    style: ElevatedButton.styleFrom(shape: const CircleBorder()),
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Choose an option'),
+                            title: const Text('Choose an option'),
                             content: SingleChildScrollView(
                               child: ListBody(
                                 children: <Widget>[
                                   ListTile(
-                                    leading: Icon(Icons.photo_library),
-                                    title: Text('Gallery'),
+                                    leading: const Icon(Icons.photo_library),
+                                    title: const Text('Gallery'),
                                     onTap: () {
                                       BlocProvider.of<ImageUploadBloc>(
                                               context)
@@ -63,8 +64,8 @@ class ProfileImg extends StatelessWidget {
                                     },
                                   ),
                                   ListTile(
-                                    leading: Icon(Icons.camera),
-                                    title: Text('Camera'),
+                                    leading: const Icon(Icons.camera),
+                                    title: const Text('Camera'),
                                     onTap: () {
                                       BlocProvider.of<ImageUploadBloc>(
                                               context)
@@ -80,7 +81,7 @@ class ProfileImg extends StatelessWidget {
                         },
                       );
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.edit,
                     ),
                   ),

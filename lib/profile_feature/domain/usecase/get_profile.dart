@@ -9,6 +9,6 @@ class GetProfileUseCase {
   const GetProfileUseCase({required this.baserepo});
 
    Future<Either<Failure, ProfileModel?>> call(String id) async {
-    return await baserepo.getoneProfile(id);
+    return await baserepo.getoneProfile('64a16604493228d42c997761');
   }
 }

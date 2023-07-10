@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddProfileDetailsScreen extends StatefulWidget {
+  const AddProfileDetailsScreen({super.key});
+
   @override
   _AddProfileDetailsScreenState createState() => _AddProfileDetailsScreenState();
 }
@@ -10,11 +12,11 @@ class AddProfileDetailsScreen extends StatefulWidget {
 class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
   File? _image;
   final picker = ImagePicker();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _bioController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
 
   Future getImageFromCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -38,7 +40,7 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Profile Details'),
+        title: const Text('Add Profile Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -51,20 +53,20 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Choose Image'),
+                        title: const Text('Choose Image'),
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: <Widget>[
                               GestureDetector(
-                                child: Text('Camera'),
+                                child: const Text('Camera'),
                                 onTap: () {
                                   getImageFromCamera();
                                   Navigator.of(context).pop();
                                 },
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               GestureDetector(
-                                child: Text('Gallery'),
+                                child: const Text('Gallery'),
                                 onTap: () {
                                   getImageFromGallery();
                                   Navigator.of(context).pop();
@@ -81,47 +83,47 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
                   radius: 80,
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
-                      ? Icon(Icons.add_a_photo, size: 40)
+                      ? const Icon(Icons.add_a_photo, size: 40)
                       : null,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Name',
                 ),
               ),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
               ),
               TextField(
                 controller: _phoneController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Phone',
                 ),
               ),
               TextField(
                 controller: _addressController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Address',
                 ),
               ),
               TextField(
                 controller: _bioController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Bio',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   // Add your logic here to save the profile details
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),

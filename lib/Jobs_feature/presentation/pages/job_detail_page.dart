@@ -20,7 +20,7 @@ class JobDetailPage extends StatelessWidget {
 
   AppBar _buildAppbar() {
     return AppBar(
-      title: Text("Job Detail"),
+      title: const Text("Job Detail"),
     );
   }
 

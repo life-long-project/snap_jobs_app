@@ -49,13 +49,15 @@ class AuthenticationRepository {
           ? _token = _sharedPrefs.getString('token')
           : null;
 
-      if (_token == null)
+      if (_token == null) {
         _statusStreamController.add(AuthenticationStatus.unauthenticated);
+      }
 
       return (_token ?? '');
     }
-    if (_token == null)
+    if (_token == null) {
       _statusStreamController.add(AuthenticationStatus.unauthenticated);
+    }
 
     return (_token ?? '');
   }

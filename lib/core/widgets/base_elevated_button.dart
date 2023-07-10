@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BaseElevatedButton extends StatelessWidget {
-  BaseElevatedButton({
+  const BaseElevatedButton({
     super.key,
     required this.text,
     required this.onPressed,

@@ -20,27 +20,27 @@ class JobListWidget extends StatelessWidget {
           leading: Text(posts[index].jobId),
           title: Text(
             posts[index].jobName,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 posts[index].jobDescription,
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               Text(
                 'Job Type: ${posts[index].jobType}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               Text(
                 'Salary: ${posts[index].salary}',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
 
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           onTap: () {
             Navigator.push(
               context,
@@ -51,7 +51,7 @@ class JobListWidget extends StatelessWidget {
           },
         );
       },
-      separatorBuilder: (context, index) => Divider(thickness: 1),
+      separatorBuilder: (context, index) => const Divider(thickness: 1),
     );
   }
 }

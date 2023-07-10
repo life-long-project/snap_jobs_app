@@ -18,7 +18,7 @@ class SignUpPages extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           SignUpBloc(signUpRepository: sl<BaseSignUpRepository>()),
-      child: SignUpStepper(),
+      child: const SignUpStepper(),
     );
   }
 }
@@ -40,7 +40,7 @@ class _SignUpStepperState extends State<SignUpStepper> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: const Text("Sign Up"),
         centerTitle: true,
       ),
       body: Form(
@@ -78,7 +78,7 @@ class _SignUpStepperState extends State<SignUpStepper> {
             }
           },
           child: Stepper(
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             type: StepperType.horizontal,
             currentStep: _StepsIndex,
             onStepContinue: () {
@@ -88,7 +88,7 @@ class _SignUpStepperState extends State<SignUpStepper> {
                 });
               } else if (_StepsIndex == 1) {
                 if (_formKey.currentState!.validate()) {
-                  context.read<SignUpBloc>().add(SignUpSubmitted());
+                  context.read<SignUpBloc>().add(const SignUpSubmitted());
                 }
               }
             },
@@ -102,13 +102,13 @@ class _SignUpStepperState extends State<SignUpStepper> {
             },
             steps: [
               Step(
-                title: Text("Sign up"),
-                content: SignUpFirstPage(),
+                title: const Text("Sign up"),
+                content: const SignUpFirstPage(),
                 isActive: _StepsIndex == 0,
               ),
               Step(
-                title: Text("More About yourself"),
-                content: SignUpSecondPage(),
+                title: const Text("More About yourself"),
+                content: const SignUpSecondPage(),
                 isActive: _StepsIndex == 1,
               ),
             ],

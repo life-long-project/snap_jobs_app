@@ -16,3 +16,8 @@ class RefrechOneProfileModelEvent extends GetProfileEvent{
 
   
 }
+ class UpdateRatingEvent extends GetProfileEvent{
+
+
+  
+}

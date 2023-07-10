@@ -1,11 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
 import '../../Home_Feature/Presentation/UI/Screens/home.dart';
 
 class BottomNavigation extends StatefulWidget {
-  BottomNavigation({
+  const BottomNavigation({
     super.key,
   });
 

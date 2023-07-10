@@ -13,7 +13,7 @@ class LoadingJobsState extends GetAllJobsState {}
 class LoadedJobsState extends GetAllJobsState {
   final List<JobPost> posts;
 
-  LoadedJobsState({required this.posts});
+  const LoadedJobsState({required this.posts});
 
   @override
   List<Object> get props => [posts];
@@ -22,7 +22,7 @@ class LoadedJobsState extends GetAllJobsState {
 class ErrorPostJobsState extends GetAllJobsState {
   final String message;
 
-  ErrorPostJobsState({required this.message});
+  const ErrorPostJobsState({required this.message});
 
   @override
   List<Object> get props => [message];

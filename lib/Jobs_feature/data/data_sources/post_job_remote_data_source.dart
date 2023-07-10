@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
-import 'package:snap_jobs/core/network/error_message_model.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../models/job_post_model.dart';

@@ -14,6 +14,7 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
   final GetProfileUseCase getoneprofileusecase;
   GetProgileBloc({required this.getoneprofileusecase})
       : super(GetProfileInitial()) {
+   
     on<GetProfileEvent>((event, emit) async {
       if (event is GetOneProfileModelEvent ||
           event is RefrechOneProfileModelEvent) {
@@ -24,7 +25,14 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
             await getoneprofileusecase as Either<Failure, ProfileModel>;
         emit(_mapFailureOrPostsToState(failureOrProfilemodel));
       }
+    if(event is UpdateRatingEvent){
+      print("update rating");
+
+      
+    }
+    
     });
+   
   }
 
   GetProfileState _mapFailureOrPostsToState(
@@ -47,4 +55,5 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
         return "Unexpected Error, Please try again later.";
     }
   }
+ 
 }

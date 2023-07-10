@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../error/failure.dart';
 
 abstract class BaseUseCase<T, Parameters> {
   

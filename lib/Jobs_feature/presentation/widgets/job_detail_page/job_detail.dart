@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/post_job_entity.dart';
@@ -23,38 +22,38 @@ class JobDetailWidget extends StatelessWidget {
         children: [
           Text(
             post.jobName,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Divider(
+          const Divider(
             height: 50,
           ),
           Text(
             post.jobDescription,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),
-          Divider(
+          const Divider(
             height: 50,
           ),
           Text(
             'Salary: \$${post.salary}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),
 
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             'Job Type: ${post.jobType}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),
-          Divider(
+          const Divider(
             height: 50,
           ),
           Row(

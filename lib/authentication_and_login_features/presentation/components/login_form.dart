@@ -68,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                LoginButton(),
+                const LoginButton(),
                 _SignUpButton(),
               ],
             ),
@@ -88,7 +88,7 @@ class _SignUpButton extends StatelessWidget {
           SignUpPages.route(),
         );
       },
-      child: Text('Sign up'),
+      child: const Text('Sign up'),
     );
   }
 }

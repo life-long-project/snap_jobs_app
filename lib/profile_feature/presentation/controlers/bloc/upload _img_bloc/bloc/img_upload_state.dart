@@ -60,7 +60,7 @@ import 'package:equatable/equatable.dart';
 class ImageUploadState extends Equatable {
   final String ?imagePath;
 
-    ImageUploadState({
+    const ImageUploadState({
      this.imagePath
   });
 

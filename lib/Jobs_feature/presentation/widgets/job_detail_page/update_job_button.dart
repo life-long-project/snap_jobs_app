@@ -17,14 +17,14 @@ class UpdateJobBtnWidget extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => AddJobPage(
+              builder: (_) => const AddJobPage(
                 isUpdateJob: true,
 
               ),
             ));
       },
-      icon: Icon(Icons.edit),
-      label: Text("Edit"),
+      icon: const Icon(Icons.edit),
+      label: const Text("Edit"),
     );
   }
 }

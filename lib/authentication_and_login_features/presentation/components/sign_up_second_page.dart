@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/components/sign_up_form.dart/city_field.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/components/sign_up_form.dart/country_field.dart';
@@ -26,7 +25,7 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
         child: Row(
           children: [
             Expanded(child: SkillsTextFields(i)),
-            SizedBox(
+            const SizedBox(
               width: 16,
             ),
             // we need add button at last skill row only
@@ -71,10 +70,10 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
 // all inputs here are not required
 
         //*Country
-        CountryField(),
+        const CountryField(),
 
         //*City
-        CityField(),
+        const CityField(),
 
         //*Age
         FormField<int>(
@@ -108,7 +107,7 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
 
         //*past experiences
 
-        PastExperincesField(),
+        const PastExperincesField(),
 
         //*skills as array of string
 
@@ -130,7 +129,7 @@ class _SignUpSecondPageState extends State<SignUpSecondPage> {
 
 class SkillsTextFields extends StatefulWidget {
   final int index;
-  SkillsTextFields(this.index);
+  const SkillsTextFields(this.index, {super.key});
   @override
   _SkillsTextFieldsState createState() => _SkillsTextFieldsState();
 }
@@ -166,7 +165,7 @@ class _SkillsTextFieldsState extends State<SkillsTextFields> {
             .read<SignUpBloc>()
             .add(SkillsChanged(_SignUpSecondPageState.skillsList));
       },
-      decoration: InputDecoration(hintText: 'Enter your skill'),
+      decoration: const InputDecoration(hintText: 'Enter your skill'),
       validator: (_) {
         return null;
       },

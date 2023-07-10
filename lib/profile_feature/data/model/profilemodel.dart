@@ -7,7 +7,7 @@ class ProfileModel extends Profile {
       required super.feedBack,
       required super.pastJobs,
       required super.rateQuantity,
-      required super.rateAverage,
+      required super.rating,
       required super.userImageUrl,
       required super.workImageUrl,
 
@@ -25,14 +25,14 @@ class ProfileModel extends Profile {
         feedBack: json['feed_back'],
         pastJobs: json['past_jobs'],
         rateQuantity: json['rate_quantity'],
-        rateAverage: json['rate_average'],
+        rating: json['rating'],
         userImageUrl: json['user_image_url'],
         workImageUrl: json['work_image_url'],
        
         sId: json['_id'],
         
         age: json['age'],
-        bio: json['bio'],
+        bio: json['"past_experience'],
         location: json['location'],
         userName: json['full_name'],
       );
