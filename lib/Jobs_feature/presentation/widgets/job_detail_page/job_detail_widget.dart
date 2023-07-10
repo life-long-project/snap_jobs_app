@@ -255,12 +255,12 @@ class JobDetailWidget extends StatelessWidget {
                                   BlocProvider.of<PostJobBloc>(context)
                                       .add(FinishJobEvent(jobId: job.jobId));
 
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                    content: SnackBar(
-                                        content:
-                                            Text('Thanks for using SnapJobs')),
-                                  ));
+                                  // ScaffoldMessenger.of(context)
+                                  //     .showSnackBar(const SnackBar(
+                                  //   content: SnackBar(
+                                  //       content:
+                                  //           Text('Thanks for using SnapJobs')),
+                                  // ));
                                 },
                                 child: const Text("Finish Job "),
                               )

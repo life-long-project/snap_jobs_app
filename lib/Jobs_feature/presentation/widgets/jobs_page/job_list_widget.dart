@@ -26,10 +26,11 @@ class JobListWidget extends StatelessWidget {
         return JobCardWithoutPic(
 
           job: posts[index],
-          index:  (scrollDirection == Axis.vertical) ? index:  1,
+          index:  (scrollDirection == Axis.vertical) ? index:  2,
         );
       },
-      separatorBuilder: (context, index) => const Divider(thickness: 1 , color: Colors.transparent),
+
+      // separatorBuilder: (context, index) => const Divider(thickness: 1 , color: Colors.transparent),
     );
   }
 }

@@ -18,8 +18,6 @@ class AllJobsPage extends StatefulWidget {
 }
 
 class _AllJobsPageState extends State<AllJobsPage> {
-
-
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width -
@@ -47,7 +45,6 @@ class _AllJobsPageState extends State<AllJobsPage> {
                   previous.requestJobsStatus != current.requestJobsStatus;
             },
             builder: (context, state) {
-
               switch (state.requestJobsStatus) {
                 case RequestJobsStatus.initial:
                   return const initial();
@@ -59,11 +56,9 @@ class _AllJobsPageState extends State<AllJobsPage> {
                     return RefreshIndicator(
                         onRefresh: () => _onRefresh(context),
                         child: Container(
-
-                          width: deviceWidth ,
-                          height: deviceHeight ,
-                          padding: const EdgeInsets.symmetric(vertical:8 ),
-
+                          width: deviceWidth,
+                          height: deviceHeight,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,17 +71,19 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                       .onBackground,
                                   title: 'In process Jobs',
                                   child: const Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Icon(Icons.timer_outlined , ),
-                                       Text('In process Jobs',),
+                                      Icon(
+                                        Icons.timer_outlined,
+                                      ),
+                                      Text(
+                                        'In process Jobs',
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                              Flexible(
+                              Expanded(
                                 flex: 4,
                                 child: JobListWidget(
                                   posts: state.userActiveJobs,
@@ -167,7 +164,7 @@ class initial extends StatelessWidget {
     BlocProvider.of<RequestJobsBloc>(context).add(
       const RequestAllJobsEvent(),
     );
-   final userId =RepositoryProvider.of<UserRepository>(context).user.id ?? "";
+    final userId = RepositoryProvider.of<UserRepository>(context).user.id ?? "";
 
     BlocProvider.of<RequestJobsBloc>(context)
         .add(RequestUserActiveJobsEvent(userId: userId));
