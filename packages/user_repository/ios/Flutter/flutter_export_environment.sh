@@ -1,9 +1,9 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/magdy/snap/flutter/common/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/magdy/AndroidStudioProjects/snap_jobs_app/packages/user_repository"
+export "FLUTTER_ROOT=D:\Downloads\flutter_windows_3.7.12-stable\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\nouran\Desktop\Final_Graduation\snap_jobs_app\packages\user_repository"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib/main.dart"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.1"
 export "FLUTTER_BUILD_NUMBER=0.0.1"
