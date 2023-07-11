@@ -1,94 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:snap_jobs/splash/view/splash_page.dart';
 
-import 'core/utils/themeApp/themeDataLight.dart';
-import 'core/utils/app_string.dart';
-
-import 'core/widgets/base_outlined_button.dart';
-import 'core/widgets/bottom_navigation.dart';
-import 'core/services/services_locator.dart';
-import 'core/widgets/base_elevated_button.dart';
-
-void main() async {
+void main() {
   //WidgetsFlutterBinding.ensureInitialized();
-  ServicesLocator().init();
 
-  runApp(const MyApp());
+  runApp(const SplashPage());
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
+// import 'package:snap_jobs/core/services/services_locator.dart';
+// import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// import 'Jobs_feature/presentation/bloc/get_all_jobs/bloc/get_all_jobs_bloc.dart';
+// import 'Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: AppString.appName,
-        theme: getThemeDtaLight(),
-        home: MyHomePage());
-  }
-}
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await ServicesLocator().init();
+//   runApp(MyApp());
+// }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
-          child: ListView(
-        children: [
-          DrawerHeader(
-            child: Image.asset(
-              "assets/logo_blue_text.png",
-            ),
-          ),
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('About Us'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Help & Support'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          BaseOutlinedButton(
-            text: "Post a job",
-            onPressed: () {},
-          ),
-        ],
-      )),
-      appBar: AppBar(
-        title: Text(AppString.appName),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-          InkWell(
-            onTap: () {},
-            child: CircleAvatar(
-              backgroundImage: Image.asset(
-                "assets/logo_blue_text.png",
-                fit: BoxFit.fill,
-                width: 15,
-                height: 15,
-              ).image,
-              radius: 15,
-              backgroundColor: Colors.red,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         theme: getThemeDtaLight(),
+//         title: 'Posts Job',
+//         home: AllJobsPage());
+//   }
+// }

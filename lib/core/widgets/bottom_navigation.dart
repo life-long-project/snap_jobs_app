@@ -1,15 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/core/utils/themeApp/ThemeDataLight.dart';
 
 import '../../Home_Feature/Presentation/UI/Screens/home.dart';
-import '../../Jobs_feature/domain/entities/jobs.dart';
-
-import '../../Jobs_feature/presentation/uI/screens/jobs_screen.dart';
-import '../../Jobs_feature/presentation/uI/screens/test.dart';
 
 class BottomNavigation extends StatefulWidget {
-  BottomNavigation({
+  const BottomNavigation({
     super.key,
   });
 
@@ -20,14 +15,11 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  Jobs? job;
   int _currentIndex = 0;
   final List<Widget> _children = [
     //TODO
     const HomePage(),
-    const className(),
-    const className(),
-    const className(),
+
   ];
   void onTappedBar(int index) {
     setState(() {
