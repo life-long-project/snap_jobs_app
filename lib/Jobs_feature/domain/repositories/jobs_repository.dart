@@ -9,4 +9,10 @@ abstract class JobsRepository {
   Future<Either<Failure, Unit>> deleteJob(String jobId);
   Future<Either<Failure, Unit>> updateJob(JobEntity job);
   Future<Either<Failure, Unit>> addJob(JobEntity job);
+
+  Future<Either<Failure, Unit>> finishJob(String jobId);
+
+
+
+ Future<Either<Failure, List<JobEntity>>> getUserActiveJobs(String userId);
 }

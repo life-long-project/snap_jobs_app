@@ -14,6 +14,7 @@ abstract class JobRemoteDataSource {
   Future<List<JobEntity>> getUserJobs(String userId);
   Future<JobEntity> getOneJob(String jobId);
   Future<Unit> deleteJob(String jobId);
+  Future<Unit> finishJob(String jobId);
   Future<Unit> updateJob(JobModel jobPostModel);
   Future<Unit> addJob(JobModel jobPostModel);
 }
@@ -47,6 +48,31 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     }
   }
 
+  //* get user jobs
+  @override
+  Future<List<JobEntity>> getUserJobs(String userId) async {
+    try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getProfile + userId),
+        headers: {"Content-Type": "application/json"},
+      );
+      final  decodedJson =
+          json.decode(response.body)["user_jobs"];
+      final List<JobEntity> result = decodedJson
+          .map<JobModel>(
+              (jsonJobPostModel) => JobModel.fromJson(jsonJobPostModel))
+          .toList();
+      return result;
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+      throw OfflineException();
+    }
+  }
+
 //* get one job
   @override
   Future<JobEntity> getOneJob(String jobId) async {
@@ -69,32 +95,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     }
   }
 
-//* get user jobs
-  @override
-  Future<List<JobEntity>> getUserJobs(String userId) async {
-    //TODO :implement the right request after backend add fetaure
-
-    try {
-      final response = await client.get(
-        Uri.parse(ApiConstants.getAllJobsPath),
-        headers: {"Content-Type": "application/json"},
-      );
-      final decodedJson = json.decode(response.body)["jobs"];
-      final List<JobModel> jobModel = decodedJson
-          .map<JobModel>(
-              (jsonJobPostModel) => JobModel.fromJson(jsonJobPostModel))
-          .toList();
-
-      return jobModel;
-    } on ServerException {
-      rethrow;
-    } catch (e, s) {
-      stderr.writeln(e);
-      stderr.writeln(s);
-
-      throw OfflineException();
-    }
-  }
   //* add job
 
   @override
@@ -105,7 +105,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       return Future.value(unit);
     } on ServerException {
       rethrow;
-
     } catch (e, s) {
       stderr.writeln(e);
       stderr.writeln(s);
@@ -113,7 +112,28 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw OfflineException();
     }
   }
+  //* finish job
+  @override
+  Future<Unit> finishJob(String jobId) async {
 
+try {
+      await client.post(
+        Uri.parse(ApiConstants.finishJobPath + jobId),
+        headers: {"Content-Type": "application/json"},
+        body : {"is_finished":"true"}
+
+      );
+      return Future.value(unit);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+      throw OfflineException();
+    }
+
+  }
   //*delete job
 
   @override
@@ -158,4 +178,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw OfflineException();
     }
   }
+
+
 }

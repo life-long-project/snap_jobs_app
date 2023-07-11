@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:user_repository/user_repository.dart';
 
 import '../../../core/widgets/loading_widget.dart';
 import '../widgets/jobs_page/job_list_widget.dart';
@@ -17,20 +19,20 @@ class AllJobsPage extends StatefulWidget {
 }
 
 class _AllJobsPageState extends State<AllJobsPage> {
-  Future<void> _onStart(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1));
-    BlocProvider.of<RequestJobsBloc>(context).add(const RequestAllJobsEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.along(Axis.horizontal);
+    final deviceHeight = (MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.along(Axis.vertical) -
+        kToolbarHeight -
+        kBottomNavigationBarHeight);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<RequestJobsBloc>(
             lazy: false,
             create: (context) {
-              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
-              _onStart(context);
               return sl<RequestJobsBloc>();
             }),
         BlocProvider(create: (_) => sl<PostJobBloc>())
@@ -39,6 +41,11 @@ class _AllJobsPageState extends State<AllJobsPage> {
         Padding(
           padding: const EdgeInsets.all(10),
           child: BlocBuilder<RequestJobsBloc, RequestJobsState>(
+            buildWhen: (previous, current) {
+              return previous.jobs != current.jobs ||
+                  previous.userActiveJobs != current.userActiveJobs ||
+                  previous.requestJobsStatus != current.requestJobsStatus;
+            },
             builder: (context, state) {
               switch (state.requestJobsStatus) {
                 case RequestJobsStatus.initial:
@@ -47,9 +54,211 @@ class _AllJobsPageState extends State<AllJobsPage> {
                   return const LoadingWidget();
 
                 case RequestJobsStatus.success:
-                  return RefreshIndicator(
+                  if (state.userActiveJobs.isNotEmpty) {
+                    return RefreshIndicator(
                       onRefresh: () => _onRefresh(context),
-                      child: JobListWidget(posts: state.jobs));
+                      child: Container(
+                        width: deviceWidth,
+                        height: deviceHeight,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: CustomScrollView(
+                          slivers: [
+                            MultiSliver(
+                              children: <Widget>[
+                                MultiSliver(children: <Widget>[
+                                  SliverPinnedHeader(
+                                    child: Container(
+                                      padding: deviceHeight > 600
+                                          ? const EdgeInsets.symmetric(
+                                              vertical: 15)
+                                          : const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      child: Flexible(
+                                        flex: 1,
+                                        child: Title(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                          title: 'In process Jobs',
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.timer_outlined,
+                                              ),
+                                              Text(
+                                                'In process Jobs',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SliverAnimatedPaintExtent(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: SliverFixedExtentList(
+                                      itemExtent: deviceHeight * .3,
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: 1,
+                                        (context, index) => Expanded(
+                                          flex: 2,
+                                          child: JobListWidget(
+                                            posts: state.userActiveJobs,
+                                            scrollDirection: Axis.horizontal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                                //
+                                MultiSliver(children: <Widget>[
+                                  SliverPinnedHeader(
+                                    child: Container(
+                                      padding: deviceHeight > 600
+                                          ? const EdgeInsets.symmetric(
+                                              vertical: 15)
+                                          : const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      child: Flexible(
+                                        flex: 1,
+                                        child: Title(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                          title: 'In process Jobs',
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.timer_outlined,
+                                              ),
+                                              Text(
+                                                'New jobs',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SliverAnimatedPaintExtent(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: SliverFixedExtentList(
+                                      itemExtent: deviceHeight * .8,
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: 1,
+                                        (context, index) => Column(
+                                          children: [
+                                            Flexible(
+                                              flex: 8,
+                                              child: JobListWidget(
+                                                posts: state.jobs,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+
+                            // SliverFixedExtentList(
+                            //   itemExtent: deviceHeight * 0.6,
+                            //   delegate: SliverChildBuilderDelegate(
+                            //     childCount: 1,
+                            //     (context, index) => Column(
+                            //       children: [
+                            //         Flexible(
+                            //           flex: 1,
+                            //           child: Title(
+                            //             color: Theme.of(context)
+                            //                 .colorScheme
+                            //                 .onBackground,
+                            //             title: 'In process Jobs',
+                            //             child: const Row(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.start,
+                            //               children: [
+                            //                 Icon(
+                            //                   Icons.timer_outlined,
+                            //                 ),
+                            //                 Text(
+                            //                   'In process Jobs',
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Expanded(
+                            //           flex: 4,
+                            //           child: JobListWidget(
+                            //             posts: state.userActiveJobs,
+                            //             scrollDirection: Axis.horizontal,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // SliverFixedExtentList(
+                            //     itemExtent: deviceHeight,
+                            //     delegate: SliverChildBuilderDelegate(
+                            //       childCount: 1,
+                            //       (context, index) => Column(
+                            //         children: [
+                            //           Flexible(
+                            //             flex: 1,
+                            //             child: Title(
+                            //               color: Theme.of(context)
+                            //                   .colorScheme
+                            //                   .onBackground,
+                            //               title: 'In process Jobs',
+                            //               child: const Row(
+                            //                 mainAxisAlignment:
+                            //                     MainAxisAlignment.start,
+                            //                 children: [
+                            //                   Icon(
+                            //                     Icons.timer_outlined,
+                            //                   ),
+                            //                   Text(
+                            //                     'New jobs',
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           Flexible(
+                            //             flex: 8,
+                            //             child: JobListWidget(
+                            //               posts: state.jobs,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return RefreshIndicator(
+                        onRefresh: () => _onRefresh(context),
+                        child: JobListWidget(
+                          posts: state.jobs,
+                        ));
+                  }
                 case RequestJobsStatus.failure:
                   return MessageDisplayWidget(message: state.message);
               }
@@ -67,6 +276,10 @@ class _AllJobsPageState extends State<AllJobsPage> {
 
   Future<void> _onRefresh(BuildContext context) async {
     BlocProvider.of<RequestJobsBloc>(context).add(RefreshJobsEvent());
+    final userId = RepositoryProvider.of<UserRepository>(context).user.id ?? "";
+
+    BlocProvider.of<RequestJobsBloc>(context)
+        .add(RequestUserActiveJobsEvent(userId: userId));
   }
 }
 
@@ -84,7 +297,10 @@ class initial extends StatelessWidget {
     BlocProvider.of<RequestJobsBloc>(context).add(
       const RequestAllJobsEvent(),
     );
+    final userId = RepositoryProvider.of<UserRepository>(context).user.id ?? "";
 
+    BlocProvider.of<RequestJobsBloc>(context)
+        .add(RequestUserActiveJobsEvent(userId: userId));
     return const Center(
         child: Text(
       'initial',

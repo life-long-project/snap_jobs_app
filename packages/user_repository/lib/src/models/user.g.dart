@@ -19,7 +19,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
               .toList() ??
           ['not found'],
       country: json['country'] as String? ?? 'not found',
-      pastExperience: json['past_experience'] as String? ?? 'not found',
+      pastExperience: json['past_experience'][0] as String? ?? 'not found',
       skills: (json['skills'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??

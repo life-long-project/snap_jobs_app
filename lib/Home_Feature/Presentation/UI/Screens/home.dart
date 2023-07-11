@@ -77,8 +77,18 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Theme.of(context).colorScheme.primary  ,
+        shadowColor: Theme.of(context).colorScheme.onPrimary ,
+        title: Text(
+            'Hi, $userName',
+            style:  TextStyle(
+              fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize
+              ,
+              fontWeight: Theme.of(context).textTheme.headlineMedium!.fontWeight,
+
+            ),),
+
+        elevation: 1,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_active),
@@ -92,31 +102,18 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text(
-            'Hi, $userName',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-         MultiBlocProvider(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider<RequestJobsBloc>(
+                  lazy: false,
+                  create: (context) {
 
-
-      providers: [
-        BlocProvider<RequestJobsBloc>(
-            lazy: false,
-            create: (context) {
-              // sl<RequestJobsBloc>().add(RequestAllJobsEvent());
-
-              return sl<RequestJobsBloc>();
-            }),
-        BlocProvider(create: (_) => sl<PostJobBloc>(),
-        ),
-      ],
-
-
-
-
+                    return sl<RequestJobsBloc>();
+                  }),
+              BlocProvider(
+                create: (_) => sl<PostJobBloc>(),
+              ),
+            ],
             child: const Expanded(
               child: AllJobsPage(),
             ),

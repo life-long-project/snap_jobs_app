@@ -23,6 +23,7 @@ class JobsRepositoryImpl extends JobsRepository {
   @override
   Future<Either<Failure, Unit>> addJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
+      dateTime: job.dateTime,
       image: job.image,
       jobDescription: job.jobDescription,
       jobId: job.jobId,
@@ -43,12 +44,34 @@ class JobsRepositoryImpl extends JobsRepository {
       return remoteDataSource.deleteJob(jobId);
     });
   }
+  //*Finish job
 
+  @override
+  Future<Either<Failure, Unit>> finishJob(String jobId) {
+    return _getMessage(() {
+      return remoteDataSource.finishJob(jobId);
+    });
+  }
+
+  //* getUserActiveJobs
+
+  @override
+  getUserActiveJobs(String userId) async {
+    final List<JobEntity> response = await remoteDataSource.getUserJobs(userId);
+
+    final List<JobEntity> result = response
+        .where((element) =>
+            element.isFinished == false && element.isActive == false)
+        .toList();
+
+    return Right(result);
+  }
   //* updateJob
 
   @override
   Future<Either<Failure, Unit>> updateJob(JobEntity job) async {
     final JobModel jobModel = JobModel(
+        dateTime: job.dateTime,
         jobTitle: job.jobTitle,
         image: job.image,
         jobDescription: job.jobDescription,
@@ -56,8 +79,8 @@ class JobsRepositoryImpl extends JobsRepository {
         jobType: job.jobType,
         salary: job.salary);
 
-    return await _getMessage(() {
-      return remoteDataSource.updateJob(jobModel);
+    return await _getMessage(() async {
+      return await remoteDataSource.updateJob(jobModel);
     });
   }
   //* getAllJobs

@@ -8,8 +8,10 @@ import 'package:snap_jobs/Jobs_feature/data/repositories/jobs_repository_impl.da
 import 'package:snap_jobs/Jobs_feature/domain/repositories/jobs_repository.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/add_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
@@ -24,6 +26,12 @@ import 'package:snap_jobs/authentication_and_login_features/presentation/control
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
+import 'package:snap_jobs/offers_feature/data/data_sources/offers_remote_data_source.dart';
+import 'package:snap_jobs/offers_feature/data/repositories/offer_repository_impl.dart';
+import 'package:snap_jobs/offers_feature/domain/repositories/offer_repository.dart';
+import 'package:snap_jobs/offers_feature/domain/usecases/apply_offer_use_case.dart';
+import 'package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart';
+import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -60,6 +68,7 @@ class ServicesLocator {
 
     sl.registerFactory<PostJobBloc>(
       () => PostJobBloc(
+        finishJob:sl<FinishJobUseCase>() ,
         addJob: sl<AddJobUseCase>(),
         updateJob: sl<UpdateJobUseCase>(),
         deleteJob: sl<DeleteJobUseCase>(),
@@ -68,15 +77,21 @@ class ServicesLocator {
 
     sl.registerFactory<RequestJobsBloc>(
       () => RequestJobsBloc(
+        getUserActiveJobs: sl<GetUserActiveJobsUseCase>(),
         getAllJobs: sl<GetAllJobsUseCase>(),
-        getUserJobs: sl<GetUserJobsUseCase>(),
         getOneJob: sl<GetOneJobUseCase>(),
+
+      ),
+    );
+    sl.registerFactory<OfferBloc>(
+      () => OfferBloc(
+        sl<ApplyOfferUseCase>(),
       ),
     );
 
     // *Use Cases
 
-    sl.registerLazySingleton(() => SignUpUseCase(sl()));
+    sl.registerLazySingleton(() => SignUpUseCase(sl<BaseSignUpRepository>()));
 
     //*Jobs  Usecases
     sl.registerLazySingleton(
@@ -85,6 +100,12 @@ class ServicesLocator {
       ),
     );
 
+
+    sl.registerLazySingleton(
+      () => GetUserActiveJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
     sl.registerLazySingleton(
       () => GetUserJobsUseCase(
         sl<JobsRepository>(),
@@ -112,8 +133,33 @@ class ServicesLocator {
       ),
     );
 
+    sl.registerLazySingleton(
+      () => FinishJobUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
+    //* offer usecases
+
+    sl.registerLazySingleton(
+      () => ApplyOfferUseCase(
+        sl<OfferRepository>(),
+      ),
+    );
+
+    sl.registerLazySingleton(
+      () => AcceptOfferUseCase(
+        sl<OfferRepository>(),
+      ),
+    );
     //*DataSource
     sl.registerLazySingleton<BaseSignUpDataSource>(() => SignUpDataSource());
+
+    sl.registerLazySingleton<OffersRemoteDataSource>(
+      () => OffersRemoteDataSourceImpl(
+        sl<BaseHttpClient>(),
+      ),
+    );
 
     //* repository
     sl.registerLazySingleton<BaseSignUpRepository>(
@@ -135,6 +181,11 @@ class ServicesLocator {
         remoteDataSource: sl<JobRemoteDataSource>(),
         networkInfo: sl<NetworkInfo>(),
         localDataSource: sl<JobsLocalDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<OfferRepository>(
+      () => OfferRepositoryImpl(
+        sl<OffersRemoteDataSource>(),
       ),
     );
 
@@ -163,7 +214,7 @@ class ServicesLocator {
 }
 
 class ServiceLocatorWithTokens {
-  init(String token)  async {
+  init(String token) async {
     sl.registerSingleton(
       BaseHttpClient.addToken(token),
     );

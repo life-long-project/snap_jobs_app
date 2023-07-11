@@ -67,10 +67,20 @@ class _AppState extends State<App> {
               ),
             );
           }
-          return RepositoryProvider.value(
-            value: _authenticationRepository,
+          return MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider.value(value: _authenticationRepository),
+              RepositoryProvider.value(value: _userRepository)
+            ],
             child: BlocProvider(
               create: (_) => AuthenticationBloc(
+                //! this is small issue
+                //! i have to take the repository from the context
+                //! like this "RepositoryProvider.of<UserRepository>(context),"
+                //!to make all the blocs have the same source of the repository
+                //! but here it  will make error that i can't resolve yet
+                //! but using the service locator shouldn't make any problems
+                //! as it's the same instance. just ugly code.
                 authenticationRepository: _authenticationRepository,
                 userRepository: _userRepository,
               ),
@@ -111,9 +121,7 @@ class _AppViewState extends State<AppView> {
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
-                  (route) => false,
-                );
+                    LoginPage.route(), (route) => false);
                 break;
               case AuthenticationStatus.unknown:
                 break;
