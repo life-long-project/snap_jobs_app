@@ -220,50 +220,51 @@ class JobDetailWidget extends StatelessWidget {
                 ? RepositoryProvider.of<UserRepository>(context).user.id ==
                         job.userId
                     ? job.isActive
-                        ?
-                        //job is active and by the user, the user
-                        // should see options add, delete and list of offers to
-                        //choose from
-                        EditAndDeleteButtons(
-                            deviceHeight: deviceHeight,
-                            deviceWidth: deviceWidth,
-                            job: job)
-                        :
-                        //job is not active and by the user, the user
-                        // should see options finish job and the
-                        //accepted offer
-                        Column(
-                            children: [
-                              job.offers?.isEmpty ?? true
-                                  //show nothing if the chosen offer is
-                                  //not available.
-                                  //this case is  a bug in backend
-                                  //and won't be reached if everything
-                                  //went as planned
-                                  ? const SizedBox.shrink()
-                                  //*the accepted offer card
+                            ?
+                            //job is active and by the user, the user
+                            // should see options add, delete and list of offers to
+                            //choose from
+                            EditAndDeleteButtons(
+                                deviceHeight: deviceHeight,
+                                deviceWidth: deviceWidth,
+                                job: job)
+                            :
+                            //job is not active and by the user, the user
+                            // should see options finish job and the
+                            //accepted offer
+                            Column(
+                                children: [
+                                  job.offers?.isEmpty ?? true
+                                      //show nothing if the chosen offer is
+                                      //not available.
+                                      //this case is  a bug in backend
+                                      //and won't be reached if everything
+                                      //went as planned
+                                      ? const SizedBox.shrink()
+                                      //*the accepted offer card
 
-                                  : AcceptedOfferAndFinishButton(job: job),
+                    : AcceptedOfferAndFinishButton(job: job),
                             ],
                           )
-                    :
-                    //if job is not by the user, the user
-                    // should see options apply
-                    //if they didn't apply before
-
-                    job.isAlreadyApplied ?? false
-                        ? const ElevatedButton(
-                            onPressed: null,
-                            child: Text("Already Applied"),
-                          )
-                        : ElevatedButton(
-                            onPressed: () => _addOfferDialogBuilder(context),
-                            child: Text("Apply"),
-                          )
                 :
-                //if job is finished there are no actions for now
-                const SizedBox.shrink(),
-          ],
+                //if job is not by the user, the user
+                // should see options apply
+                //if they didn't apply before
+
+                job.isAlreadyApplied ?? false
+                  ? const ElevatedButton(
+                      onPressed: null,
+                      child: Text("Already Applied"),
+                    )
+                  : ElevatedButton(
+                      onPressed: () => _addOfferDialogBuilder(context),
+                      child: Text("Apply"),
+                    )
+            :
+            //if job is finished there are no actions for now
+            const SizedBox.shrink(),
+
+              ],
         ),
       ),
     );
