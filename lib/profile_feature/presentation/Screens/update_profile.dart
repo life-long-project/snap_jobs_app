@@ -6,88 +6,99 @@ class AddProfileDetailsScreen extends StatefulWidget {
   const AddProfileDetailsScreen({super.key});
 
   @override
-  _AddProfileDetailsScreenState createState() => _AddProfileDetailsScreenState();
+  _AddProfileDetailsScreenState createState() =>
+      _AddProfileDetailsScreenState();
 }
 
 class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
   File? _image;
   final picker = ImagePicker();
+  final TextEditingController _firstnameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _Controller = TextEditingController();
 
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
-  }
+  // Future getImageFromCamera() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.camera);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //     }
+  //   });
+  // }
 
-  Future getImageFromGallery() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
-  }
+  // Future getImageFromGallery() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Profile Details'),
+        title: const Text('Update Profile Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Choose Image'),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              GestureDetector(
-                                child: const Text('Camera'),
-                                onTap: () {
-                                  getImageFromCamera();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                              GestureDetector(
-                                child: const Text('Gallery'),
-                                onTap: () {
-                                  getImageFromGallery();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: _image != null ? FileImage(_image!) : null,
-                  child: _image == null
-                      ? const Icon(Icons.add_a_photo, size: 40)
-                      : null,
+              
+              // GestureDetector(
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return AlertDialog(
+              //           title: const Text('Choose Image'),
+              //           content: SingleChildScrollView(
+              //             child: ListBody(
+              //               children: <Widget>[
+              //                 GestureDetector(
+              //                   child: const Text('Camera'),
+              //                   onTap: () {
+              //                     getImageFromCamera();
+              //                     Navigator.of(context).pop();
+              //                   },
+              //                 ),
+              // const SizedBox(height: 10),
+              // GestureDetector(
+              //   child: const Text('Gallery'),
+              //   onTap: () {
+              //     getImageFromGallery();
+              //     Navigator.of(context).pop();
+              //   },
+              // ),
+
+              // child: CircleAvatar(
+              //   radius: 80,
+              //   backgroundImage: _image != null ? FileImage(_image!) : null,
+              //   child: _image == null
+              //       ? const Icon(Icons.add_a_photo, size: 40)
+              //       : null,
+              // ),
+
+              const SizedBox(height: 20),
+              TextField(
+                controller: _firstnameController,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
                 ),
               ),
-              const SizedBox(height: 20),
+              TextField(
+                controller: _lastnameController,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                ),
+              ),
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -109,7 +120,13 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
               TextField(
                 controller: _addressController,
                 decoration: const InputDecoration(
-                  labelText: 'Address',
+                  labelText: 'city',
+                ),
+              ),
+              TextField(
+                controller: _addressController,
+                decoration: const InputDecoration(
+                  labelText: 'Country',
                 ),
               ),
               TextField(
@@ -132,4 +149,3 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
     );
   }
 }
-

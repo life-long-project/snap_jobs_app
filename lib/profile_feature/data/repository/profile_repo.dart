@@ -3,13 +3,14 @@ import 'package:snap_jobs/core/error/exceptions.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
 import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/rating_model.dart';
 
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 
 import '../../../core/error/failure.dart';
 
 typedef UpdateOrAddJob = Future< Unit> Function();
-//
+
 class DataRepository implements BaseProfilerepo {
   final NetworkDataSource _networkDataSource;
   //final CacheDataSource _cacheDataSource;
@@ -36,31 +37,7 @@ class DataRepository implements BaseProfilerepo {
      //return const Left(ServerFailure(""));
   }
 
-  @override
-  Future<Either<Failure, Unit>> postProfile(ProfileModel profileModel) async {
-    // await _networkDataSource.postprofile(profileModel);
-    final postprofileModel = ProfileModel(
-      age: profileModel.age,
-      bio: profileModel.bio,
-      feedBack: profileModel.feedBack,
-      location: profileModel.location,
-      pastJobs: profileModel.pastJobs,
-     
-      sId: profileModel.sId,
-      userName: profileModel.userName,
-      workImageUrl: profileModel.workImageUrl,
-      userImageUrl: profileModel.userImageUrl,
-      skills: profileModel.skills,
-      rateQuantity: null,
-       rating: profileModel.rating,
-    );
-
-    return await _getMessage(() {
-      return _networkDataSource.postprofile(postprofileModel);
-    });
-    // Clear the cached profile after posting
-  // return ( await _cacheDataSource.saveProfile(profileModel));
-  }
+ 
 
   @override
   Future<Either<Failure, Unit>> updateProfile(ProfileModel profileModel) async {
@@ -104,5 +81,11 @@ class DataRepository implements BaseProfilerepo {
     } else {
       return const Left(OfflineFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> PostRating(RatingModel ratingmodel) {
+    // TODO: implement PostRating
+    throw UnimplementedError();
   }
 }

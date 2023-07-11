@@ -9,11 +9,13 @@ import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
 
 import '../../../core/error/exceptions.dart';
+import '../model/rating_model.dart';
 
 abstract class BaseProfileDataSource {
   Future<ProfileModel?> getoneProfile(String id);
-  Future<Unit> postprofile(ProfileModel profileModel);
+  
   Future<Unit> updaterofile(ProfileModel profileModel);
+   Future<Unit> PostRating(RatingModel ratingmodel);
 }
 
 class NetworkDataSource extends BaseProfileDataSource {
@@ -28,22 +30,7 @@ class NetworkDataSource extends BaseProfileDataSource {
     return (result);
   }
 
-  @override
-  Future<Unit> postprofile(ProfileModel profileModel) async {
-    final body = {
-      "userName": profileModel.userName,
-      "bio": profileModel.bio,
-      "age": profileModel.age,
-      "location": profileModel.location,
-      "skills": profileModel.skills,
-      "past_jobs": profileModel.pastJobs
-    };
-
-    //this create profile depend on signup and usermodel not req
-    await sl<BaseHttpClient>()
-        .post(Uri.parse(ApiConstants.profileUrl), body: body);
-    return Future.value(unit);
-  }
+  
 
   @override
   Future<Unit> updaterofile(ProfileModel profileModel) async {
@@ -59,6 +46,26 @@ class NetworkDataSource extends BaseProfileDataSource {
       //check url
       await sl<BaseHttpClient>()
           .patch(Uri.parse(ApiConstants.getprofileUrl), body: body);
+      return Future.value(unit);
+    } on ServerException catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+      throw Error();
+    }
+  }
+  
+  @override
+  Future<Unit> PostRating(RatingModel ratingmodel) async{
+
+
+    final body = {
+      "rating":ratingmodel.rating,
+      "feedback":ratingmodel.feedback
+    };
+    try {
+      //check url
+      await sl<BaseHttpClient>()
+          .post(Uri.parse(ApiConstants.postratingUrl), body: body);
       return Future.value(unit);
     } on ServerException catch (e, s) {
       stderr.writeln(e);

@@ -15,6 +15,7 @@ import 'package:snap_jobs/core/utilities_and_theme/themeApp/themeDataLight.dart'
 
 
 import 'profile_feature/presentation/Screens/profile_page.dart';
+import 'profile_feature/presentation/Screens/update_profile.dart';
 import 'profile_feature/presentation/controlers/bloc/upload _img_bloc/bloc/img_upload_bloc.dart';
 import 'profile_feature/presentation/wedgets/upload_profile_img.dart';
 
@@ -37,6 +38,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: getThemeDtaLight(),
         title: 'Posts Job',
-        home: ProfileScreen());
+        home: AddProfileDetailsScreen());
   }
 }

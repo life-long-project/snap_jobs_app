@@ -44,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 20),
-                      const ProfileImg(),
+                      const uploadProfileImg(),
                       const SizedBox(height: 20),
                       Text(
                         state.profilemodel.userName,
