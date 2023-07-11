@@ -47,10 +47,36 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
         ),
       );
     }
-        return skillsTextFieldsList;
-
+    return skillsTextFieldsList;
   }
 
+  void updateOrAddPost() {
+    final post = JobEntity(
+      dateTime: DateTime.now(),
+      jobTitle: _jobNameController.text,
+      jobDescription: _jobDescriptionController.text,
+      jobType: _jobTypeController.text == "fullTime"
+          ? JobType.fullTime
+          : _jobTypeController.text == "partTime"
+              ? JobType.partTime
+              : JobType.service,
+      jobId: '',
+      isFinished: false,
+      skills: skillsList,
+      image: const [],
+      salary: int.parse(_salaryController.text),
+    );
+
+    if (widget.post != null) {
+      BlocProvider.of<PostJobBloc>(context).add(UpdateJobEvent(post: post));
+    } else {
+      BlocProvider.of<PostJobBloc>(context).add(AddJobEvent(post: post));
+    }
+  }
+
+  // the add skills ui is hard to extract yet
+  // so i will leave it here for now
+  //TODO: extract add skills ui
   Widget _addRemoveButton(bool add, int index) {
     return InkWell(
       onTap: () {
@@ -102,21 +128,25 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormFieldWidget(
-                  name: "Job Name",
-                  multiLines: false,
-                  controller: _jobNameController,),
+                name: "Job Name",
+                multiLines: false,
+                controller: _jobNameController,
+              ),
               TextFormFieldWidget(
-                  name: "Description",
-                  multiLines: true,
-                  controller: _jobDescriptionController,),
-              JobTypeFormField(controller: _jobTypeController,),
+                name: "Description",
+                multiLines: true,
+                controller: _jobDescriptionController,
+              ),
+              JobTypeFormField(
+                controller: _jobTypeController,
+              ),
               TextFormFieldWidget(
                 name: "Salary",
                 multiLines: false,
                 controller: _salaryController,
                 numbersOnly: true,
               ),
-               Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // name textfield
@@ -130,7 +160,8 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
               FormSubmitBtn(
                   isUpdateJob: (widget.post != null),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate() 
+                      ) {
                       updateOrAddPost();
                     } else {
                       null;
@@ -140,31 +171,8 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
       ),
     );
   }
-
-  void updateOrAddPost() {
-    final post = JobEntity(
-      dateTime: DateTime.now(),
-      jobTitle: _jobNameController.text,
-      jobDescription: _jobDescriptionController.text,
-      jobType: _jobTypeController.text == "fullTime"
-          ? JobType.fullTime
-          : _jobTypeController.text == "partTime"
-              ? JobType.partTime
-              : JobType.service,
-      jobId: '',
-      isFinished: false,
-      skills: skillsList,
-      image: const [],
-      salary: int.parse(_salaryController.text),
-    );
-
-    if (widget.post != null) {
-      BlocProvider.of<PostJobBloc>(context).add(UpdateJobEvent(post: post));
-    } else {
-      BlocProvider.of<PostJobBloc>(context).add(AddJobEvent(post: post));
-    }
-  }
 }
+
 class SkillsTextFields extends StatefulWidget {
   final int index;
   const SkillsTextFields(this.index, {super.key});
@@ -197,8 +205,6 @@ class SkillsTextFieldsState extends State<SkillsTextFields> {
       // whenever text field value changes
       onChanged: (skill) {
         _AddJobFormWidgetState.skillsList[widget.index] = skill;
-
-
       },
       decoration: const InputDecoration(hintText: 'Enter your skill'),
       validator: (_) {

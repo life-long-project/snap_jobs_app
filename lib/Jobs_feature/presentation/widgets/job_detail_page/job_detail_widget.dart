@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/accepted_offer_and_finish_button.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/edit_and_delete_buttons.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
 import 'package:snap_jobs/offers_feature/presentation/pages/Add_offer_dialog.dart';
@@ -222,54 +224,42 @@ class JobDetailWidget extends StatelessWidget {
                         //job is active and by the user, the user
                         // should see options add, delete and list of offers to
                         //choose from
-                        SizedBox(
-                            height: deviceHeight * 0.3,
-                            width: deviceWidth * 0.9,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    UpdateJobBtnWidget(post: job),
-                                    DeleteJobBtnWidget(jobId: job.jobId),
-                                  ],
-                                ),
-                                job.offers?.isEmpty ?? true
-                                    ? const SizedBox.shrink()
-                                    : OffersListWidget(offers: job.offers!)
-                              ],
-                            ),
-                          )
-                        : Column(
+                        EditAndDeleteButtons(
+                            deviceHeight: deviceHeight,
+                            deviceWidth: deviceWidth,
+                            job: job)
+                        :
+                        //job is not active and by the user, the user
+                        // should see options finish job and the
+                        //accepted offer
+                        Column(
                             children: [
                               job.offers?.isEmpty ?? true
+                                  //show nothing if the chosen offer is
+                                  //not available.
+                                  //this case is  a bug in backend
+                                  //and won't be reached if everything
+                                  //went as planned
                                   ? const SizedBox.shrink()
-                                  : offerCard(
-                                      job.offers!.firstWhere(
-                                          (element) => element.isAccepted),
-                                      context),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  BlocProvider.of<PostJobBloc>(context)
-                                      .add(FinishJobEvent(jobId: job.jobId));
+                                  //*the accepted offer card
 
-                                  // ScaffoldMessenger.of(context)
-                                  //     .showSnackBar(const SnackBar(
-                                  //   content: SnackBar(
-                                  //       content:
-                                  //           Text('Thanks for using SnapJobs')),
-                                  // ));
-                                },
-                                child: const Text("Finish Job "),
-                              )
+                                  : AcceptedOfferAndFinishButton(job: job),
                             ],
                           )
-                    : ElevatedButton(
-                        onPressed: () => _addOfferDialogBuilder(context),
-                        child: Text("Apply"),
-                      )
+                    :
+                    //if job is not by the user, the user
+                    // should see options apply
+                    //if they didn't apply before
+
+                    job.isAlreadyApplied ?? false
+                        ? const ElevatedButton(
+                            onPressed: null,
+                            child: Text("Already Applied"),
+                          )
+                        : ElevatedButton(
+                            onPressed: () => _addOfferDialogBuilder(context),
+                            child: Text("Apply"),
+                          )
                 :
                 //if job is finished there are no actions for now
                 const SizedBox.shrink(),

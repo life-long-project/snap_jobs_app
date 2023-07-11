@@ -17,7 +17,8 @@ class UpdateJobBtnWidget extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const AddJobPage(
+              builder: (_) =>  AddJobPage(
+                job: post,
                 isUpdateJob: true,
               ),
             ));

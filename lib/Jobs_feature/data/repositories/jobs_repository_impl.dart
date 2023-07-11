@@ -46,14 +46,12 @@ class JobsRepositoryImpl extends JobsRepository {
   }
   //*Finish job
 
-
   @override
   Future<Either<Failure, Unit>> finishJob(String jobId) {
     return _getMessage(() {
       return remoteDataSource.finishJob(jobId);
     });
   }
-
 
   //* getUserActiveJobs
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
@@ -26,6 +27,7 @@ class _AllJobsPageState extends State<AllJobsPage> {
         MediaQuery.of(context).padding.along(Axis.vertical) -
         kToolbarHeight -
         kBottomNavigationBarHeight);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<RequestJobsBloc>(
@@ -54,71 +56,202 @@ class _AllJobsPageState extends State<AllJobsPage> {
                 case RequestJobsStatus.success:
                   if (state.userActiveJobs.isNotEmpty) {
                     return RefreshIndicator(
-                        onRefresh: () => _onRefresh(context),
-                        child: Container(
-                          width: deviceWidth,
-                          height: deviceHeight,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: Title(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                  title: 'In process Jobs',
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.timer_outlined,
+                      onRefresh: () => _onRefresh(context),
+                      child: Container(
+                        width: deviceWidth,
+                        height: deviceHeight,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: CustomScrollView(
+                          slivers: [
+                            MultiSliver(
+                              children: <Widget>[
+                                MultiSliver(children: <Widget>[
+                                  SliverPinnedHeader(
+                                    child: Container(
+                                      padding: deviceHeight > 600
+                                          ? const EdgeInsets.symmetric(
+                                              vertical: 15)
+                                          : const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      child: Flexible(
+                                        flex: 1,
+                                        child: Title(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                          title: 'In process Jobs',
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.timer_outlined,
+                                              ),
+                                              Text(
+                                                'In process Jobs',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      Text(
-                                        'In process Jobs',
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: JobListWidget(
-                                  posts: state.userActiveJobs,
-                                  scrollDirection: Axis.horizontal,
-                                ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: Title(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                  title: 'In process Jobs',
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.timer_outlined,
+                                  SliverAnimatedPaintExtent(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: SliverFixedExtentList(
+                                      itemExtent: deviceHeight * .3,
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: 1,
+                                        (context, index) => Expanded(
+                                          flex: 2,
+                                          child: JobListWidget(
+                                            posts: state.userActiveJobs,
+                                            scrollDirection: Axis.horizontal,
+                                          ),
+                                        ),
                                       ),
-                                      Text(
-                                        'New jobs',
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 8,
-                                child: JobListWidget(
-                                  posts: state.jobs,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ));
+                                ]),
+                                //
+                                MultiSliver(children: <Widget>[
+                                  SliverPinnedHeader(
+                                    child: Container(
+                                      padding: deviceHeight > 600
+                                          ? const EdgeInsets.symmetric(
+                                              vertical: 15)
+                                          : const EdgeInsets.symmetric(
+                                              vertical: 4),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .background,
+                                      child: Flexible(
+                                        flex: 1,
+                                        child: Title(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                          title: 'In process Jobs',
+                                          child: const Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.timer_outlined,
+                                              ),
+                                              Text(
+                                                'New jobs',
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SliverAnimatedPaintExtent(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: SliverFixedExtentList(
+                                      itemExtent: deviceHeight * .8,
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: 1,
+                                        (context, index) => Column(
+                                          children: [
+                                            Flexible(
+                                              flex: 8,
+                                              child: JobListWidget(
+                                                posts: state.jobs,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+
+                            // SliverFixedExtentList(
+                            //   itemExtent: deviceHeight * 0.6,
+                            //   delegate: SliverChildBuilderDelegate(
+                            //     childCount: 1,
+                            //     (context, index) => Column(
+                            //       children: [
+                            //         Flexible(
+                            //           flex: 1,
+                            //           child: Title(
+                            //             color: Theme.of(context)
+                            //                 .colorScheme
+                            //                 .onBackground,
+                            //             title: 'In process Jobs',
+                            //             child: const Row(
+                            //               mainAxisAlignment:
+                            //                   MainAxisAlignment.start,
+                            //               children: [
+                            //                 Icon(
+                            //                   Icons.timer_outlined,
+                            //                 ),
+                            //                 Text(
+                            //                   'In process Jobs',
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Expanded(
+                            //           flex: 4,
+                            //           child: JobListWidget(
+                            //             posts: state.userActiveJobs,
+                            //             scrollDirection: Axis.horizontal,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // SliverFixedExtentList(
+                            //     itemExtent: deviceHeight,
+                            //     delegate: SliverChildBuilderDelegate(
+                            //       childCount: 1,
+                            //       (context, index) => Column(
+                            //         children: [
+                            //           Flexible(
+                            //             flex: 1,
+                            //             child: Title(
+                            //               color: Theme.of(context)
+                            //                   .colorScheme
+                            //                   .onBackground,
+                            //               title: 'In process Jobs',
+                            //               child: const Row(
+                            //                 mainAxisAlignment:
+                            //                     MainAxisAlignment.start,
+                            //                 children: [
+                            //                   Icon(
+                            //                     Icons.timer_outlined,
+                            //                   ),
+                            //                   Text(
+                            //                     'New jobs',
+                            //                   ),
+                            //                 ],
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           Flexible(
+                            //             flex: 8,
+                            //             child: JobListWidget(
+                            //               posts: state.jobs,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ),),
+                          ],
+                        ),
+                      ),
+                    );
                   } else {
                     return RefreshIndicator(
                         onRefresh: () => _onRefresh(context),

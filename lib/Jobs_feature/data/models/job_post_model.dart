@@ -4,7 +4,7 @@ import 'package:snap_jobs/offers_feature/data/models/offer_model.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 
 class JobModel extends JobEntity {
-  const JobModel({
+   JobModel({
     super.userId,
     super.userName,
     required super.dateTime,

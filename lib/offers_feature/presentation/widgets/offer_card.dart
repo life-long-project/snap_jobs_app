@@ -21,7 +21,7 @@ Card offerCard(OfferEntity offer, BuildContext context) {
             ? ElevatedButton(
                 onPressed: () async {
                   try {
-                    final response =
+                    
                         await sl<AcceptOfferUseCase>().call(offer.offerId!);
 
                     if (context.mounted) {

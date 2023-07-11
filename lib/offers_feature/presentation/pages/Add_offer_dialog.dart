@@ -33,6 +33,13 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width -
+        MediaQuery.of(context).padding.along(Axis.horizontal);
+    final deviceHeight = (MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.along(Axis.vertical) -
+        kToolbarHeight -
+        kBottomNavigationBarHeight);
+
     return BlocListener<OfferBloc, OfferState>(
       listener: (context, state) {
         if (state.status == OfferStatus.success) {
@@ -43,8 +50,6 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
             );
           Navigator.of(context).pop();
         }
-
-
 
         if (state.status == OfferStatus.error) {
           ScaffoldMessenger.of(context)
@@ -60,7 +65,6 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
               const SnackBar(content: Text('Loading')),
             );
         }
-
       },
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -68,74 +72,96 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
             title: const Text('Add Offer'),
             contentPadding: const EdgeInsetsDirectional.all(15),
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              SizedBox(
+
+                width: deviceWidth * 0.8,
+                height: deviceHeight * 0.5,
+
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            final current = int.parse(priceFieldController.text);
-                            priceFieldController.text = (current + 1).toString();
+                            final current =
+                                int.parse(priceFieldController.text);
+                            priceFieldController.text =
+                                (current + 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: CircleBorder(),
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(4),
                           ),
-                          child: const Icon(
-                            Icons.plus_one,
+                          child: const CircleAvatar(
+                            child: Text("+10"),
+                          ),
+                        ),
+                         Flexible(
+                          flex: 1,
+                          fit: FlexFit.loose,
+                          child: IntrinsicWidth(
+                            child: TextField(
+                              controller: priceFieldController
+                                ..text = widget.job.salary.toString(),
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'price ',
+                              ),
+                            ),
                           ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            final current = int.parse(priceFieldController.text);
-                            priceFieldController.text = (current - 1).toString();
+                            final current =
+                                int.parse(priceFieldController.text);
+                            priceFieldController.text =
+                                (current - 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: CircleBorder(),
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(4),
                           ),
-                          child: const Icon(
-                            Icons.exposure_minus_1,
+                          child: const CircleAvatar(
+                            child: Text("-10"),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  TextField(
-                    controller: priceFieldController
-                      ..text = widget.job.salary.toString(),
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'price ',
+
+                    const SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  TextField(
-                    controller: messageFieldController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Message',
-                      helperText: 'Enter your message',
+                    Flexible(
+                      flex: 3,
+                      fit: FlexFit.loose,
+                      child: TextField(
+                        controller: messageFieldController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Message',
+                          helperText: 'Enter your message',
+                        ),
+                      ),
                     ),
-                  ),
-                  OutlinedButton(
-                    child: const Text('Add Offer'),
-                    onPressed: () {
-                      final offer = OfferEntity(
-                        isAccepted: false,
-                          offerId: '',
-                          jobId: widget.job.jobId,
-                          salary: int.parse(priceFieldController.text),
-                          message: messageFieldController.text);
-                      BlocProvider.of<OfferBloc>(context)
-                          .add(OfferApplyRequested(offer));
-                    },
-                  )
-                ],
+                    OutlinedButton(
+                      child: const Text('Add Offer'),
+                      onPressed: () {
+                        final offer = OfferEntity(
+                            isAccepted: false,
+                            offerId: '',
+                            jobId: widget.job.jobId,
+                            salary: int.parse(priceFieldController.text),
+                            message: messageFieldController.text);
+                        BlocProvider.of<OfferBloc>(context)
+                            .add(OfferApplyRequested(offer));
+                      },
+                    )
+                  ],
+                ),
               )
             ]),
       ),

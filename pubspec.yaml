@@ -65,7 +65,8 @@ dependencies:
   shared_preferences: ^2.1.1
   flutter_localizations:
     sdk: flutter
-
+  sliver_tools: ^0.2.10
+  flutter_launcher_icons: ^0.13.1
 
 
 
@@ -87,6 +88,7 @@ dev_dependencies:
 
 
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -98,6 +100,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/blue_logo_black_text.png
+    - assets/images/logo_blue.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # The following line ensures that the Material Icons font is
@@ -131,3 +134,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
