@@ -4,6 +4,7 @@ import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 class AddOfferDialog extends StatefulWidget {
   final JobEntity job;
@@ -153,6 +154,7 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                         final offer = OfferEntity(
                             isAccepted: false,
                             offerId: '',
+                            
                             jobId: widget.job.jobId,
                             salary: int.parse(priceFieldController.text),
                             message: messageFieldController.text);
