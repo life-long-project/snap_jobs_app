@@ -13,21 +13,29 @@ Card offerCard(OfferEntity offer, BuildContext context) {
         ),
         leading: const Icon(Icons.money),
         subtitle: Text(
-          """ posted by :${(offer.applicantId ?? "user user").substring(0, 9)}
+          """ posted by :${(offer.applicantName ?? "mohamed ahmed").substring(0, 9)}
                ${offer.message ?? ""}""",
           maxLines: 2,
+          style:  TextStyle(
+
+            
+
+          ),
         ),
         trailing: !offer.isAccepted
             ? ElevatedButton(
                 onPressed: () async {
                   try {
-                    
+
                         await sl<AcceptOfferUseCase>().call(offer.offerId!);
 
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("offer accepted "),
+                          content: Text("offer accepted " ,
+
+
+                          ),
                         ),
                       );
                     }

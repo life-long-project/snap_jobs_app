@@ -7,6 +7,14 @@ part 'offer_model.g.dart';
   fieldRename: FieldRename.snake,
 )
 class OfferModel extends OfferEntity {
+  @override
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+    includeToJson: false,
+  )
+  String? get applicantName => super.applicantName;
+
 
   @override
   @JsonKey(
@@ -70,18 +78,19 @@ OfferEntity   toEntity() {
       jobId: jobId,
       applicantId :applicantId,
       salary: salary,
-      message: message,
+      message: message, applicantName: applicantName,
     );
   }
+
   OfferModel(
       {String? offerId,
       String? applicantId,
       required String jobId,
       bool isAccepted = false,
-
+      String? applicantName ,
       required int salary,
       String? message})
-      : super(offerId: offerId, jobId: jobId, salary: salary, message: message , applicantId: applicantId , isAccepted: isAccepted );
+      : super(offerId: offerId, jobId: jobId, salary: salary, message: message , applicantId: applicantId , isAccepted: isAccepted, applicantName: applicantName);
 
   factory OfferModel.fromJson(Map<String, dynamic> json) =>
       _$OfferModelFromJson(json);
