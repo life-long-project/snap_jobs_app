@@ -68,7 +68,7 @@ class ServicesLocator {
 
     sl.registerFactory<PostJobBloc>(
       () => PostJobBloc(
-        finishJob:sl<FinishJobUseCase>() ,
+        finishJob: sl<FinishJobUseCase>(),
         addJob: sl<AddJobUseCase>(),
         updateJob: sl<UpdateJobUseCase>(),
         deleteJob: sl<DeleteJobUseCase>(),
@@ -80,7 +80,6 @@ class ServicesLocator {
         getUserActiveJobs: sl<GetUserActiveJobsUseCase>(),
         getAllJobs: sl<GetAllJobsUseCase>(),
         getOneJob: sl<GetOneJobUseCase>(),
-
       ),
     );
     sl.registerFactory<OfferBloc>(
@@ -99,7 +98,6 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
-
 
     sl.registerLazySingleton(
       () => GetUserActiveJobsUseCase(
@@ -204,9 +202,7 @@ class ServicesLocator {
     sl.registerLazySingleton<JobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
     sl.registerLazySingleton<JobsLocalDataSource>(
-      () => JobsLocalDataSourceImpl(
-        sharedPreferences: sl<SharedPreferences>(),
-      ),
+      () => JobsLocalDataSourceImpl(),
     );
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());

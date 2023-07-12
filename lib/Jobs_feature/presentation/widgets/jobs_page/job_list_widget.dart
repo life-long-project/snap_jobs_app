@@ -5,13 +5,13 @@ import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_card_without_pic
 class JobListWidget extends StatelessWidget {
   final List<JobEntity> posts;
   final Axis scrollDirection;
-
+  final bool canContact;
 
   const JobListWidget({
     Key? key,
     required this.posts,
     this.scrollDirection = Axis.vertical,
-
+   required this.canContact ,
   }) : super(key: key);
 
   @override
@@ -28,6 +28,7 @@ class JobListWidget extends StatelessWidget {
           job: posts[index],
           index: (scrollDirection == Axis.vertical) ? index : 2,
           forHorizontal: scrollDirection == Axis.horizontal,
+          canContact: canContact,
         );
       },
 

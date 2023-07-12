@@ -15,16 +15,16 @@ class OffersListWidget extends StatefulWidget {
 class _OffersListState extends State<OffersListWidget> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
+      fit: FlexFit.loose,
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: widget.offers.length,
         itemBuilder: (context, index) {
-          return offerCard(widget.offers[index], context);
+          return offerCard((widget.offers)[index], context);
         },
       ),
     );
   }
-
 }

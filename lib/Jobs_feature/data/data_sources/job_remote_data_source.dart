@@ -10,7 +10,7 @@ import '../../../core/error/exceptions.dart';
 import '../models/job_post_model.dart';
 
 abstract class JobRemoteDataSource {
-  Future<List<JobModel>> getAllJobs();
+  Future<List<JobEntity>> getAllJobs();
   Future<List<JobEntity>> getUserJobs(String userId);
   Future<JobEntity> getOneJob(String jobId);
   Future<Unit> deleteJob(String jobId);
@@ -26,15 +26,15 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
 
   //* get all jobs
   @override
-  Future<List<JobModel>> getAllJobs() async {
+  Future<List<JobEntity>> getAllJobs() async {
     try {
       final response = await client.get(
         Uri.parse(ApiConstants.getAllJobsPath),
       );
       final decodedJson = json.decode(response.body)["jobs"];
-      final List<JobModel> jobModel = decodedJson
-          .map<JobModel>(
-              (jsonJobPostModel) => JobModel.fromJson(jsonJobPostModel))
+      final List<JobEntity> jobModel = decodedJson
+          .map<JobEntity>((jsonJobPostModel) =>
+              JobModel.fromJson(jsonJobPostModel).toEntity())
           .toList();
 
       return jobModel;
@@ -56,11 +56,10 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
         Uri.parse(ApiConstants.getProfile + userId),
         headers: {"Content-Type": "application/json"},
       );
-      final  decodedJson =
-          json.decode(response.body)["user_jobs"];
+      final decodedJson = json.decode(response.body)["user_jobs"];
       final List<JobEntity> result = decodedJson
-          .map<JobModel>(
-              (jsonJobPostModel) => JobModel.fromJson(jsonJobPostModel))
+          .map<JobEntity>((jsonJobPostModel) =>
+              JobModel.fromJson(jsonJobPostModel).toEntity())
           .toList();
       return result;
     } on ServerException {
@@ -69,7 +68,7 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       stderr.writeln(e);
       stderr.writeln(s);
 
-      throw OfflineException();
+      throw NoInternetException();
     }
   }
 
@@ -82,7 +81,7 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
         headers: {"Content-Type": "application/json"},
       );
       final decodedJson = json.decode(response.body)[0];
-      final JobModel jobModel = JobModel.fromJson(decodedJson);
+      final jobModel = JobModel.fromJson(decodedJson).toEntity();
 
       return jobModel;
     } on ServerException {
@@ -112,17 +111,14 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw OfflineException();
     }
   }
+
   //* finish job
   @override
   Future<Unit> finishJob(String jobId) async {
-
-try {
-      await client.post(
-        Uri.parse(ApiConstants.finishJobPath + jobId),
-        headers: {"Content-Type": "application/json"},
-        body : {"is_finished":"true"}
-
-      );
+    try {
+      await client.post(Uri.parse(ApiConstants.finishJobPath + jobId),
+          headers: {"Content-Type": "application/json"},
+          body: {"is_finished": "true"});
       return Future.value(unit);
     } on ServerException {
       rethrow;
@@ -132,7 +128,6 @@ try {
 
       throw OfflineException();
     }
-
   }
   //*delete job
 
@@ -178,6 +173,4 @@ try {
       throw OfflineException();
     }
   }
-
-
 }

@@ -4,7 +4,7 @@ import 'package:snap_jobs/offers_feature/data/models/offer_model.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 
 class JobModel extends JobEntity {
-   JobModel({
+  JobModel({
     super.userId,
     super.userName,
     required super.dateTime,
@@ -32,9 +32,11 @@ class JobModel extends JobEntity {
 
       userId: (json["posted_by_id"] ?? "error") as String,
       offers: json["offers"]?.isEmpty ?? true
-          ?null
-          : json["offers"].map<OfferEntity>((value) => OfferModel.fromJson(value).toEntity()).toList()
- ,
+          ? null
+          : json["offers"]
+              .map<OfferEntity>(
+                  (value) => OfferModel.fromJson(value).toEntity())
+              .toList(),
 
       dateTime: DateTime.parse(json['createdAt'] as String),
 
@@ -62,6 +64,25 @@ class JobModel extends JobEntity {
       image: (json['job_img_url'] ?? []).isEmpty
           ? <String>[]
           : [json['job_img_url']],
+    );
+  }
+  JobEntity toEntity() {
+    return JobEntity(
+      userName: userName,
+      userId: userId,
+      offers: offers,
+      dateTime: dateTime,
+      jobId: jobId,
+      jobTitle: jobTitle,
+      jobDescription: jobDescription,
+      jobType: jobType,
+      salary: salary,
+      skills: skills,
+      isActive: isActive,
+      isFinished: isFinished,
+      workerId: workerId,
+      duration: duration,
+      image: image,
     );
   }
 

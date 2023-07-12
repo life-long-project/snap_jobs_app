@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../domain/entities/job_entity.dart';
 
@@ -20,7 +23,12 @@ class AddJobFormWidget extends StatefulWidget {
 }
 
 class _AddJobFormWidgetState extends State<AddJobFormWidget> {
+  XFile? _image;
+
+  final ImagePicker picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
+
+  //*text field controllers
   final TextEditingController _jobNameController = TextEditingController();
   final TextEditingController _jobDescriptionController =
       TextEditingController();
@@ -49,6 +57,14 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
     }
     return skillsTextFieldsList;
   }
+
+    Future getImage() async {
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
 
   void updateOrAddPost() {
     final post = JobEntity(
@@ -146,6 +162,21 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
                 controller: _salaryController,
                 numbersOnly: true,
               ),
+              //  add pic field for flutter
+              //
+Column(
+                children: [
+                  if (_image != null) Image.file(File(_image!.path) ),
+                  ElevatedButton(
+                     
+
+                    child: Text('upload Image to explain more '),
+                    onPressed: getImage,
+                  ),
+
+                ],
+              ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -160,7 +191,7 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
               FormSubmitBtn(
                   isUpdateJob: (widget.post != null),
                   onPressed: () {
-                    if (_formKey.currentState!.validate() 
+                    if (_formKey.currentState!.validate()
                       ) {
                       updateOrAddPost();
                     } else {
@@ -170,6 +201,12 @@ class _AddJobFormWidgetState extends State<AddJobFormWidget> {
             ]),
       ),
     );
+  }
+
+  uploadImage(File file) {
+
+
+
   }
 }
 

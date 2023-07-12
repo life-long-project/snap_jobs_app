@@ -1,19 +1,26 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/job_detail_page.dart';
+import 'package:snap_jobs/chat_fetaure/presentation/chat_page.dart';
+import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/util/colors_list.dart';
+import 'package:user_repository/user_repository.dart';
 
 class JobCardWithoutPic extends StatelessWidget {
   final JobEntity job;
   final int _colorIndex;
   final bool forHorizontal;
+  final bool canContact;
   const JobCardWithoutPic({
     super.key,
     required this.job,
     required int index,
     required this.forHorizontal,
+    required this.canContact,
   }) : _colorIndex = index % 3;
 
   @override
@@ -61,20 +68,18 @@ class JobCardWithoutPic extends StatelessWidget {
                 SizedBox(
                   //TODO: add location
                   child: Text(
+                    RepositoryProvider.of<UserRepository>(context)
+                                        .user
+                                        .id ==
+                                    job.userId? '0 km away':
                     '${job.distance} km away ',
                     style: TextStyle(
                         color: ColorsLists.textColors[_colorIndex],
                         fontSize: forHorizontal
                             ? Theme.of(context).textTheme.bodySmall!.fontSize
-                            : Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .fontSize,
+                            : Theme.of(context).textTheme.bodyMedium!.fontSize,
                         fontWeight: forHorizontal
-                            ? Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .fontWeight
+                            ? Theme.of(context).textTheme.bodySmall!.fontWeight
                             : Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -100,34 +105,89 @@ class JobCardWithoutPic extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        ColorsLists.buttonColors[_colorIndex]),
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        ColorsLists.buttonTextColors[_colorIndex]),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => JobDetailPage(jobId: job.jobId),
+                Container(
+                  margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          ColorsLists.buttonColors[_colorIndex]),
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          ColorsLists.buttonTextColors[_colorIndex]),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider<PostJobBloc>(
+                           create: (_) => sl<PostJobBloc>(),
+                            child: JobDetailPage(jobId: job.jobId),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'more info',
+                      style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.labelMedium!.fontSize,
+                        fontWeight: FontWeight.w400,
                       ),
-                    );
-                  },
-                  child: Text(
-                    'more info',
-                    style: TextStyle(
-                      fontSize:
-                          Theme.of(context).textTheme.labelMedium!.fontSize,
-                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
+                canContact
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const ChatPage(),
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.message,
+                              color: ColorsLists.buttonColors[_colorIndex],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              //dialoage to show the phone number
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Phone Number'),
+                                    content: Text(job.userId ??
+                                        "phone number not found  "),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Close'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.call,
+                              color: ColorsLists.buttonColors[_colorIndex],
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ],
