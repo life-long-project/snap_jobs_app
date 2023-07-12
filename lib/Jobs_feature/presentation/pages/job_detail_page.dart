@@ -8,21 +8,27 @@ import 'package:user_repository/user_repository.dart';
 
 import '../widgets/job_detail_page/job_detail_widget.dart';
 
-class JobDetailPage extends StatelessWidget {
-  late JobEntity post;
+class JobDetailPage extends StatefulWidget {
   final String jobId;
 
-  JobDetailPage({
+  const JobDetailPage({
     Key? key,
     required this.jobId,
   }) : super(key: key);
+
+  @override
+  State<JobDetailPage> createState() => _JobDetailPageState();
+}
+
+class _JobDetailPageState extends State<JobDetailPage> {
+  late JobEntity post;
 
   Future<JobEntity> _getJob(String jobId, String userId) async {
     final response = await sl<GetOneJobUseCase>().call(jobId);
 
     return response.fold(
       (failure) => throw Exception(failure.message),
-      (job) => _checkIfAlreadyOffered(job, userId ),
+      (job) => _checkIfAlreadyOffered(job, userId),
     );
   }
 
@@ -34,17 +40,44 @@ class JobDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppbar(),
-      body: FutureBuilder(
-        future: _getJob(jobId, (RepositoryProvider.of<UserRepository>(context).user.id)??""),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildBody(snapshot.data!);
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+    return BlocListener<PostJobBloc, PostJobState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+
+        switch (state.status) {
+          case PostJobStatus.success:
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content:
+                    Text(state.message.isEmpty ? "Success" : state.message),
+              ),
+            );
+            Navigator.pop(context);
+            break;
+            case PostJobStatus.error:
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content:
+                    Text(state.message.isEmpty ? "Error" : state.message),
+              ),
+            );
+            default:
+            break;
+        }
+      },
+      child: Scaffold(
+        appBar: _buildAppbar(),
+        body: FutureBuilder(
+          future: _getJob(widget.jobId,
+              (RepositoryProvider.of<UserRepository>(context).user.id) ?? ""),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildBody(snapshot.data!);
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }
@@ -56,11 +89,11 @@ class JobDetailPage extends StatelessWidget {
   }
 
   Widget _buildBody(JobEntity job) {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: BlocProvider<PostJobBloc>(
         create: (context) => sl<PostJobBloc>(),
         child: JobDetailWidget(job: job),
-        
       ),
     );
   }

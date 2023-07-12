@@ -5,41 +5,65 @@ import 'package:snap_jobs/offers_feature/domain/usecases/accept_offer_use_case.d
 
 Card offerCard(OfferEntity offer, BuildContext context) {
   return Card(
+    elevation: 5,
     child: Expanded(
       child: ListTile(
         isThreeLine: true,
+        //* salary
         title: Text(
           " ${offer.salary} \$",
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         leading: const Icon(Icons.money),
-        subtitle: Text(
-          """ posted by :${(offer.applicantName ?? "mohamed ahmed").substring(0, 9)}
-               ${offer.message ?? ""}""",
-          maxLines: 2,
-          style:  TextStyle(
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              //* Applicant Name
 
-            
+              """ posted by :${(offer.applicantName ?? "mohamed ahmed")}
+                   ${offer.message ?? ""}""",
+              maxLines: 1,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            RichText(text: TextSpan(
+              text: "rating ",
+              style: Theme.of(context).textTheme.bodySmall,
+              children: [
+                TextSpan(
+                  text: "4",
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                const WidgetSpan(
+                  child: Icon(
+                    Icons.star,
+                    color: Colors.amber,),
+                )
+              ],
+            ))
+            ,
 
-          ),
+          ],
         ),
+
         trailing: !offer.isAccepted
             ? ElevatedButton(
                 onPressed: () async {
                   try {
-
-                        await sl<AcceptOfferUseCase>().call(offer.offerId!);
+                    await sl<AcceptOfferUseCase>().call(offer.offerId!);
 
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("offer accepted " ,
-
-
+                          content: Text(
+                            "offer accepted ",
                           ),
                         ),
                       );
+                      if (context.mounted) Navigator.pop(context);
                     }
-                    if (context.mounted) Navigator.pop(context);
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

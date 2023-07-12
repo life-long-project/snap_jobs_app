@@ -1,40 +1,49 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../models/job_post_model.dart';
 
 abstract class JobsLocalDataSource {
-  Future<List<JobModel>> getCachedJobs();
-  Future<Unit> cacheJobs(List<JobModel> postModels);
+  Future<List<JobEntity>> getCachedJobs();
+  Future<Unit> cacheJobs(List<JobEntity> jobs);
 }
 
 const cachedJobs = "CACHED_JOBS";
 
 class JobsLocalDataSourceImpl implements JobsLocalDataSource {
-  final SharedPreferences sharedPreferences;
+  JobsLocalDataSourceImpl();
 
-  JobsLocalDataSourceImpl({required this.sharedPreferences});
   @override
-  Future<Unit> cacheJobs(List<JobModel> postModels) {
-    List postModelsToJson = postModels
-        .map<Map<String, dynamic>>((postModel) => postModel.toJson())
-        .toList();
-    sharedPreferences.setString(cachedJobs, json.encode(postModelsToJson));
+  Future<Unit> cacheJobs(List<JobEntity> jobs) async {
+    final path = Directory.current.path;
+
+    var box = await Hive.openBox<JobEntity>(cachedJobs);
+
+    jobs.forEach((element) async {
+      await box.add(element);
+    });
+
     return Future.value(unit);
   }
 
   @override
-  Future<List<JobModel>> getCachedJobs() {
-    final jsonString = sharedPreferences.getString(cachedJobs);
-    if (jsonString != null) {
-      List decodeJsonData = json.decode(jsonString);
-      List<JobModel> jsonToPostModels = decodeJsonData
-          .map<JobModel>((jsonPostModel) => JobModel.fromJson(jsonPostModel))
-          .toList();
-      return Future.value(jsonToPostModels);
+  Future<List<JobEntity>> getCachedJobs() async {
+    final path = Directory.current.path;
+
+    final box = await Hive.openBox<JobEntity>(cachedJobs);
+
+    if (box.length > 0) {
+      List<JobEntity> jobs = [];
+      for (var i = 0; i < box.length; i++) {
+        jobs.add(box.getAt(i)!);
+      }
+      return jobs;
     } else {
       throw EmptyCacheException();
     }
