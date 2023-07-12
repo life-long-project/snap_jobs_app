@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:snap_jobs/splash/view/splash_page.dart';
 
-void main() {
+import 'Jobs_feature/domain/entities/job_entity.dart';
+
+void main() async {
   //WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(JobEntityAdapter());
+  Hive.registerAdapter(JobTypeAdapter());
 
   runApp(const SplashPage());
 }

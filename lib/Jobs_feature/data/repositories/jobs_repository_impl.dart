@@ -90,6 +90,7 @@ class JobsRepositoryImpl extends JobsRepository {
     if (await networkInfo.isConnected) {
       try {
         final remoteJobs = await remoteDataSource.getAllJobs();
+
         localDataSource.cacheJobs(remoteJobs);
         return Right(remoteJobs);
       } on ServerException {
