@@ -6,7 +6,7 @@ class ReceiveMessageUseCase {
 
   ReceiveMessageUseCase(this.repository);
 
-  Stream<ChatMessageEntity> call(String authToken) {
+  Future<List<ChatMessageEntity>> call(String authToken) {
     return repository.receiveMessages(authToken);
   }
 }

@@ -8,5 +8,5 @@ abstract class ChatRepository {
       String senderId, String receiverId, String text);
   Future<Either<Failure, Unit>> sendMessage(
       String senderId, String conversationId, String text);
-  Stream<ChatMessageEntity> receiveMessages(String authToken);
+  Future<List<ChatMessageEntity>> receiveMessages(String authToken);
 }
