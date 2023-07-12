@@ -10,7 +10,7 @@ import 'package:snap_jobs/core/use_case/base_usecase.dart';
 class LoginUseCase extends BaseUseCase<void, LoginCredentials> {
   final AuthenticationRepository _authenticationRepository;
 
-  LoginUseCase(this._authenticationRepository);
+      LoginUseCase(this._authenticationRepository);
 
   ///Returns the token of the user if the login is successful.
   ///
@@ -21,15 +21,16 @@ class LoginUseCase extends BaseUseCase<void, LoginCredentials> {
   @override
   Future<void> call(LoginCredentials parameters) async {
     var url = Uri.parse(ApiConstants.loginPath);
-    final credentials = LoginCredentialsModel(email:  parameters.email , password: parameters.password);
+    final credentials = LoginCredentialsModel(
+        email: parameters.email, password: parameters.password);
     // notice that the data layer is the AuthenticationRepository and
     // UserRepository packages.so we convert ToJson() in the domain layer.
 
     try {
       await _authenticationRepository.logIn(
-          url: url, body: credentials.toJson() );
-    } catch (e){
-      throw  ServerFailure("Login Failed: ${e.toString()}" );
+          url: url, body: credentials.toJson());
+    } catch (e) {
+      throw ServerFailure("Login Failed: ${e.toString()}");
     }
   }
 }

@@ -85,6 +85,7 @@ class _SignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
+        
         Navigator.of(context).push(
           SignUpPages.route(),
         );

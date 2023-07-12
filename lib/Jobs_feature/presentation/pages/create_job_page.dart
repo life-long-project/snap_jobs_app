@@ -58,9 +58,13 @@ class AddJobPage extends StatelessWidget {
                 if (state is PostJobMessage) {
                   SnackBarMessage().showSuccessSnackBar(
                       message: state.message, context: context);
+
+                      Navigator.of(context).pop();
                 } else if (state is PostJobError) {
                   SnackBarMessage().showErrorSnackBar(
                       message: state.message, context: context);
+                                            Navigator.of(context).pop();
+
                 }
               },
               builder: (context, state) {

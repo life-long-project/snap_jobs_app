@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:snap_jobs/authentication_and_login_features/domain/entities/sign_up_parameters.dart';
@@ -33,7 +34,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<PastExperiencesChanged>(_onPastExperiencesChanged);
     on<SkillsChanged>(_onSkillsChanged);
 
-    on<SignUpSubmitted>(_onSubmitted);
+    on<SignUpSubmitted>(_onSubmitted ,
+    transformer: droppable(),
+    );
   }
 
   final BaseSignUpRepository _signUpRepository;
@@ -156,7 +159,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   }
 
   void _onGenderChanged(GenderChanged event, Emitter<SignUpState> emit) {
-    final gender = event.gender;
+    final gender = (event.gender == "male" || event.gender == "female")? event.gender : "female";
+
 
     emit(state.copyWith(
       gender: gender,

@@ -15,7 +15,7 @@ class UserRepository {
     this.getUserPath,
   );
 
-  get user => _user ?? User.empty;
+  User get  user => _user ?? User.empty;
 
   /// When token comes back from the server we set it here and the repo gets the user
   /// automatically, you should just wait for the setToken to complete and then get user

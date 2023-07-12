@@ -18,8 +18,7 @@ void main() {
         requestJobsBloc = RequestJobsBloc(
           getAllJobs: requestJobsBloc.getAllJobs,
           getOneJob: requestJobsBloc.getOneJob,
-          getUserJobs: requestJobsBloc.getUserJobs,
-        );
+          getUserActiveJobs: requestJobsBloc.getUserActiveJobs,        );
       },
     );
 
