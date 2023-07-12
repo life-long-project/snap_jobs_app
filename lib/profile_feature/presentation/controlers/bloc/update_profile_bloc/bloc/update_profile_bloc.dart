@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/core/error/failure.dart';
 import 'package:snap_jobs/core/network/error_message_model.dart';
 import 'package:snap_jobs/core/network/messages.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/update_profile.dart';
 
 part 'update_profile_event.dart';

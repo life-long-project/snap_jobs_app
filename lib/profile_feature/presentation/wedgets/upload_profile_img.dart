@@ -12,7 +12,7 @@ class uploadProfileImg   extends StatelessWidget {
   const uploadProfileImg({super.key});
 
   //final ImageUploadBloc imageUploadBloc = sl<ImageUploadBloc>();
-
+//ERRORR Because of bloc provider only
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ImageUploadBloc, ImageUploadState>(

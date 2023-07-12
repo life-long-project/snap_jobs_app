@@ -1,13 +1,12 @@
-
 import 'package:hive/hive.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 
 @HiveType(typeId: 1)
-class Profilehivemodel extends HiveObject   {
+class Profilehivemodel extends HiveObject {
   @HiveField(0)
-  final ProfileModel profileData;
+  final UserModel profileData;
 
-   Profilehivemodel({
+  Profilehivemodel({
     required this.profileData,
   });
 }

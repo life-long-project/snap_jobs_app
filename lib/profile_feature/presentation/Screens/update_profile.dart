@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:snap_jobs/profile_feature/presentation/wedgets/upload_profile_img.dart';
 
-class AddProfileDetailsScreen extends StatefulWidget {
-  const AddProfileDetailsScreen({super.key});
+class AddProfileDetailsScreen extends StatelessWidget {
+   AddProfileDetailsScreen({super.key});
 
-  @override
-  _AddProfileDetailsScreenState createState() =>
-      _AddProfileDetailsScreenState();
-}
+  
 
-class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
-  File? _image;
+
+  
   final picker = ImagePicker();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
@@ -42,6 +40,7 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ///TO DO:TRIGER UPDATE BLOC HERE
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update Profile Details'),
@@ -52,6 +51,7 @@ class _AddProfileDetailsScreenState extends State<AddProfileDetailsScreen> {
           child: Column(
             children: [
               
+              const uploadProfileImg(),
               // GestureDetector(
               //   onTap: () {
               //     showDialog(

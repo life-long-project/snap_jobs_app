@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/allprofile_model.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 //part of 'getbrofile_bloc.dart';
 
 abstract class GetProfileState extends Equatable {
@@ -15,19 +16,22 @@ class GetProfileInitial extends GetProfileState {}
 class GetProfileLoading extends GetProfileState {}
 
 class GetProfileSuccess extends GetProfileState {
-  final ProfileModel profilemodel;
+  final AllProfileModel profilemodel;
 
-    const GetProfileSuccess({
+    GetProfileSuccess({
     required this.profilemodel
   });
 
-@override
-List<Object> get props => [profilemodel];
+
+  @override
+  List<Object> get props => [profilemodel];
+  
+  
   GetProfileSuccess copyWith({
-    ValueGetter<ProfileModel>? profilemodel    
+    AllProfileModel? profilemodel    
   }) {
     return GetProfileSuccess(
-          profilemodel: profilemodel != null ? profilemodel() : this.profilemodel
+          profilemodel: profilemodel ?? this.profilemodel
     );
   }
 }
@@ -35,19 +39,11 @@ List<Object> get props => [profilemodel];
 class GetProfileFailure extends GetProfileState {
   final String message;
 
-    const GetProfileFailure({
-    required this.message
-  });
+  const GetProfileFailure({required this.message});
 
-  
-
-@override
-List<Object> get props => [message];
-  GetProfileFailure copyWith({
-    String? message    
-  }) {
-    return GetProfileFailure(
-          message: message ?? this.message
-    );
+  @override
+  List<Object> get props => [message];
+  GetProfileFailure copyWith({String? message}) {
+    return GetProfileFailure(message: message ?? this.message);
   }
 }

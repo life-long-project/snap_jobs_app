@@ -107,30 +107,28 @@ class ServicesLocator {
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
 
-
-
-///$$$
+    ///$$$
     ///Profile repo
     sl.registerLazySingleton<BaseProfilerepo>(() => DataRepository(sl(), sl()));
 
     ///ProfilenetDataSource
     //sl.registerLazySingleton<BaseProfileDataSource>(() => NetworkDataSource());
-   sl.registerLazySingleton <NetworkDataSource>(()=>NetworkDataSource());
+    sl.registerLazySingleton<NetworkDataSource>(() => NetworkDataSource());
 //ImageUploadRemoteDataSource
- sl.registerLazySingleton <ImageUploadRemoteDataSource>(()=>HttpImageUploadRemoteDataSource());
+    sl.registerLazySingleton<ImageUploadRemoteDataSource>(
+        () => HttpImageUploadRemoteDataSource());
+
     ///profilecasheDataSource
     //sl.registerLazySingleton<CacheDataSource>(() => CacheDataSourceImpl());
 
     ///usecase
-    sl.registerLazySingleton(() =>  GetProfileUseCase( baserepo: (sl())));
-    sl.registerLazySingleton(() =>  UploadImage(  (sl())));
+    sl.registerLazySingleton(() => GetProfileInfoUseCase(baserepo: (sl())));
+    sl.registerLazySingleton(() => UploadImage((sl())));
 
-  
-  
-  
-  ///bloc
-  sl.registerFactory<GetProgileBloc>(() => GetProgileBloc(getoneprofileusecase: sl()));
-  sl.registerFactory<ImageUploadBloc>(() => ImageUploadBloc(sl()));
+    ///bloc
+    sl.registerFactory<GetProgileBloc>(
+        () => GetProgileBloc(getoneprofileusecase: sl()));
+    sl.registerFactory<ImageUploadBloc>(() => ImageUploadBloc(sl()));
   }
 }
 

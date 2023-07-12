@@ -7,7 +7,7 @@ import '../controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 
 class Rating extends StatefulWidget {
   const Rating({Key? key}) : super(key: key);
-
+///TODO:USE bloc to get rate and may need edit ui
   @override
   State<Rating> createState() => _RatingState();
 }

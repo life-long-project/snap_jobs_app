@@ -47,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                       const uploadProfileImg(),
                       const SizedBox(height: 20),
                       Text(
-                        state.profilemodel.userName,
+                        state.profilemodel.user.userName,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
-                              state.profilemodel.bio,
+                              state.profilemodel.user.bio,
                               maxLines: 3,
                               textAlign: TextAlign.center,
                             ),
@@ -83,6 +83,7 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       const Text(
                         'Recent Reviews',
+                        ///TO DO: Update UI And Complete Doing Usecase
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -98,6 +99,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ],
+                    ///TO DO:DO JOB HISTOREY
                   ),
                 ),
               );

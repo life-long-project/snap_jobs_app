@@ -4,17 +4,17 @@ import 'package:equatable/equatable.dart';
 
 import 'package:snap_jobs/core/error/failure.dart';
 import 'package:snap_jobs/core/network/error_message_model.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/allprofile_model.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 
 part 'getbrofile_event.dart';
 
 class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
-  final GetProfileUseCase getoneprofileusecase;
+  final GetProfileInfoUseCase getoneprofileusecase;
   GetProgileBloc({required this.getoneprofileusecase})
       : super(GetProfileInitial()) {
-   
     on<GetProfileEvent>((event, emit) async {
       if (event is GetOneProfileModelEvent ||
           event is RefrechOneProfileModelEvent) {
@@ -22,21 +22,17 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
 
         final failureOrProfilemodel =
             // ignore: await_only_futures
-            await getoneprofileusecase as Either<Failure, ProfileModel>;
+            await getoneprofileusecase as Either<Failure, AllProfileModel>;
         emit(_mapFailureOrPostsToState(failureOrProfilemodel));
       }
-    if(event is UpdateRatingEvent){
-      print("update rating");
-
-      
-    }
-    
+      if (event is UpdateRatingEvent) {
+        print("update rating");
+      }
     });
-   
   }
 
   GetProfileState _mapFailureOrPostsToState(
-      Either<Failure, ProfileModel> either) {
+      Either<Failure, AllProfileModel> either) {
     return either.fold(
       (failure) => GetProfileFailure(message: _mapFailureToMessage(failure)),
       (success) => GetProfileSuccess(profilemodel: success),
@@ -55,5 +51,4 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
         return "Unexpected Error, Please try again later.";
     }
   }
- 
 }

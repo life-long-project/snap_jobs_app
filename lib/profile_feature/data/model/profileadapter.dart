@@ -1,9 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-
-
 import 'package:hive/hive.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 import 'package:snap_jobs/profile_feature/data/model/profilecasheddata.dart';
 
 class ProfileHiveModelAdapter extends TypeAdapter<Profilehivemodel> {
@@ -17,7 +15,7 @@ class ProfileHiveModelAdapter extends TypeAdapter<Profilehivemodel> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Profilehivemodel(
-      profileData: fields[0] as ProfileModel,
+      profileData: fields[0] as UserModel,
     );
   }
 

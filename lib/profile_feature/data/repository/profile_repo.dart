@@ -2,25 +2,24 @@ import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/core/error/exceptions.dart';
 import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:snap_jobs/profile_feature/data/data%20source/networkdatasource.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 import 'package:snap_jobs/profile_feature/data/model/rating_model.dart';
 
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 
 import '../../../core/error/failure.dart';
 
-typedef UpdateOrAddJob = Future< Unit> Function();
+typedef UpdateOrAddJob = Future<Unit> Function();
 
 class DataRepository implements BaseProfilerepo {
   final NetworkDataSource _networkDataSource;
   //final CacheDataSource _cacheDataSource;
   final NetworkInfo _networkInfo;
 
-  DataRepository(
-      this._networkDataSource,  this._networkInfo);
+  DataRepository(this._networkDataSource, this._networkInfo);
 
   @override
-  Future<Either<Failure, ProfileModel?>> getoneProfile(String id) async {
+  Future<Either<Failure, UserModel?>> getoneProfile(String id) async {
     // Check if profile is cached
     // final cachedProfile = await _cacheDataSource.getProfile();
     // if (cachedProfile != null) {
@@ -33,40 +32,36 @@ class DataRepository implements BaseProfilerepo {
     // Cache the fetched profile
     //await _cacheDataSource.saveProfile(networkProfile as ProfileModel );
 
-    return right(networkProfile) ;
-     //return const Left(ServerFailure(""));
+    return right(networkProfile);
+    //return const Left(ServerFailure(""));
   }
 
- 
-
   @override
-  Future<Either<Failure, Unit>> updateProfile(ProfileModel profileModel) async {
-    final ProfileModel updateprofileModel = ProfileModel(
+  Future<Either<Failure, Unit>> updateProfile(UserModel profileModel) async {
+    final UserModel updateprofileModel = UserModel(
       age: profileModel.age,
       bio: profileModel.bio,
       feedBack: profileModel.feedBack,
       location: profileModel.location,
       pastJobs: profileModel.pastJobs,
-      
       sId: profileModel.sId,
       userName: profileModel.userName,
       workImageUrl: profileModel.workImageUrl,
       userImageUrl: profileModel.userImageUrl,
       skills: profileModel.skills,
       rateQuantity: null,
-       rating: profileModel.rating,
+      rating: profileModel.rating,
     );
     await _networkDataSource.updaterofile(profileModel);
     try {
-  return await _getMessage(() {
-    return _networkDataSource.updaterofile(updateprofileModel);
-  });
-} finally {
-   //await _cacheDataSource.saveProfile(profileModel);
-}
+      return await _getMessage(() {
+        return _networkDataSource.updaterofile(updateprofileModel);
+      });
+    } finally {
+      //await _cacheDataSource.saveProfile(profileModel);
+    }
 
     // Clear the cached profile after updating
-   
   }
 
   Future<Either<Failure, Unit>> _getMessage(

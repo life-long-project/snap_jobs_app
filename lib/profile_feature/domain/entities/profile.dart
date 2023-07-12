@@ -1,59 +1,22 @@
 import 'package:equatable/equatable.dart';
-abstract class Profile extends Equatable {
-  //get one profile data
- const Profile({
-    
-    required this.skills,
-     this.feedBack,
-    required this.pastJobs,
-     this.rateQuantity,
-    required this.rating,
-    required this.userImageUrl,
-    required this.workImageUrl,
-    
-    required this.sId,
-   
-    required this.userName,
-    required this.bio,
-    required this.age,
-    required this.location
-  });
-  
- 
-  
-  final List<String> skills;
-  final List<String>? feedBack;
- final  List<String> pastJobs;
-  final double ?rateQuantity;
- final double rating;
- final String userImageUrl;
- final String workImageUrl;
- 
- 
- final String sId;
+import 'package:flutter/widgets.dart';
+import 'package:snap_jobs/Jobs_feature/data/models/job_post_model.dart';
+import 'package:snap_jobs/profile_feature/domain/entities/rating.dart';
+import 'package:snap_jobs/profile_feature/domain/entities/user.dart';
 
- 
- final String userName;
- final String bio;
-  final int age;
- final String location;
+class AllProfile extends Equatable {
+  //all models that may use from other feature
+  final User user;
+  final List<JobPostModel> userJobs;
+
+  final List? acceptedJobs;
+  final List<Rating> rates;
+
+  const AllProfile(
+      {required this.user,
+       required this.userJobs,
+        this.acceptedJobs, required this.rates});
 
   @override
-  List<Object?> get props => [
-        
-        skills,
-        feedBack,
-        pastJobs,
-        rateQuantity,
-        rating,
-        userImageUrl,
-        workImageUrl,
-       
-        sId,
-        
-        userName,
-        bio,
-        age,
-        location,
-      ];
+  List<Object?> get props => [user, userJobs, acceptedJobs, rates];
 }

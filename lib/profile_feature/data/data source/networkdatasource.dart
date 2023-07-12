@@ -6,34 +6,32 @@ import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
-import 'package:snap_jobs/profile_feature/data/model/profilemodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../model/rating_model.dart';
 
 abstract class BaseProfileDataSource {
-  Future<ProfileModel?> getoneProfile(String id);
-  
-  Future<Unit> updaterofile(ProfileModel profileModel);
-   Future<Unit> PostRating(RatingModel ratingmodel);
+  Future<UserModel?> getoneProfile(String id);
+
+  Future<Unit> updaterofile(UserModel profileModel);
+  Future<Unit> PostRating(RatingModel ratingmodel);
 }
 
 class NetworkDataSource extends BaseProfileDataSource {
   @override
-  Future<ProfileModel?> getoneProfile(String id) async {
+  Future<UserModel?> getoneProfile(String id) async {
     final response = await sl<BaseHttpClient>().get(
       Uri.parse(ApiConstants.getprofileUrl + id),
       headers: {"Content-Type": "application/json"},
     );
 
-    final result = ProfileModel.fromJson(jsonDecode(response.body)['data']);
+    final result = UserModel.fromJson(jsonDecode(response.body)['data']);
     return (result);
   }
 
-  
-
   @override
-  Future<Unit> updaterofile(ProfileModel profileModel) async {
+  Future<Unit> updaterofile(UserModel profileModel) async {
     final body = {
       "userName": profileModel.userName,
       "bio": profileModel.bio,
@@ -53,14 +51,12 @@ class NetworkDataSource extends BaseProfileDataSource {
       throw Error();
     }
   }
-  
+
   @override
-  Future<Unit> PostRating(RatingModel ratingmodel) async{
-
-
+  Future<Unit> PostRating(RatingModel ratingmodel) async {
     final body = {
-      "rating":ratingmodel.rating,
-      "feedback":ratingmodel.feedback
+      "rating": ratingmodel.rating,
+      "feedback": ratingmodel.feedback
     };
     try {
       //check url
