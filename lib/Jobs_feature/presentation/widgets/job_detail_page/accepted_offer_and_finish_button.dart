@@ -32,12 +32,7 @@ class AcceptedOfferAndFinishButton extends StatelessWidget {
                   .add(FinishJobEvent(
                       jobId: job.jobId));
 
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(
-                content: SnackBar(
-                    content: Text(
-                        'Thanks for using SnapJobs')),
-              ));
+           
             },
             child: const Text("Finish Job "),
           )

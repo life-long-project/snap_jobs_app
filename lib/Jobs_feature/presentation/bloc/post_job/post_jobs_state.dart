@@ -1,30 +1,39 @@
 part of 'post_job_bloc.dart';
 
-abstract class PostJobState extends Equatable {
-  const PostJobState();
+enum PostJobStatus { initial, loading, success, error }
+abstract class PostJobState  {
+   PostJobStatus status;
+   PostJobState(
+      {this.message = "" , this.status = PostJobStatus.initial}
+   );
+  final String message;
 
-  @override
-  List<Object> get props => [];
 }
 
-class PostJobInitial extends PostJobState {}
+class PostJobInitial extends PostJobState {
+
+
+
+
+  PostJobInitial():super(status: PostJobStatus.initial);
+
+}
 
 class PostJobLoading extends PostJobState {}
 
 class PostJobError extends PostJobState {
-  final String message;
 
-  const PostJobError({required this.message});
 
-  @override
-  List<Object> get props => [message];
+   PostJobError({message}) :super(status: PostJobStatus.error , message: message);
+
+
 }
 
 class PostJobMessage extends PostJobState {
-  final String message;
-
-  const PostJobMessage({required this.message});
-
   @override
-  List<Object> get props => [message];
+
+
+   PostJobMessage({required message}):super(status: PostJobStatus.success, message: message);
+
+
 }

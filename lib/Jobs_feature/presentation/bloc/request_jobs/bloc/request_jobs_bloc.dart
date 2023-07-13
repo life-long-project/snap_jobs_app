@@ -32,23 +32,19 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
     on<RequestAllJobsEvent>(
       _onRequestAllJobsEvent,
       transformer: droppable(),
-
     );
     on<RefreshJobsEvent>(
       _onRefreshJobsEvent,
       transformer: droppable(),
-
     );
 
     on<RequestOneJobEvent>(
       _onGetOneJobEvent,
-
     );
 
     on<RequestUserActiveJobsEvent>(
       _onRequestUserActiveJobsEvent,
-            transformer: droppable(),
-
+      transformer: droppable(),
     );
   }
 
@@ -71,13 +67,9 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
 
     final response = getAllJobs.call();
 
-
     emit(_mapResponseToState(await response));
 
-     await   _onRefreshUserActiveJobs(emit);
-
-
-
+    await _onRefreshUserActiveJobs(emit);
   }
 
   //* User Jobs
@@ -85,8 +77,6 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
 //* user Active jobs
   FutureOr<void> _onRequestUserActiveJobsEvent(
       RequestUserActiveJobsEvent event, Emitter<RequestJobsState> emit) async {
-
-
     final response = await getUserActiveJobs.call(event.userId);
     userId = event.userId;
     emit(state.copyWith(status: RequestJobsStatus.loading));
@@ -95,14 +85,14 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   }
 
   FutureOr<void> _onRefreshUserActiveJobs(
-      Emitter<RequestJobsState> emit
-      ) async {
-        if(userId != null )
-{    final response = await getUserActiveJobs.call(userId!);
-    emit(state.copyWith(status: RequestJobsStatus.loading));
-    await Future.delayed(Duration.zero);
-    emit(_mapResponseToActiveJobsState(response));
-}  }
+      Emitter<RequestJobsState> emit) async {
+    if (userId != null) {
+      final response = await getUserActiveJobs.call(userId!);
+      emit(state.copyWith(status: RequestJobsStatus.loading));
+      await Future.delayed(Duration.zero);
+      emit(_mapResponseToActiveJobsState(response));
+    }
+  }
   //* One Job
 
   Future<void> _onGetOneJobEvent(
@@ -126,7 +116,9 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   RequestJobsState _mapResponseToActiveJobsState(
       Either<Failure, List<JobEntity>> either) {
     return either.fold(
-      (failure) => state.copyWith(message: _mapFailureToMessage(failure)),
+      (failure) => state.copyWith(
+          message: _mapFailureToMessage(failure),
+          status: RequestJobsStatus.failure),
       (jobs) => state.copyWith(
         status: RequestJobsStatus.success,
         userActiveJobs: jobs,

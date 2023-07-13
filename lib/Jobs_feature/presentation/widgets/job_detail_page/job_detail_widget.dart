@@ -20,251 +20,437 @@ class JobDetailWidget extends StatelessWidget {
     Key? key,
     required this.job,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width -
         MediaQuery.of(context).padding.along(Axis.horizontal);
     final deviceHeight = (MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.along(Axis.vertical) -
-        kToolbarHeight -
-        kBottomNavigationBarHeight);
-    return SizedBox(
-      height: deviceHeight * 0.9,
-      width: deviceWidth * 0.9,
+        kToolbarHeight);
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: deviceHeight,
+        maxWidth: deviceWidth * 0.9,
+        minHeight: deviceHeight,
+        minWidth: deviceWidth * 0.9,
+      ),
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              job.jobTitle,
-              style: Theme.of(context).textTheme.displaySmall,
-            ),
-
-            Text(
-              job.jobDescription,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-
-            Text(
-              'Job Type: ${job.jobType.toString().split('.').last}',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "Posted by",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                  ),
-                  (RepositoryProvider.of<UserRepository>(context).user.id ==
-                          job.userId)
-                      ? TextSpan(
-                          text: " You",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                        )
-                      : TextSpan(
-                          text: " ${job.userName}",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                ],
-              ),
-            ),
-            //* Images of the job
-            SizedBox(
-              height: deviceHeight * 0.3,
-              width: deviceWidth * 0.9,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  job.image.isNotEmpty
-                      ? FadeInImage.assetNetwork(
-                          placeholder: 'assets/images/logo_blue_text.png',
-                          image: job.image[0]!,
-                        )
-                      : Expanded(
-                          flex: 2,
-                          child:
-                              Image.asset('assets/images/logo_blue_text.png')),
-                  Expanded(
-                    flex: 1,
-                    child: Row(children: [
-                      job.image.length > 1
-                          ? Expanded(
-                              flex: 1,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/images/logo_blue_text.png',
-                                image: job.image[1]!,
-                              ),
-                            )
-                          : Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                  'assets/images/logo_blue_text.png')),
-                      job.image.length > 2
-                          ? Expanded(
-                              flex: 1,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/images/logo_blue_text.png',
-                                image: job.image[2]!,
-                              ),
-                            )
-                          : Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                  'assets/images/logo_blue_text.png')),
-                    ]),
-                  )
-                ],
-              ),
-            ),
-
-            //*additional info
-            SizedBox(
-              height: deviceHeight * 0.2,
-              width: deviceWidth * .9,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+        scrollDirection: Axis.vertical,
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: double.infinity,
+            maxWidth: deviceWidth * 0.9,
+            minHeight: deviceHeight * 0.9,
+            minWidth: deviceWidth * 0.9,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            textDirection: TextDirection.ltr,
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                  maxWidth: deviceWidth * 0.9,
+                  minWidth: deviceWidth * 0.9,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    //*time since the job posted
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.access_time,
-                              color: Theme.of(context).colorScheme.onSurface,
+                    Column(
+                      //* pic and job name , type and description
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 1,
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxHeight: deviceHeight * 0.3,
+                              maxWidth: deviceWidth * 0.9,
+                              minHeight: deviceHeight * 0.1,
+                            ),
+                            child: Column(
+                              //* job name ,type and description
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  flex: 2,
+                                  child: Text(
+                                    job.jobTitle,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall,
+                                  ),
+                                ),
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  flex: 2,
+                                  child: Text(
+                                    job.jobDescription,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                                Column(
+                                  //*job Type and posted by
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      flex: 1,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            //* job type
+                                            TextSpan(
+                                              text: "Job Type: ",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onBackground,
+                                                  ),
+                                            ),
+                                            TextSpan(
+                                              text: job.jobType
+                                                  .toString()
+                                                  .split('.')
+                                                  .last
+                                                  .split(RegExp(
+                                                      r"(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
+                                                  .join(" "),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      fit: FlexFit.loose,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: "Posted by",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onBackground,
+                                                  ),
+                                            ),
+                                            (RepositoryProvider.of<
+                                                                UserRepository>(
+                                                            context)
+                                                        .user
+                                                        .id ==
+                                                    job.userId)
+                                                ? TextSpan(
+                                                    text: " You",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface,
+                                                        ),
+                                                  )
+                                                : TextSpan(
+                                                    text: " ${job.userName}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium,
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          TextSpan(
-                            text: _getTextTellingHowLongAgo(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                    //* location of job
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.location_on_outlined,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "hardcoded",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                    //*salary requsted
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.attach_money_outlined,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                          TextSpan(
-                            text: job.salary.toString(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ]),
-            ),
+                        ),
+                        SizedBox(
+                          //* Images of the job
+                          height: deviceHeight * 0.4,
+                          width: deviceWidth * .9,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              job.image.isNotEmpty
+                                  ? Flexible(
+                                      flex: 1,
+                                      fit: FlexFit.tight,
+                                      child: FadeInImage.assetNetwork(
+                                        fit: BoxFit.fitHeight,
+                                        placeholder:
+                                            'assets/images/barista.jpg',
+                                        image: job.image[0]!,
+                                      ),
+                                    )
+                                  : Flexible(
+                                      fit: FlexFit.tight,
+                                      child: Image.asset(
+                                        fit: BoxFit.fitHeight,
+                                        'assets/images/barista.jpg',
+                                      ),
+                                    ),
 
-            //* Actions
-
-            !job.isFinished
-                ? RepositoryProvider.of<UserRepository>(context).user.id ==
-                        job.userId
-                    ? job.isActive
-                            ?
-                            //job is active and by the user, the user
-                            // should see options add, delete and list of offers to
-                            //choose from
-                            EditAndDeleteButtons(
-                                deviceHeight: deviceHeight,
-                                deviceWidth: deviceWidth,
-                                job: job)
-                            :
-                            //job is not active and by the user, the user
-                            // should see options finish job and the
-                            //accepted offer
-                            Column(
-                                children: [
-                                  job.offers?.isEmpty ?? true
-                                      //show nothing if the chosen offer is
-                                      //not available.
-                                      //this case is  a bug in backend
-                                      //and won't be reached if everything
-                                      //went as planned
-                                      ? const SizedBox.shrink()
-                                      //*the accepted offer card
-
-                    : AcceptedOfferAndFinishButton(job: job),
+                              // Expanded(
+                              //   flex: 1,
+                              //   child: Row(children: [
+                              //     job.image.length > 1
+                              //         ? Expanded(
+                              //             flex: 1,
+                              //             child: FadeInImage.assetNetwork(
+                              //               placeholder: 'assets/images/logo_blue_text.png',
+                              //               image: job.image[1]!,
+                              //             ),
+                              //           )
+                              //         : Expanded(
+                              //             flex: 1,
+                              //             child: Image.asset(
+                              //                 'assets/images/logo_blue_text.png')),
+                              //     job.image.length > 2
+                              //         ? Expanded(
+                              //             flex: 1,
+                              //             child: FadeInImage.assetNetxt)
+                              //text(
+                              //               placeholder: 'assets/images/logo_blue_text.png',
+                              //               image: job.image[2]!,
+                              //             ),
+                              //           )
+                              //         : Expanded(
+                              //             flex: 1,
+                              //             child: Image.asset(
+                              //                 'assets/images/logo_blue_text.png')),
+                              //   ]),
+                              // )
                             ],
-                          )
-                :
-                //if job is not by the user, the user
-                // should see options apply
-                //if they didn't apply before
+                          ),
+                        ),
+                        //*additional info
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: SizedBox(
+                            height: deviceHeight * 0.09,
+                            width: deviceWidth * .9,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  RichText(
+                                    //*salary requsted
 
-                job.isAlreadyApplied ?? false
-                  ? const ElevatedButton(
-                      onPressed: null,
-                      child: Text("Already Applied"),
-                    )
-                  : ElevatedButton(
-                      onPressed: () => _addOfferDialogBuilder(context),
-                      child: Text("Apply"),
-                    )
-            :
-            //if job is finished there are no actions for now
-            const SizedBox.shrink(),
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                      children: [
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.attach_money_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: job.salary.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    //*time since the job posted
 
-              ],
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                      children: [
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.access_time,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: _getTextTellingHowLongAgo(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  RichText(
+                                    //* location of job
+
+                                    textAlign: TextAlign.center,
+                                    text: TextSpan(
+                                      children: [
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.location_on_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "Dahab",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      //* Actions
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        (!job.isFinished)
+                            ?( RepositoryProvider.of<UserRepository>(context)
+                                .user.id! ==
+                                   job.userId) ?
+                                   (job.isActive)  ?
+                                    //job is active and by the user, the user
+                                    // should see options add, delete and list of offers to
+                                    //choose from
+                                    Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Flexible(
+                                            //* Edit button and delete button
+                                            fit: FlexFit.loose,
+                                            child: EditAndDeleteButtons(
+                                                deviceHeight: deviceHeight,
+                                                deviceWidth: deviceWidth,
+                                                job: job),
+                                          ),
+                                          //checks if there is offers
+                                          //and display them if so
+
+                                          job.offers?.isEmpty ?? true
+                                              ? const ElevatedButton(
+                                                  onPressed: null,
+                                                  child:
+                                                      Text("Wait for offers"),
+                                                )
+                                              : Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "offers",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .displaySmall!
+                                                          ,
+
+                                                    ),
+                                                    //* offers list
+
+                                                    OffersListWidget(
+                                                        offers: job.offers!),
+                                                  ],
+                                                )
+                                        ],
+                                      )
+                                    :
+                                    //job is not active and by the user, the user
+                                    // should see options finish job and the
+                                    //accepted offer
+                                    Flexible(
+                                        fit: FlexFit.loose,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            job.offers?.isEmpty ?? true
+                                                //show nothing if the chosen offer is
+                                                //not available.
+                                                //this case is  a bug in backend
+                                                //and won't be reached if everything
+                                                //went as planned
+                                                ? const SizedBox.shrink()
+                                                //*the accepted offer card
+
+                                                : AcceptedOfferAndFinishButton(
+                                                    job: job),
+                                          ],
+                                        ),
+                                      )
+                                :
+                                //if job is not by the user, the user
+                                // should see options apply
+                                //if they didn't apply before
+
+                                job.isAlreadyApplied ?? false
+                                    ? const ElevatedButton(
+                                        onPressed: null,
+                                        child: Text("Already Applied"),
+                                      )
+                                    : ElevatedButton(
+                                        onPressed: () =>
+                                            _addOfferDialogBuilder(context),
+                                        child: Text("Apply"),
+                                      )
+                            :
+                            //if job is finished there are no actions for now
+                            const SizedBox.shrink(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -23,10 +23,11 @@ class EditAndDeleteButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: deviceHeight * 0.3,
+      height: deviceHeight * 0.1,
       width: deviceWidth * 0.9,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
+
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,12 +36,6 @@ class EditAndDeleteButtons extends StatelessWidget {
               DeleteJobBtnWidget(jobId: job.jobId),
             ],
           ),
-          job.offers?.isEmpty ?? true
-              ? const ElevatedButton(
-                  onPressed: null,
-                  child: Text("Wait for offers"),
-                )
-              : OffersListWidget(offers: job.offers!)
         ],
       ),
     );

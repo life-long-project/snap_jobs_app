@@ -28,6 +28,9 @@ class _AllJobsPageState extends State<AllJobsPage> {
         kToolbarHeight -
         kBottomNavigationBarHeight);
 
+    final GlobalKey activeJobsListKey = GlobalKey();
+    final GlobalKey allJobsListKey = GlobalKey();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<RequestJobsBloc>(
@@ -48,6 +51,9 @@ class _AllJobsPageState extends State<AllJobsPage> {
             },
             builder: (context, state) {
               switch (state.requestJobsStatus) {
+                case RequestJobsStatus.failure:
+                  return MessageDisplayWidget(message: state.message);
+
                 case RequestJobsStatus.initial:
                   return const initial();
                 case RequestJobsStatus.loading:
@@ -56,6 +62,7 @@ class _AllJobsPageState extends State<AllJobsPage> {
                 case RequestJobsStatus.success:
                   if (state.userActiveJobs.isNotEmpty) {
                     return RefreshIndicator(
+                      triggerMode: RefreshIndicatorTriggerMode.anywhere,
                       onRefresh: () => _onRefresh(context),
                       child: Container(
                         width: deviceWidth,
@@ -66,18 +73,43 @@ class _AllJobsPageState extends State<AllJobsPage> {
                             MultiSliver(
                               children: <Widget>[
                                 MultiSliver(children: <Widget>[
+                                  //* Active Jobs Header
                                   SliverPinnedHeader(
-                                    child: Container(
-                                      padding: deviceHeight > 600
-                                          ? const EdgeInsets.symmetric(
-                                              vertical: 15)
-                                          : const EdgeInsets.symmetric(
-                                              vertical: 4),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                      child: Flexible(
-                                        flex: 1,
+                                    child: InkWell(
+                                      onTap: () => Scrollable.of(
+                                              activeJobsListKey.currentContext!)
+                                          .position
+                                          .animateTo(
+                                            0,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.easeIn,
+                                          ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .background,
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        padding: deviceHeight > 600
+                                            ? const EdgeInsets.symmetric(
+                                                vertical: 15)
+                                            : const EdgeInsets.symmetric(
+                                                vertical: 4),
                                         child: Title(
                                           color: Theme.of(context)
                                               .colorScheme
@@ -99,18 +131,18 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                       ),
                                     ),
                                   ),
+                                  //* Active Jobs List
                                   SliverAnimatedPaintExtent(
                                     duration: const Duration(milliseconds: 300),
                                     child: SliverFixedExtentList(
+                                      key: activeJobsListKey,
                                       itemExtent: deviceHeight * .3,
                                       delegate: SliverChildBuilderDelegate(
                                         childCount: 1,
-                                        (context, index) => Expanded(
-                                          flex: 2,
-                                          child: JobListWidget(
-                                            posts: state.userActiveJobs,
-                                            scrollDirection: Axis.horizontal,
-                                          ),
+                                        (context, index) => JobListWidget(
+                                          canContact: true ,
+                                          posts: state.userActiveJobs,
+                                          scrollDirection: Axis.horizontal,
                                         ),
                                       ),
                                     ),
@@ -118,18 +150,35 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                 ]),
                                 //
                                 MultiSliver(children: <Widget>[
+                                  //* All Jobs Header
                                   SliverPinnedHeader(
-                                    child: Container(
-                                      padding: deviceHeight > 600
-                                          ? const EdgeInsets.symmetric(
-                                              vertical: 15)
-                                          : const EdgeInsets.symmetric(
-                                              vertical: 4),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                      child: Flexible(
-                                        flex: 1,
+                                    child: InkWell(
+                                      //TODO: Scroll and hide other scrolller
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .background,
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        padding: deviceHeight > 600
+                                            ? const EdgeInsets.symmetric(
+                                                vertical: 15)
+                                            : const EdgeInsets.symmetric(
+                                                vertical: 4),
                                         child: Title(
                                           color: Theme.of(context)
                                               .colorScheme
@@ -154,6 +203,7 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                   SliverAnimatedPaintExtent(
                                     duration: const Duration(milliseconds: 300),
                                     child: SliverFixedExtentList(
+                                      key: allJobsListKey,
                                       itemExtent: deviceHeight * .8,
                                       delegate: SliverChildBuilderDelegate(
                                         childCount: 1,
@@ -163,6 +213,7 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                               flex: 8,
                                               child: JobListWidget(
                                                 posts: state.jobs,
+                                                canContact: false,
                                               ),
                                             )
                                           ],
@@ -173,81 +224,6 @@ class _AllJobsPageState extends State<AllJobsPage> {
                                 ]),
                               ],
                             ),
-
-                            // SliverFixedExtentList(
-                            //   itemExtent: deviceHeight * 0.6,
-                            //   delegate: SliverChildBuilderDelegate(
-                            //     childCount: 1,
-                            //     (context, index) => Column(
-                            //       children: [
-                            //         Flexible(
-                            //           flex: 1,
-                            //           child: Title(
-                            //             color: Theme.of(context)
-                            //                 .colorScheme
-                            //                 .onBackground,
-                            //             title: 'In process Jobs',
-                            //             child: const Row(
-                            //               mainAxisAlignment:
-                            //                   MainAxisAlignment.start,
-                            //               children: [
-                            //                 Icon(
-                            //                   Icons.timer_outlined,
-                            //                 ),
-                            //                 Text(
-                            //                   'In process Jobs',
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //         ),
-                            //         Expanded(
-                            //           flex: 4,
-                            //           child: JobListWidget(
-                            //             posts: state.userActiveJobs,
-                            //             scrollDirection: Axis.horizontal,
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // SliverFixedExtentList(
-                            //     itemExtent: deviceHeight,
-                            //     delegate: SliverChildBuilderDelegate(
-                            //       childCount: 1,
-                            //       (context, index) => Column(
-                            //         children: [
-                            //           Flexible(
-                            //             flex: 1,
-                            //             child: Title(
-                            //               color: Theme.of(context)
-                            //                   .colorScheme
-                            //                   .onBackground,
-                            //               title: 'In process Jobs',
-                            //               child: const Row(
-                            //                 mainAxisAlignment:
-                            //                     MainAxisAlignment.start,
-                            //                 children: [
-                            //                   Icon(
-                            //                     Icons.timer_outlined,
-                            //                   ),
-                            //                   Text(
-                            //                     'New jobs',
-                            //                   ),
-                            //                 ],
-                            //               ),
-                            //             ),
-                            //           ),
-                            //           Flexible(
-                            //             flex: 8,
-                            //             child: JobListWidget(
-                            //               posts: state.jobs,
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     ),),
                           ],
                         ),
                       ),
@@ -257,10 +233,9 @@ class _AllJobsPageState extends State<AllJobsPage> {
                         onRefresh: () => _onRefresh(context),
                         child: JobListWidget(
                           posts: state.jobs,
+                          canContact: false,
                         ));
                   }
-                case RequestJobsStatus.failure:
-                  return MessageDisplayWidget(message: state.message);
               }
             },
           ),
