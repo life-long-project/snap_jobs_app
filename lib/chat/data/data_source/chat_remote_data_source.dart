@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:socket_io_client/socket_io_client.dart' as io;
+
 
 import 'package:snap_jobs/core/network/api_constants.dart';
 

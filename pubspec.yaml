@@ -65,16 +65,8 @@ dependencies:
   shared_preferences: ^2.1.1
   flutter_localizations:
     sdk: flutter
-<<<<<<< HEAD
-  socket_io: ^1.0.1
-  socket_io_client: ^1.0.2
-  flutter_chat_ui: ^1.6.9
-  flutter_chat_types: ^3.6.2
-
-=======
   sliver_tools: ^0.2.10
   flutter_launcher_icons: ^0.13.1
->>>>>>> 0eb74e043b250cf4fd0a90f9fb636e09d4b5b7ef
 
 
 
