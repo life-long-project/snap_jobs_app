@@ -1,3 +1,4 @@
+import 'package:snap_jobs/profile_feature/domain/entities/allprofile.dart';
 import 'package:snap_jobs/profile_feature/domain/entities/profile.dart';
 
 class ProfileModel extends Profile {

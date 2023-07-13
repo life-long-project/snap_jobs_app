@@ -73,6 +73,7 @@ dependencies:
   sliver_tools: ^0.2.10
   flutter_launcher_icons: ^0.13.1
   image_picker: ^1.0.1
+  flutter_rating_bar: ^4.0.1
 
 
 
