@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/profile_feature/data/model/profile_model.dart';
-import 'package:snap_jobs/profile_feature/domain/entities/profile.dart';
 //part of 'getbrofile_bloc.dart';
 
 abstract class GetProfileState extends Equatable {
@@ -18,7 +17,7 @@ class GetProfileLoading extends GetProfileState {}
 class GetProfileSuccess extends GetProfileState {
 
 
-   GetProfileSuccess({required super.profileModel});
+   const GetProfileSuccess({required super.profileModel});
 
   @override
   List<Object> get props => [profileModel];

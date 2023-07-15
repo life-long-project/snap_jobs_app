@@ -11,7 +11,8 @@ import '../models/job_post_model.dart';
 
 abstract class JobRemoteDataSource {
   Future<List<JobEntity>> getAllJobs();
-  Future<List<JobEntity>> getUserJobs(String userId);
+  Future<List<JobEntity>> getUserActiveJobs(String userId);
+  Future<List<JobEntity>> getUserAcceptedJobs(String userId);
   Future<JobEntity> getOneJob(String jobId);
   Future<Unit> deleteJob(String jobId);
   Future<Unit> finishJob(String jobId);
@@ -48,9 +49,9 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     }
   }
 
-  //* get user jobs
+  //* get user Active jobs
   @override
-  Future<List<JobEntity>> getUserJobs(String userId) async {
+  Future<List<JobEntity>> getUserActiveJobs(String userId) async {
     try {
       final response = await client.get(
         Uri.parse(ApiConstants.getProfile + userId),
@@ -71,6 +72,35 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw NoInternetException();
     }
   }
+
+
+
+  //* get user Accepted jobs
+
+  @override
+  Future<List<JobEntity>> getUserAcceptedJobs(String userId) async {
+    try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getProfile + userId),
+        headers: {"Content-Type": "application/json"},
+      );
+      final decodedJson = json.decode(response.body)["accepted_jobs"];
+      final List<JobEntity> result = decodedJson
+          .map<JobEntity>((jsonJobPostModel) =>
+              JobModel.fromJson(jsonJobPostModel).toEntity())
+          .toList();
+      return result;
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+      throw NoInternetException();
+    }
+  }
+
+
 
 //* get one job
   @override

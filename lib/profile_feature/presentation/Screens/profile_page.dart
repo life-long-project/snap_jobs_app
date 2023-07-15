@@ -10,7 +10,6 @@ import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profi
 import 'package:snap_jobs/profile_feature/presentation/widgets/Recent_Review.dart';
 import 'package:snap_jobs/profile_feature/presentation/widgets/rating.dart';
 import 'package:snap_jobs/profile_feature/presentation/widgets/upload_profile_img.dart';
-import 'package:snap_jobs/rate/data/models/rate_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   bool showMoreText = false;

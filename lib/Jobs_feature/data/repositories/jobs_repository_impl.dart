@@ -57,7 +57,23 @@ class JobsRepositoryImpl extends JobsRepository {
 
   @override
   getUserActiveJobs(String userId) async {
-    final List<JobEntity> response = await remoteDataSource.getUserJobs(userId);
+    final List<JobEntity> response =
+        await remoteDataSource.getUserActiveJobs(userId);
+
+    final List<JobEntity> result = response
+        .where((element) =>
+            element.isFinished == false && element.isActive == false)
+        .toList();
+
+    return Right(result);
+  }
+
+  //* User accepted jobs
+  @override
+  Future<Either<Failure, List<JobEntity>>> getUserAcceptedJobs(
+      String userId) async {
+    final List<JobEntity> response =
+        await remoteDataSource.getUserActiveJobs(userId);
 
     final List<JobEntity> result = response
         .where((element) =>
@@ -112,13 +128,6 @@ class JobsRepositoryImpl extends JobsRepository {
   Future<Either<Failure, JobEntity>> getOneJob(String jobId) async {
     final response = await remoteDataSource.getOneJob(jobId);
     return Right(response);
-  }
-
-//* getUserJobs
-  @override
-  Future<Either<Failure, List<JobEntity>>> getUserJobs(String userId) {
-    // TODO: implement getUserJobs
-    throw UnimplementedError();
   }
 
   //* helper method

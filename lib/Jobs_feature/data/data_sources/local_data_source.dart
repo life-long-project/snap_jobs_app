@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
@@ -18,7 +17,6 @@ class JobsLocalDataSourceImpl implements JobsLocalDataSource {
 
   @override
   Future<Unit> cacheJobs(List<JobEntity> jobs) async {
-    final path = Directory.current.path;
 
     var box = await Hive.openBox<JobEntity>(cachedJobs);
 
@@ -31,7 +29,6 @@ class JobsLocalDataSourceImpl implements JobsLocalDataSource {
 
   @override
   Future<List<JobEntity>> getCachedJobs() async {
-    final path = Directory.current.path;
 
     final box = await Hive.openBox<JobEntity>(cachedJobs);
 

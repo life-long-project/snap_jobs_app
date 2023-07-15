@@ -6,7 +6,7 @@ import 'package:snap_jobs/splash/view/stateless_splash_screen.dart';
 
 import 'package:user_repository/user_repository.dart';
 
-import 'Home_Feature/Presentation/UI/Screens/home.dart';
+import 'home_feature/presentation/ui/screens/home.dart';
 import 'authentication_and_login_features/presentation/screens/login/login_page.dart';
 import 'core/network/base_http_client.dart';
 import 'core/services/services_locator.dart';

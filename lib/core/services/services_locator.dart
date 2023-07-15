@@ -12,7 +12,6 @@ import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart'
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
@@ -112,11 +111,11 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
-    sl.registerLazySingleton(
-      () => GetUserJobsUseCase(
-        sl<JobsRepository>(),
-      ),
-    );
+    // sl.registerLazySingleton(
+    //   () => GetUserJobsUseCase(
+    //     sl<JobsRepository>(),
+    //   ),
+    // );
     sl.registerLazySingleton(
       () => GetOneJobUseCase(
         sl<JobsRepository>(),
@@ -209,23 +208,15 @@ class ServicesLocator {
 
     //! Core
 
-    sl.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(
-        sl<Connectivity>(),
-      ),
-    );
-
-    sl.registerLazySingleton<Connectivity>(() => Connectivity());
-
-    // *Datasources
-
     sl.registerLazySingleton<JobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
+
     sl.registerLazySingleton<JobsLocalDataSource>(
       () => JobsLocalDataSourceImpl(),
     );
 
     sl.registerLazySingleton<NoParameters>(() => const NoParameters());
+
   }
 }
 

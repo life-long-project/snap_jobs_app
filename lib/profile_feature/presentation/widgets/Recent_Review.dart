@@ -16,7 +16,7 @@ class RecentReview extends StatelessWidget {
       color: ColorsLists.backgroundColors[_colorIndex],
 
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,14 +26,14 @@ class RecentReview extends StatelessWidget {
                   Icons.person,
                   color: ColorsLists.textColors[_colorIndex],
                 ),
-                SizedBox(width: 5),
+                const SizedBox(width: 5),
                 Text(_rate.rate.toString() ,
                     style: TextStyle(
                       color: ColorsLists.titleColors[_colorIndex],
                     )),
               ],
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Rating(
               currentRating: _rate.rate,
               rateStar: Icon(Icons.circle,
@@ -41,7 +41,7 @@ class RecentReview extends StatelessWidget {
                                   ),
                                   textColor : ColorsLists.textColors[_colorIndex],
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(_rate.message.isEmpty ? 'No messagefadfadfadfafdafadf' : _rate.message ,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
