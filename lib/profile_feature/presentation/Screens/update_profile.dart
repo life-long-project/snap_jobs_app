@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snap_jobs/profile_feature/presentation/widgets/upload_profile_img.dart';

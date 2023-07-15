@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:snap_jobs/profile_feature/data/model/allprofile_model.dart';
-import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/profile_model.dart';
+import 'package:snap_jobs/profile_feature/domain/entities/profile.dart';
 //part of 'getbrofile_bloc.dart';
 
 abstract class GetProfileState extends Equatable {
-  const GetProfileState();
+  final ProfileModel profileModel ;
+ const  GetProfileState({ this.profileModel =  const ProfileModel.empty()});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [profileModel];
 }
 
 class GetProfileInitial extends GetProfileState {}
@@ -16,25 +16,20 @@ class GetProfileInitial extends GetProfileState {}
 class GetProfileLoading extends GetProfileState {}
 
 class GetProfileSuccess extends GetProfileState {
-  final AllProfileModel profilemodel;
 
-    GetProfileSuccess({
-    required this.profilemodel
-  });
 
+   GetProfileSuccess({required super.profileModel});
 
   @override
-  List<Object> get props => [profilemodel];
-  
-  
-  GetProfileSuccess copyWith({
-    AllProfileModel? profilemodel    
-  }) {
-    return GetProfileSuccess(
-          profilemodel: profilemodel ?? this.profilemodel
-    );
+  List<Object> get props => [profileModel];
+
+  GetProfileSuccess copyWith({ProfileModel? profileModel}) {
+    return GetProfileSuccess(profileModel: profileModel ?? this.profileModel);
   }
 }
+
+//ToEntitiy() method
+
 
 class GetProfileFailure extends GetProfileState {
   final String message;

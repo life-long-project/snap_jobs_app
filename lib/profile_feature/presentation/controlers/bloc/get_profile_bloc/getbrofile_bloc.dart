@@ -4,16 +4,16 @@ import 'package:equatable/equatable.dart';
 
 import 'package:snap_jobs/core/error/failure.dart';
 import 'package:snap_jobs/core/network/error_message_model.dart';
-import 'package:snap_jobs/profile_feature/data/model/allprofile_model.dart';
-import 'package:snap_jobs/profile_feature/data/model/usermodel.dart';
+import 'package:snap_jobs/profile_feature/data/model/profile_model.dart';
+
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_state.dart';
 
 part 'getbrofile_event.dart';
 
-class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
-  final GetProfileInfoUseCase getoneprofileusecase;
-  GetProgileBloc({required this.getoneprofileusecase})
+class GetProfileBloc extends Bloc<GetProfileEvent, GetProfileState> {
+  final GetProfileInfoUseCase getprofileinfousecase;
+  GetProfileBloc({required this.getprofileinfousecase})
       : super(GetProfileInitial()) {
     on<GetProfileEvent>((event, emit) async {
       if (event is GetOneProfileModelEvent ||
@@ -22,7 +22,8 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
 
         final failureOrProfilemodel =
             // ignore: await_only_futures
-            await getoneprofileusecase as Either<Failure, AllProfileModel>;
+            await getprofileinfousecase.call("64a894c7205107f13de57c3d")
+                as Either<Failure, ProfileModel>;
         emit(_mapFailureOrPostsToState(failureOrProfilemodel));
       }
       if (event is UpdateRatingEvent) {
@@ -32,10 +33,10 @@ class GetProgileBloc extends Bloc<GetProfileEvent, GetProfileState> {
   }
 
   GetProfileState _mapFailureOrPostsToState(
-      Either<Failure, AllProfileModel> either) {
+      Either<Failure, ProfileModel> either) {
     return either.fold(
       (failure) => GetProfileFailure(message: _mapFailureToMessage(failure)),
-      (success) => GetProfileSuccess(profilemodel: success),
+      (success) => GetProfileSuccess(profileModel: success),
     );
   }
 

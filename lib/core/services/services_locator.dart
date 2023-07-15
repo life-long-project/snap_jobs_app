@@ -29,9 +29,13 @@ import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:snap_jobs/offers_feature/data/data_sources/offers_remote_data_source.dart';
 import 'package:snap_jobs/offers_feature/data/repositories/offer_repository_impl.dart';
 import 'package:snap_jobs/offers_feature/domain/repositories/offer_repository.dart';
-import 'package:snap_jobs/offers_feature/domain/usecases/apply_offer_use_case.dart';
 import 'package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
+import 'package:snap_jobs/profile_feature/data/data_source/profile_remote_data_source.dart';
+import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -82,12 +86,16 @@ class ServicesLocator {
         getOneJob: sl<GetOneJobUseCase>(),
       ),
     );
+    sl.registerFactory<GetProfileBloc>(
+      () => GetProfileBloc(
+        getprofileinfousecase: sl<GetProfileInfoUseCase>(),
+      ),
+    );
     sl.registerFactory<OfferBloc>(
       () => OfferBloc(
         sl<ApplyOfferUseCase>(),
       ),
     );
-
     // *Use Cases
 
     sl.registerLazySingleton(() => SignUpUseCase(sl<BaseSignUpRepository>()));
@@ -120,6 +128,11 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
+
+    sl.registerLazySingleton(
+      () => GetProfileInfoUseCase(baserepo: sl<BaseProfilerepo>()),
+    );
+
     sl.registerLazySingleton(
       () => DeleteJobUseCase(
         sl<JobsRepository>(),
@@ -164,6 +177,13 @@ class ServicesLocator {
       () => SignUpRepository(
         sl<BaseSignUpDataSource>(),
       ),
+    );
+
+    sl.registerLazySingleton<ProfileRemoteDataSource>(
+      () => ProfileRemoteDataSource(),
+    );
+    sl.registerLazySingleton<BaseProfilerepo>(
+      () => DataRepository(sl<ProfileRemoteDataSource>(), sl<NetworkInfo>()),
     );
     sl.registerLazySingleton<AuthenticationRepository>(
         () => AuthenticationRepository(

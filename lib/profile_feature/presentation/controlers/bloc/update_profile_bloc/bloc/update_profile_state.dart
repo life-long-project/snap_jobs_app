@@ -10,20 +10,20 @@ abstract class UpdateProfileState extends Equatable {
 class UpdateProfileInitial extends UpdateProfileState {}
 
 class UpdateProfileSuccess extends UpdateProfileState {
-  final UserModel modelprofile;
+  final User modelprofile;
 
   const UpdateProfileSuccess({required this.modelprofile});
 
   @override
   List<Object> get props => [modelprofile];
-  UpdateProfileSuccess copyWith({UserModel? modelprofile}) {
+  UpdateProfileSuccess copyWith({User? modelprofile}) {
     return UpdateProfileSuccess(
         modelprofile: modelprofile ?? this.modelprofile);
   }
 }
 
 class UpdateProfileFail extends UpdateProfileState {
-  UpdateProfileFail({required this.message});
+  const UpdateProfileFail({required this.message});
 
   final String message;
 
@@ -35,7 +35,7 @@ class UpdateProfileFail extends UpdateProfileState {
 }
 
 class MessageUpdateProfileState extends UpdateProfileState {
-  MessageUpdateProfileState({required this.message});
+  const MessageUpdateProfileState({required this.message});
 
   final String message;
 

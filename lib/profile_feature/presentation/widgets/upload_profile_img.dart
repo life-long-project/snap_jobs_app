@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:snap_jobs/profile_feature/data/data_source/imgdatasource.dart';
+import 'package:snap_jobs/profile_feature/domain/usecase/imgupload.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_bloc.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/upload%20_img_bloc/bloc/img_upload_event.dart';
 
@@ -16,7 +18,10 @@ class uploadProfileImg   extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ImageUploadBloc, ImageUploadState>(
+        bloc: ImageUploadBloc(UploadImage(ImageUploadRemoteDataSourceimpl())),
+
         builder: (context, state) {
+
       return Center(
         child: Stack(
           alignment: Alignment.center,

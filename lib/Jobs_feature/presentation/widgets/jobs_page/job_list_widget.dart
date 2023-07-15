@@ -10,8 +10,8 @@ class JobListWidget extends StatelessWidget {
   const JobListWidget({
     Key? key,
     required this.posts,
-    this.scrollDirection = Axis.vertical,
    required this.canContact ,
+    this.scrollDirection = Axis.vertical,
   }) : super(key: key);
 
   @override
@@ -22,6 +22,9 @@ class JobListWidget extends StatelessWidget {
       itemCount: posts.length,
 
       scrollDirection: scrollDirection,
+
+
+
 
       itemBuilder: (context, index) {
         return JobCardWithoutPic(

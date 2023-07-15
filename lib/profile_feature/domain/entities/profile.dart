@@ -1,67 +1,20 @@
-import 'package:equatable/equatable.dart';
+import 'package:snap_jobs/Jobs_feature/data/models/job_post_model.dart';
+import 'package:snap_jobs/offers_feature/data/models/offer_model.dart';
+import 'package:snap_jobs/rate/data/models/rate_model.dart';
+import 'package:user_repository/user_repository.dart';
 
-abstract class Profile extends Equatable {
-  final bool isAdmin;
-  final List<String> skills;
-  final List<dynamic> feedBack;
-  final List<dynamic> pastJobs;
-  final int rateQuantity;
-  final double rateAverage;
-  final String userImageUrl;
-  final String workImageUrl;
-  final bool isReported;
-  final bool isBlocked;
-  final String sId;
-  final String createdAt;
-  final String updatedAt;
-  final int iV;
-  final String userName;
-  final String bio;
-  final int age;
-  final String location;
-  final bool following;
-
-  const Profile(
-      {required this.isAdmin,
-      required this.following,
-      required this.skills,
-      required this.feedBack,
-      required this.pastJobs,
-      required this.rateQuantity,
-      required this.rateAverage,
-      required this.userImageUrl,
-      required this.workImageUrl,
-      required this.isReported,
-      required this.isBlocked,
-      required this.sId,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.iV,
-      required this.userName,
-      required this.bio,
-      required this.age,
-      required this.location});
-
-  @override
-  List<Object> get props => [
-        isAdmin,
-        following,
-        skills,
-        feedBack,
-        pastJobs,
-        rateQuantity,
-        rateAverage,
-        userImageUrl,
-        workImageUrl,
-        isReported,
-        isBlocked,
-        sId,
-        createdAt,
-        updatedAt,
-        iV,
-        userName,
-        bio,
-        age,
-        location
-      ];
+class ProfileEntity {
+  final User user;
+  final List<RateModel?> rates;
+  final List<JobModel?> acceptedJobs;
+  final List<JobModel?> jobs;
+  final List<OfferModel?> pendingOffers;
+  const ProfileEntity.empty()
+      : user = User.empty,
+        rates = const [],
+        acceptedJobs = const [],
+        jobs = const [],
+        pendingOffers = const [];
+  ProfileEntity(
+      this.user, this.rates, this.acceptedJobs, this.jobs, this.pendingOffers);
 }

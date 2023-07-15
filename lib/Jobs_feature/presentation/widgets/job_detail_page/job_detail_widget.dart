@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
-import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/accepted_offer_and_finish_button.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/edit_and_delete_buttons.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
 import 'package:snap_jobs/offers_feature/presentation/pages/Add_offer_dialog.dart';
-import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/update_job_button.dart';
-import 'package:snap_jobs/offers_feature/presentation/widgets/offer_card.dart';
 import 'package:snap_jobs/offers_feature/presentation/widgets/offers_list.dart';
 import 'package:user_repository/user_repository.dart';
 
-import 'delete_job_button.dart';
 
 class JobDetailWidget extends StatelessWidget {
   final JobEntity job;
@@ -439,7 +435,7 @@ class JobDetailWidget extends StatelessWidget {
                                     : ElevatedButton(
                                         onPressed: () =>
                                             _addOfferDialogBuilder(context),
-                                        child: Text("Apply"),
+                                        child: const Text("Apply"),
                                       )
                             :
                             //if job is finished there are no actions for now

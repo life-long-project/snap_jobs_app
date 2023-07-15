@@ -5,10 +5,10 @@ import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/reque
 import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:snap_jobs/profile_feature/presentation/Screens/profile_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const HomePage());
   }
@@ -77,22 +77,23 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary  ,
-        shadowColor: Theme.of(context).colorScheme.onPrimary ,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        shadowColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(
-            'Hi, $userName',
-            style:  TextStyle(
-              fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize
-              ,
-              fontWeight: Theme.of(context).textTheme.headlineMedium!.fontWeight,
-
-            ),),
-
+          'Hi, $userName',
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
+            fontWeight: Theme.of(context).textTheme.headlineMedium!.fontWeight,
+          ),
+        ),
         elevation: 1,
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_active),
-            onPressed: () {},
+            icon: const Icon(Icons.person_2_rounded),
+            onPressed: () {
+
+              Navigator.of(context).push(ProfileScreen.route());
+            },
             color: Colors.blue,
           ),
           const SizedBox(
@@ -107,7 +108,6 @@ class HomePage extends StatelessWidget {
               BlocProvider<RequestJobsBloc>(
                   lazy: false,
                   create: (context) {
-
                     return sl<RequestJobsBloc>();
                   }),
               BlocProvider(

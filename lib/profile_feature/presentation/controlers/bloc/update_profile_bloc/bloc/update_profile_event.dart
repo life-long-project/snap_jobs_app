@@ -1,7 +1,7 @@
 part of 'update_profile_bloc.dart';
 
 abstract class UpdateProfileEvent extends Equatable {
-  final UserModel model;
+  final User model;
   const UpdateProfileEvent(this.model);
 
   @override

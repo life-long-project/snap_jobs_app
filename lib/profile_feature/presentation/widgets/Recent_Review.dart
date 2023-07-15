@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:snap_jobs/core/util/colors_list.dart';
+import 'package:snap_jobs/profile_feature/presentation/widgets/rating.dart';
+import 'package:snap_jobs/rate/data/models/rate_model.dart';
+
 class RecentReview extends StatelessWidget {
-  const RecentReview({super.key});
+  final RateModel _rate;
+  const RecentReview(this._rate, int index, {super.key})
+      : _colorIndex = index % 3;
+  final int _colorIndex;
 
   @override
   Widget build(BuildContext context) {
-     return const Card(
+    return Card(
+      elevation: 5,
+      color: ColorsLists.backgroundColors[_colorIndex],
+
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -12,31 +22,35 @@ class RecentReview extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.person),
+                Icon(
+                  Icons.person,
+                  color: ColorsLists.textColors[_colorIndex],
+                ),
                 SizedBox(width: 5),
-                Text('John Smith'),
+                Text(_rate.rate.toString() ,
+                    style: TextStyle(
+                      color: ColorsLists.titleColors[_colorIndex],
+                    )),
               ],
             ),
             SizedBox(height: 5),
-            Row(
-              children: [
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star, color: Colors.yellow),
-                Icon(Icons.star_border, color: Colors.yellow),
-                Icon(Icons.star_border, color: Colors.yellow),
-              ],
+            Rating(
+              currentRating: _rate.rate,
+              rateStar: Icon(Icons.circle,
+                  color: ColorsLists.titleColors[_colorIndex],
+                                  ),
+                                  textColor : ColorsLists.textColors[_colorIndex],
             ),
             SizedBox(height: 5),
-            Text(
-              'Great service! Will definitely recommend.',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            Text(_rate.message.isEmpty ? 'No messagefadfadfadfafdafadf' : _rate.message ,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: ColorsLists.textColors[_colorIndex],
+                )),
           ],
         ),
       ),
     );
   }
-  }
-  
+}

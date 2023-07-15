@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,7 +108,7 @@ class JobCardWithoutPic extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  margin: EdgeInsetsDirectional.symmetric(horizontal: 5),
+                  margin: const EdgeInsetsDirectional.symmetric(horizontal: 5),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(

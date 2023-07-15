@@ -8,7 +8,7 @@ abstract class ImageUploadRemoteDataSource {
   Future<Either<Failure, String>> uploadImage(String imagePath, String token);
 }
 
-class HttpImageUploadRemoteDataSource implements ImageUploadRemoteDataSource {
+class   ImageUploadRemoteDataSourceimpl implements ImageUploadRemoteDataSource {
   @override
   Future<Either<Failure, String>> uploadImage(String imagePath, String token) async {
     final url = 'https://back-ph2h.onrender.com/upload/profile/?auth_token=$token';
