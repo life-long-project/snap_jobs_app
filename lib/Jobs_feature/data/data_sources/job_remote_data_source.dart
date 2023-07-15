@@ -159,7 +159,7 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       'job_type': jobPostModel.jobType,
       'skills': const JsonEncoder().convert(jobPostModel.skills),
       'salary': jobPostModel.salary,
-      'job_img_url': jobPostModel.image?.toString(),
+      'job_img_url': jobPostModel.image.toString(),
     };
     try {
       await client.post(Uri.parse(ApiConstants.getAllJobsPath), body: body);

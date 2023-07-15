@@ -5,8 +5,6 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 import "package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart";
-import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
-import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 
 part 'offer_event.dart';
 part 'offer_state.dart';

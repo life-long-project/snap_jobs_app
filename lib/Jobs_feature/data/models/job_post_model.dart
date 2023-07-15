@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/offers_feature/data/models/offer_model.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';

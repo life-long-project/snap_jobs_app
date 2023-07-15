@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
-import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 
 class AddOfferDialog extends StatefulWidget {
   final JobEntity job;
@@ -93,8 +91,8 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                                 (current + 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(4),
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
                             child: Text("+10"),
@@ -123,8 +121,8 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                                 (current - 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(4),
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
                             child: Text("-10"),

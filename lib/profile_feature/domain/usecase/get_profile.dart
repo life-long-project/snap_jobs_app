@@ -1,15 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/core/error/failure.dart';
+import 'package:snap_jobs/profile_feature/data/model/profile_model.dart';
 
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 
-import '../entities/profile.dart';
-
-class GetProfileUseCase {
-  const GetProfileUseCase({required this.baserepo});
+class GetProfileInfoUseCase {
   final BaseProfilerepo baserepo;
+  const GetProfileInfoUseCase({required this.baserepo});
 
-  Future<Either<Failure, Profile>> call(String id) async {
-    return await baserepo.getprofile(id);
+  Future<Either<Failure,ProfileModel ?>> call(String id) async {
+    return await baserepo.getoneProfile('64a16604493228d42c997761');
   }
 }

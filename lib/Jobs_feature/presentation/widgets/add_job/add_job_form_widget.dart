@@ -170,8 +170,10 @@ Column(
                   ElevatedButton(
                      
 
-                    child: Text('upload Image to explain more '),
                     onPressed: getImage,
+                     
+
+                    child: const Text('upload Image to explain more '),
                   ),
 
                 ],
