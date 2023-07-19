@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
+import 'package:snap_jobs/home_feature/presentation/ui/screens/about_us.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -39,8 +40,9 @@ class AppDrawer extends StatelessWidget {
                       'About us',
                     ),
                     onTap: () {
-                      // Update the state of the app.
-                      // ...
+
+                      Navigator.of(context).push(AboutUs.route(),);
+
                     },
                   ),
                   ListTile(

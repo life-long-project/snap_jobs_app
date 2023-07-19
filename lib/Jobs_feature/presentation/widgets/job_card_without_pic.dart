@@ -24,7 +24,8 @@ class JobCardWithoutPic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = RepositoryProvider.of<UserRepository>(context).user.id;
+    final currentUserId =
+        RepositoryProvider.of<UserRepository>(context).user.id;
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 5,
@@ -68,8 +69,7 @@ class JobCardWithoutPic extends StatelessWidget {
                 SizedBox(
                   //TODO: add location
                   child: Text(
-                    currentUserId ==
-                            job.userId
+                    currentUserId == job.userId
                         ? '0 km away'
                         : '${job.distance} km away ',
                     style: TextStyle(
@@ -144,11 +144,25 @@ class JobCardWithoutPic extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const ChatPage(),
-                                ),
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // show dialouge apologize for not implemented yet
+                                  return AlertDialog(
+                                    title: const Text('Sorry'),
+                                    content: Text("Not Implemented Yet :( "),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Close'),
+                                      ),
+                                    ],
+                                  );
+
+
+                                },
                               );
                             },
                             icon: Icon(
@@ -162,7 +176,8 @@ class JobCardWithoutPic extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return CallDialogue(job: job , currentUserId: currentUserId);
+                                  return CallDialogue(
+                                      job: job, currentUserId: currentUserId);
                                 },
                               );
                             },
