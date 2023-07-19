@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
-import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
-import 'package:user_repository/user_repository.dart';
 
 class AddOfferDialog extends StatefulWidget {
   final JobEntity job;
@@ -74,10 +72,8 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
             contentPadding: const EdgeInsetsDirectional.all(15),
             children: [
               SizedBox(
-
                 width: deviceWidth * 0.8,
                 height: deviceHeight * 0.5,
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,17 +86,17 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                             final current =
                                 int.parse(priceFieldController.text);
                             priceFieldController.text =
-                                (current + 10).toString();
+                                (current - 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(4),
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
-                            child: Text("+10"),
+                            child: Text("-10"),
                           ),
                         ),
-                         Flexible(
+                        Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
                           child: IntrinsicWidth(
@@ -120,19 +116,18 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                             final current =
                                 int.parse(priceFieldController.text);
                             priceFieldController.text =
-                                (current - 10).toString();
+                                (current + 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            padding: EdgeInsets.all(4),
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
-                            child: Text("-10"),
+                            child: Text("+10"),
                           ),
                         ),
                       ],
                     ),
-
                     const SizedBox(
                       height: 5,
                     ),
@@ -154,7 +149,6 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                         final offer = OfferEntity(
                             isAccepted: false,
                             offerId: '',
-                            
                             jobId: widget.job.jobId,
                             salary: int.parse(priceFieldController.text),
                             message: messageFieldController.text);

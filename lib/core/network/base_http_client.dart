@@ -164,12 +164,7 @@ url = _mergedQuery(url, queryParams);
   Response _checkError(Response response) {
     final int statusCode = response.statusCode;
 
-    if (statusCode == null) {
-      throw const ServerException(
-        errorMessageModel: ErrorMessageModel(
-            statusMessage: 'Unknown error occurred', error: true),
-      );
-    } else if (statusCode < 200 || statusCode > 400) {
+    if (statusCode < 200 || statusCode > 400) {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(
           jsonDecode(response.body),

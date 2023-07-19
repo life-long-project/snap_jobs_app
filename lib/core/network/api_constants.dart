@@ -10,6 +10,8 @@ class ApiConstants {
 
 
   static const String getProfile = "$baseUrl/user/profile/";
+  static const String postJobRating = "$baseUrl/rate/job/";
+  static const String postUserRating = "$baseUrl/rate/user/";
 
   static const String applyOfferPath = "$baseUrl/offer/apply/";
   static const String acceptOfferPath = "$baseUrl/offer/accept/";

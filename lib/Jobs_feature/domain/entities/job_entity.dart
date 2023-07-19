@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
 
@@ -56,6 +55,8 @@ class JobEntity extends Equatable {
   final int? duration;
   @HiveField(17)
   final List<String?> image;
+  @HiveField(18)
+  final String? location;
 
   JobEntity({
     required this.dateTime,
@@ -68,6 +69,7 @@ class JobEntity extends Equatable {
     required this.jobType,
     required this.salary,
     this.skills,
+    this.location,
     this.isActive = true,
     required this.isFinished,
     this.workerId,
@@ -82,6 +84,7 @@ class JobEntity extends Equatable {
     String? userName,
     List<OfferEntity>? offers,
     String? jobTitle,
+    String? location,
     String? workerId,
     bool? isAlreadyApplied,
     bool? isFinished,
@@ -108,6 +111,7 @@ class JobEntity extends Equatable {
       jobType: jobType ?? this.jobType,
       jobDescription: jobDescription ?? this.jobDescription,
       salary: salary ?? this.salary,
+      location: location ?? this.location,
       skills: skills ?? this.skills,
       duration: duration ?? this.duration,
       image: image ?? this.image,
@@ -119,6 +123,7 @@ class JobEntity extends Equatable {
         jobId,
         workerId,
         userId,
+        location,
         userName,
         isActive,
         duration,

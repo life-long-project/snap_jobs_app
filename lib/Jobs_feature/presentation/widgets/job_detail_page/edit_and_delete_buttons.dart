@@ -1,12 +1,8 @@
-import 'package:flutter/src/material/elevated_button.dart';
-import 'package:flutter/src/rendering/flex.dart';
 import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/text.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/delete_job_button.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/widgets/job_detail_page/update_job_button.dart';
-import 'package:snap_jobs/offers_feature/presentation/widgets/offers_list.dart';
 
 class EditAndDeleteButtons extends StatelessWidget {
   const EditAndDeleteButtons({

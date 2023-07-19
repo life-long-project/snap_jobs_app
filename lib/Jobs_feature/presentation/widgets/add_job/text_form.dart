@@ -4,14 +4,15 @@ class TextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool multiLines;
   final String name;
-  TextFormFieldWidget({
+ final bool numbersOnly;
+
+  const TextFormFieldWidget({
     Key? key,
     required this.controller,
     required this.multiLines,
     required this.name,
     this.numbersOnly = false,
   }) : super(key: key);
-  bool numbersOnly;
 
   @override
   Widget build(BuildContext context) {

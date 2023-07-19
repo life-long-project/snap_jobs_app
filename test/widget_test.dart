@@ -16,9 +16,11 @@ void main() {
     setUp(
       () {
         requestJobsBloc = RequestJobsBloc(
+          getUserAcceptedJobs: requestJobsBloc.getUserAcceptedJobs,
           getAllJobs: requestJobsBloc.getAllJobs,
           getOneJob: requestJobsBloc.getOneJob,
-          getUserActiveJobs: requestJobsBloc.getUserActiveJobs,        );
+          getUserActiveJobs: requestJobsBloc.getUserActiveJobs,
+        );
       },
     );
 

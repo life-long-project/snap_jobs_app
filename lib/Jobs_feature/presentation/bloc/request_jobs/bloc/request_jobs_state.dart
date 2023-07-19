@@ -16,12 +16,13 @@ final class RequestJobsState extends Equatable {
       {this.requestJobsStatus = RequestJobsStatus.initial,
       this.jobs = const [],
       this.userActiveJobs = const [],
-
+      this.userAcceptedJobs = const [],
       this.message = ""});
 
   final RequestJobsStatus requestJobsStatus;
   final List<JobEntity> jobs;
   final List<JobEntity> userActiveJobs;
+  final List<JobEntity> userAcceptedJobs;
   final String message;
 
   @override
@@ -31,12 +32,13 @@ final class RequestJobsState extends Equatable {
     RequestJobsStatus? status,
     List<JobEntity>? jobs,
     List<JobEntity>? userActiveJobs,
+    List<JobEntity>? userAcceptedJobs,
     String? message,
-
   }) {
     return RequestJobsState(
       requestJobsStatus: status ?? requestJobsStatus,
       jobs: jobs ?? this.jobs,
+      userAcceptedJobs: userAcceptedJobs ?? this.userAcceptedJobs,
       userActiveJobs: userActiveJobs ?? this.userActiveJobs,
       message: message ?? this.message,
     );

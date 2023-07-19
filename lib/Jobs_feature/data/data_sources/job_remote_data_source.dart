@@ -11,12 +11,15 @@ import '../models/job_post_model.dart';
 
 abstract class JobRemoteDataSource {
   Future<List<JobEntity>> getAllJobs();
-  Future<List<JobEntity>> getUserJobs(String userId);
+  Future<List<JobEntity>> getUserActiveJobs(String userId);
+  Future<List<JobEntity>> getUserAcceptedJobs(String userId);
   Future<JobEntity> getOneJob(String jobId);
   Future<Unit> deleteJob(String jobId);
   Future<Unit> finishJob(String jobId);
   Future<Unit> updateJob(JobModel jobPostModel);
   Future<Unit> addJob(JobModel jobPostModel);
+
+ Future<String> getUserPhoneNumber(String userId);
 }
 
 class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
@@ -48,9 +51,9 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     }
   }
 
-  //* get user jobs
+  //* get user Active jobs
   @override
-  Future<List<JobEntity>> getUserJobs(String userId) async {
+  Future<List<JobEntity>> getUserActiveJobs(String userId) async {
     try {
       final response = await client.get(
         Uri.parse(ApiConstants.getProfile + userId),
@@ -69,6 +72,51 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       stderr.writeln(s);
 
       throw NoInternetException();
+    }
+  }
+
+  //* get user Accepted jobs
+
+  @override
+  Future<List<JobEntity>> getUserAcceptedJobs(String userId) async {
+    try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getProfile + userId),
+        headers: {"Content-Type": "application/json"},
+      );
+      final decodedJson = json.decode(response.body)["accepted_jobs"];
+      final List<JobEntity> result = decodedJson
+          .map<JobEntity>((jsonJobPostModel) =>
+              JobModel.fromJson(jsonJobPostModel).toEntity())
+          .toList();
+      return result;
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+      throw NoInternetException();
+    }
+  }
+  //* get user phone number
+    @override
+  getUserPhoneNumber(String userId) async {
+ try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getUserByID + userId),
+        headers: {"Content-Type": "application/json"},
+      );
+      final decodedJson = json.decode(response.body)["user"]["phone"];
+
+      return decodedJson;
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
+
+      throw OfflineException();
     }
   }
 
@@ -159,7 +207,7 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       'job_type': jobPostModel.jobType,
       'skills': const JsonEncoder().convert(jobPostModel.skills),
       'salary': jobPostModel.salary,
-      'job_img_url': jobPostModel.image?.toString(),
+      'job_img_url': jobPostModel.image.toString(),
     };
     try {
       await client.post(Uri.parse(ApiConstants.getAllJobsPath), body: body);
@@ -173,4 +221,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw OfflineException();
     }
   }
+
+
 }
