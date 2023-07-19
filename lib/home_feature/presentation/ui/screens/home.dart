@@ -5,8 +5,8 @@ import 'package:snap_jobs/home_feature/presentation/ui/widgets/home_app_bar.dart
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/all_jobs_page.dart';
-import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,14 +16,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userName = context.select((AuthenticationBloc bloc) {
-      final user = bloc.state.user;
+    final userName = context.select((UserRepository repo) {
+      final user = repo.user;
       return user.firstName;
+    });
+    final userId = context.select((UserRepository repo) {
+      final user = repo.user;
+      return user.id;
     });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       drawer: const AppDrawer(),
-      appBar: HomeAppBar(context, userName),
+      appBar: HomeAppBar(context, userName , userId),
       body: Column(
         children: [
           MultiBlocProvider(

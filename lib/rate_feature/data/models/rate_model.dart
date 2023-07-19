@@ -1,7 +1,7 @@
 
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:snap_jobs/rate/domain/entities/rate.dart';
+import 'package:snap_jobs/rate_feature/domain/entities/rate.dart';
 
 part 'rate_model.g.dart';
 

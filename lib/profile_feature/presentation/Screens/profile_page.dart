@@ -13,17 +13,17 @@ import 'package:snap_jobs/profile_feature/presentation/widgets/upload_profile_im
 
 class ProfileScreen extends StatelessWidget {
   bool showMoreText = false;
-
-  ProfileScreen({super.key});
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => ProfileScreen());
+  final String id;
+  ProfileScreen({super.key , required this.id});
+  static Route<void> route(String id) {
+    return MaterialPageRoute<void>(builder: (_) => ProfileScreen(id: id));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) =>
-            sl<GetProfileBloc>()..add(GetOneProfileModelEvent()),
+            sl<GetProfileBloc>()..add(GetOneProfileModelEvent(id: id)),
         child: BlocConsumer<GetProfileBloc, GetProfileState>(
           listener: (context, state) {},
           builder: (context, state) {

@@ -1,13 +1,6 @@
-import 'package:flutter/src/material/drawer.dart';
-import 'package:flutter/src/material/drawer_header.dart';
-import 'package:flutter/src/material/list_tile.dart';
-import 'package:flutter/src/material/outlined_button.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/image.dart';
-import 'package:flutter/src/widgets/scroll_view.dart';
-import 'package:flutter/src/widgets/text.dart';
-import 'package:provider/src/provider.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/authentication_and_login_features/presentation/controllers/authentication_bloc/authentication_bloc.dart';
 
 class AppDrawer extends StatelessWidget {

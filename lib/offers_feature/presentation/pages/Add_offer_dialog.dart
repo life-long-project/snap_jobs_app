@@ -72,10 +72,8 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
             contentPadding: const EdgeInsetsDirectional.all(15),
             children: [
               SizedBox(
-
                 width: deviceWidth * 0.8,
                 height: deviceHeight * 0.5,
-
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,17 +86,17 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                             final current =
                                 int.parse(priceFieldController.text);
                             priceFieldController.text =
-                                (current + 10).toString();
+                                (current - 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
-                            child: Text("+10"),
+                            child: Text("-10"),
                           ),
                         ),
-                         Flexible(
+                        Flexible(
                           flex: 1,
                           fit: FlexFit.loose,
                           child: IntrinsicWidth(
@@ -118,19 +116,18 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                             final current =
                                 int.parse(priceFieldController.text);
                             priceFieldController.text =
-                                (current - 10).toString();
+                                (current + 10).toString();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(4),
                           ),
                           child: const CircleAvatar(
-                            child: Text("-10"),
+                            child: Text("+10"),
                           ),
                         ),
                       ],
                     ),
-
                     const SizedBox(
                       height: 5,
                     ),
@@ -152,7 +149,6 @@ class _AddOfferDialogState extends State<AddOfferDialog> {
                         final offer = OfferEntity(
                             isAccepted: false,
                             offerId: '',
-                            
                             jobId: widget.job.jobId,
                             salary: int.parse(priceFieldController.text),
                             message: messageFieldController.text);

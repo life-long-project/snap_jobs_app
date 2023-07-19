@@ -18,6 +18,8 @@ abstract class JobRemoteDataSource {
   Future<Unit> finishJob(String jobId);
   Future<Unit> updateJob(JobModel jobPostModel);
   Future<Unit> addJob(JobModel jobPostModel);
+
+ Future<String> getUserPhoneNumber(String userId);
 }
 
 class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
@@ -73,8 +75,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
     }
   }
 
-
-
   //* get user Accepted jobs
 
   @override
@@ -99,8 +99,26 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw NoInternetException();
     }
   }
+  //* get user phone number
+    @override
+  getUserPhoneNumber(String userId) async {
+ try {
+      final response = await client.get(
+        Uri.parse(ApiConstants.getUserByID + userId),
+        headers: {"Content-Type": "application/json"},
+      );
+      final decodedJson = json.decode(response.body)["user"]["phone"];
 
+      return decodedJson;
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      stderr.writeln(e);
+      stderr.writeln(s);
 
+      throw OfflineException();
+    }
+  }
 
 //* get one job
   @override
@@ -203,4 +221,6 @@ class PostJobRemoteDataSourceImpl extends JobRemoteDataSource {
       throw OfflineException();
     }
   }
+
+
 }

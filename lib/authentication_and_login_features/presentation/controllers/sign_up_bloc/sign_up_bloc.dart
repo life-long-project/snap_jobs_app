@@ -39,6 +39,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     );
   }
 
+  // ignore: unused_field
   final BaseSignUpRepository _signUpRepository;
 
   Future<void> _onSubmitted(

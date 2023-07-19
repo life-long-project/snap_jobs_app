@@ -7,21 +7,22 @@ import 'package:snap_jobs/core/network/api_constants.dart';
 import 'package:snap_jobs/core/network/base_http_client.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/profile_feature/data/model/profile_model.dart';
-import 'package:snap_jobs/rate/data/models/rate_model.dart';
+import 'package:snap_jobs/rate_feature/data/models/rate_model.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../../../core/error/exceptions.dart';
 
 abstract class BaseProfileDataSource {
-  Future<User?> getoneProfile(String id);
+  Future<ProfileModel?> getOneProfile(String id);
 
-  Future<Unit> updaterofile(User profileModel);
-  Future<Unit> PostjobRating(RateModel rate);
+  Future<Unit> updateProfile(User profileModel);
+  Future<Unit> postJobRating(RateModel rateModel);
 }
 
-class ProfileRemoteDataSource {
+class ProfileRemoteDataSource extends BaseProfileDataSource
+{
   @override
-  Future<ProfileModel?> getoneProfile(String id) async {
+  Future<ProfileModel?> getOneProfile(String id) async {
     final response = await sl<BaseHttpClient>().get(
       Uri.parse(ApiConstants.getProfile + id),
       headers: {"Content-Type": "application/json"},
@@ -32,7 +33,7 @@ class ProfileRemoteDataSource {
   }
 
   @override
-  Future<Unit> updaterofile(User profileModel) async {
+  Future<Unit> updateProfile(User profileModel) async {
     try {
       //TODO not the right implementation yet
       await sl<BaseHttpClient>()
@@ -45,22 +46,22 @@ class ProfileRemoteDataSource {
     }
   }
 
-  @override
-  Future<Unit> PostUserRating(RateModel rateModel) async {
-    try {
-      //check url
-      await sl<BaseHttpClient>().post(Uri.parse(ApiConstants.postUserRating),
-          body: rateModel.toJson());
-      return Future.value(unit);
-    } on ServerException catch (e, s) {
-      stderr.writeln(e);
-      stderr.writeln(s);
-      throw Error();
-    }
-  }
+  // @override
+  // Future<Unit> PostUserRating(RateModel rateModel) async {
+  //   try {
+  //     //check url
+  //     await sl<BaseHttpClient>().post(Uri.parse(ApiConstants.postUserRating),
+  //         body: rateModel.toJson());
+  //     return Future.value(unit);
+  //   } on ServerException catch (e, s) {
+  //     stderr.writeln(e);
+  //     stderr.writeln(s);
+  //     throw Error();
+  //   }
+  // }
 
   @override
-  Future<Unit> PostJobRating(RateModel rateModel) async {
+  Future<Unit> postJobRating(RateModel rateModel) async {
     try {
       //check url
       await sl<BaseHttpClient>().post(Uri.parse(ApiConstants.postJobRating),
@@ -72,4 +73,6 @@ class ProfileRemoteDataSource {
       throw Error();
     }
   }
+
+
 }

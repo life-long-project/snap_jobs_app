@@ -61,19 +61,20 @@ class PostJobBloc extends Bloc<PostJobEvent, PostJobState> {
 
         emit(
           _eitherDoneMessageOrErrorState(
-              failureOrDoneMessage, finishSuccessMessage),
+              failureOrDoneMessage, finishSuccessMessage,  showRate: true),
         );
       }
     });
   }
 
   PostJobState _eitherDoneMessageOrErrorState(
-      Either<Failure, Unit> either, String message) {
+      Either<Failure, Unit> either, String message,
+      {bool showRate = false}) {
     return either.fold(
       (failure) => PostJobError(
         message: _mapFailureToMessage(failure),
       ),
-      (_) => PostJobMessage(message: message),
+      (success) => PostJobMessage(message: message, showRate: showRate),
     );
   }
 

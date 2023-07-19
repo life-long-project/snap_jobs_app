@@ -11,6 +11,8 @@ import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart'
 import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_phone_number_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_accepted_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
@@ -35,6 +37,8 @@ import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
 import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
 import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
+import 'package:snap_jobs/rate_feature/data/datasources/rate_data_source.dart';
+import 'package:snap_jobs/rate_feature/data/repositories/rate_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -81,6 +85,7 @@ class ServicesLocator {
     sl.registerFactory<RequestJobsBloc>(
       () => RequestJobsBloc(
         getUserActiveJobs: sl<GetUserActiveJobsUseCase>(),
+        getUserAcceptedJobs: sl<GetUserAcceptedJobsUseCase>(),
         getAllJobs: sl<GetAllJobsUseCase>(),
         getOneJob: sl<GetOneJobUseCase>(),
       ),
@@ -97,11 +102,20 @@ class ServicesLocator {
     );
     // *Use Cases
 
-    sl.registerLazySingleton(() => SignUpUseCase(sl<BaseSignUpRepository>()));
+    sl.registerLazySingleton(
+      () => SignUpUseCase(
+        sl<BaseSignUpRepository>(),
+      ),
+    );
 
     //*Jobs  Usecases
     sl.registerLazySingleton(
       () => GetAllJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => GetUserPhoneNumberUseCase(
         sl<JobsRepository>(),
       ),
     );
@@ -111,11 +125,13 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
-    // sl.registerLazySingleton(
-    //   () => GetUserJobsUseCase(
-    //     sl<JobsRepository>(),
-    //   ),
-    // );
+
+    sl.registerLazySingleton(
+      () => GetUserAcceptedJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+
     sl.registerLazySingleton(
       () => GetOneJobUseCase(
         sl<JobsRepository>(),
@@ -123,13 +139,13 @@ class ServicesLocator {
     );
 
     sl.registerLazySingleton(
-      () => AddJobUseCase(
-        sl<JobsRepository>(),
-      ),
+      () => GetProfileInfoUseCase(baserepo: sl<BaseProfileRepo>()),
     );
 
     sl.registerLazySingleton(
-      () => GetProfileInfoUseCase(baserepo: sl<BaseProfilerepo>()),
+      () => AddJobUseCase(
+        sl<JobsRepository>(),
+      ),
     );
 
     sl.registerLazySingleton(
@@ -181,7 +197,7 @@ class ServicesLocator {
     sl.registerLazySingleton<ProfileRemoteDataSource>(
       () => ProfileRemoteDataSource(),
     );
-    sl.registerLazySingleton<BaseProfilerepo>(
+    sl.registerLazySingleton<BaseProfileRepo>(
       () => DataRepository(sl<ProfileRemoteDataSource>(), sl<NetworkInfo>()),
     );
     sl.registerLazySingleton<AuthenticationRepository>(
@@ -189,7 +205,9 @@ class ServicesLocator {
               sl<BaseHttpClient>(),
               sl<SharedPreferences>(),
             ));
-
+  sl.registerLazySingleton<BaseRateRepo>(
+      () => BaseRateRepoImpl(sl<BaseRateDataSource>()),
+    );
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
@@ -208,6 +226,16 @@ class ServicesLocator {
 
     //! Core
 
+    sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(
+        sl<Connectivity>(),
+      ),
+    );
+
+    sl.registerLazySingleton<Connectivity>(() => Connectivity());
+
+    // *Datasources
+
     sl.registerLazySingleton<JobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
 
@@ -215,8 +243,10 @@ class ServicesLocator {
       () => JobsLocalDataSourceImpl(),
     );
 
-    sl.registerLazySingleton<NoParameters>(() => const NoParameters());
-
+    sl.registerLazySingleton<BaseRateDataSource>(
+      () => RateDateSourceImpl( sl<BaseHttpClient>()),
+    );
+  sl.registerLazySingleton<NoParameters>(() => const NoParameters());
   }
 }
 

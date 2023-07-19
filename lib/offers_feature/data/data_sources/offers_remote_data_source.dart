@@ -45,7 +45,7 @@ class OffersRemoteDataSourceImpl extends OffersRemoteDataSource {
   Future<void> acceptOffer(String offerId) async {
     try {
       final Uri url = Uri.parse("${ApiConstants.acceptOfferPath}$offerId/");
-      final response = await client.post(
+     await client.post(
         url,
         body: {"offer_id": offerId},
       );

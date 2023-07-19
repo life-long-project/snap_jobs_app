@@ -6,6 +6,7 @@ class JobModel extends JobEntity {
   JobModel({
     super.userId,
     super.userName,
+    super.location,
     required super.dateTime,
     required super.jobTitle,
     super.offers,
@@ -21,13 +22,12 @@ class JobModel extends JobEntity {
     super.jobId = "0",
   });
 
-  //TODO: add LOCATION and user id after backend finish
   factory JobModel.fromJson(Map<String, dynamic> json) {
     return JobModel(
-      // userName: (((json["user"]['f_name']) + " " + (json["user"]?['l_name'])) ?? "error")
-      //     as String,
       userName:
           (json["user"]["f_name"] + " " + json["user"]["l_name"]) as String,
+
+      location: (json["job_location"] ?? "Tanta") as String,
 
       userId: (json["posted_by_id"] ?? "error") as String,
       offers: json["offers"]?.isEmpty ?? true
@@ -49,6 +49,7 @@ class JobModel extends JobEntity {
           : json['job_duration'],
       isActive: (json['is_active'] ?? false) as bool,
       isFinished: (json['is_finished'] ?? true) as bool,
+      workerId: json["accepted_user_id"] ?? "",
 
       jobType: (json['job_type'] ?? "service") == "part-time"
           ? JobType.partTime
@@ -76,6 +77,7 @@ class JobModel extends JobEntity {
       jobDescription: jobDescription,
       jobType: jobType,
       salary: salary,
+      location: location,
       skills: skills,
       isActive: isActive,
       isFinished: isFinished,

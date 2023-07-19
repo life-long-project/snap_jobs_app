@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
+import 'package:snap_jobs/core/widgets/loading_widget.dart';
+import 'package:snap_jobs/rate_feature/data/repositories/rate_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../widgets/job_detail_page/job_detail_widget.dart';
@@ -43,7 +46,6 @@ class _JobDetailPageState extends State<JobDetailPage> {
     return BlocListener<PostJobBloc, PostJobState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-
         switch (state.status) {
           case PostJobStatus.success:
             ScaffoldMessenger.of(context).showSnackBar(
@@ -52,21 +54,20 @@ class _JobDetailPageState extends State<JobDetailPage> {
                     Text(state.message.isEmpty ? "Success" : state.message),
               ),
             );
-            Navigator.pop(context);
+             state.showRate?(): Navigator.pop(context);
             break;
-            case PostJobStatus.error:
+          case PostJobStatus.error:
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content:
-                    Text(state.message.isEmpty ? "Error" : state.message),
+                content: Text(state.message.isEmpty ? "Error" : state.message),
               ),
             );
-            default:
+          default:
             break;
         }
       },
       child: Scaffold(
-        appBar: _buildAppbar(),
+        appBar: _buildAppBar(),
         body: FutureBuilder(
           future: _getJob(widget.jobId,
               (RepositoryProvider.of<UserRepository>(context).user.id) ?? ""),
@@ -74,7 +75,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
             if (snapshot.hasData) {
               return _buildBody(snapshot.data!);
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: LoadingWidget());
             }
           },
         ),
@@ -82,7 +83,7 @@ class _JobDetailPageState extends State<JobDetailPage> {
     );
   }
 
-  AppBar _buildAppbar() {
+  AppBar _buildAppBar() {
     return AppBar(
       title: const Text("Job Detail"),
     );
@@ -91,10 +92,8 @@ class _JobDetailPageState extends State<JobDetailPage> {
   Widget _buildBody(JobEntity job) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-      child: BlocProvider<PostJobBloc>(
-        create: (context) => sl<PostJobBloc>(),
+
         child: JobDetailWidget(job: job),
-      ),
     );
   }
 }

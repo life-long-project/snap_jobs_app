@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/pages/job_detail_page.dart';
+import 'package:snap_jobs/Jobs_feature/presentation/widgets/call_dialogue.dart';
 import 'package:snap_jobs/chat_fetaure/presentation/chat_page.dart';
 import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/core/util/colors_list.dart';
@@ -24,6 +24,7 @@ class JobCardWithoutPic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = RepositoryProvider.of<UserRepository>(context).user.id;
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 5,
@@ -67,11 +68,10 @@ class JobCardWithoutPic extends StatelessWidget {
                 SizedBox(
                   //TODO: add location
                   child: Text(
-                    RepositoryProvider.of<UserRepository>(context)
-                                        .user
-                                        .id ==
-                                    job.userId? '0 km away':
-                    '${job.distance} km away ',
+                    currentUserId ==
+                            job.userId
+                        ? '0 km away'
+                        : '${job.distance} km away ',
                     style: TextStyle(
                         color: ColorsLists.textColors[_colorIndex],
                         fontSize: forHorizontal
@@ -118,11 +118,10 @@ class JobCardWithoutPic extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(
-
                         context,
                         MaterialPageRoute(
                           builder: (_) => BlocProvider<PostJobBloc>(
-                           create: (_) => sl<PostJobBloc>(),
+                            create: (_) => sl<PostJobBloc>(),
                             child: JobDetailPage(jobId: job.jobId),
                           ),
                         ),
@@ -163,19 +162,7 @@ class JobCardWithoutPic extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Phone Number'),
-                                    content: Text(job.userId ??
-                                        "phone number not found  "),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Close'),
-                                      ),
-                                    ],
-                                  );
+                                  return CallDialogue(job: job , currentUserId: currentUserId);
                                 },
                               );
                             },

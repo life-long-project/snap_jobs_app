@@ -11,8 +11,8 @@ abstract class JobsRepository {
 
   Future<Either<Failure, Unit>> finishJob(String jobId);
 
-
-
- Future<Either<Failure, List<JobEntity>>> getUserActiveJobs(String userId);
+  Future<Either<Failure, List<JobEntity>>> getUserActiveJobs(String userId);
   Future<Either<Failure, List<JobEntity>>> getUserAcceptedJobs(String userId);
+
+  Future<Either<Failure, String>> getUserPhoneNumber(String userId);
 }

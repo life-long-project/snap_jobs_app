@@ -22,7 +22,7 @@ class GetProfileBloc extends Bloc<GetProfileEvent, GetProfileState> {
 
         final failureOrProfilemodel =
             // ignore: await_only_futures
-            await getprofileinfousecase.call("64a894c7205107f13de57c3d")
+            await getprofileinfousecase.call(event.id)
                 as Either<Failure, ProfileModel>;
         emit(_mapFailureOrPostsToState(failureOrProfilemodel));
       }

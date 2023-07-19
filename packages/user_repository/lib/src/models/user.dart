@@ -46,7 +46,7 @@ class User extends Equatable {
   final List<String>? skills;
 
   @JsonKey(defaultValue: "not found", name: "_id")
-  final String? id;
+  final String id;
 
   @JsonKey(required: true, includeToJson: false, name: "rating",
 

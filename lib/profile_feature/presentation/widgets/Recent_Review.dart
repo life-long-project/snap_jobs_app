@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/core/util/colors_list.dart';
 import 'package:snap_jobs/profile_feature/presentation/widgets/rating.dart';
-import 'package:snap_jobs/rate/data/models/rate_model.dart';
+import 'package:snap_jobs/rate_feature/data/models/rate_model.dart';
 
 class RecentReview extends StatelessWidget {
   final RateModel _rate;

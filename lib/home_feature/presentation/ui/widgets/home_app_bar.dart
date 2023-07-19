@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snap_jobs/profile_feature/presentation/Screens/profile_page.dart';
 
-AppBar HomeAppBar(BuildContext context, String userName) {
+AppBar HomeAppBar(BuildContext context, String userName , String id ) {
   return AppBar(
     backgroundColor: Theme.of(context).colorScheme.primary,
     shadowColor: Theme.of(context).colorScheme.onPrimary,
@@ -17,7 +17,7 @@ AppBar HomeAppBar(BuildContext context, String userName) {
       IconButton(
         icon: const Icon(Icons.person_2_rounded),
         onPressed: () {
-          Navigator.of(context).push(ProfileScreen.route());
+          Navigator.of(context).push(ProfileScreen.route(id));
         },
         color: Colors.blue,
       ),

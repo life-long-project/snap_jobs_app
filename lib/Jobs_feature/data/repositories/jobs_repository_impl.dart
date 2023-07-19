@@ -52,7 +52,14 @@ class JobsRepositoryImpl extends JobsRepository {
       return remoteDataSource.finishJob(jobId);
     });
   }
+//* get phone number
 
+  @override
+  Future<Either<Failure, String>> getUserPhoneNumber(String userId) async {
+   final String userPhone = await  remoteDataSource.getUserPhoneNumber(userId);
+
+    return Right(userPhone);
+  }
   //* getUserActiveJobs
 
   @override
@@ -73,12 +80,12 @@ class JobsRepositoryImpl extends JobsRepository {
   Future<Either<Failure, List<JobEntity>>> getUserAcceptedJobs(
       String userId) async {
     final List<JobEntity> response =
-        await remoteDataSource.getUserActiveJobs(userId);
+        await remoteDataSource.getUserAcceptedJobs(userId);
 
     final List<JobEntity> result = response
-        .where((element) =>
-            element.isFinished == false && element.isActive == false)
-        .toList();
+    .where((element) =>
+        element.isFinished == false && element.isActive == false)
+    .toList();
 
     return Right(result);
   }
@@ -144,4 +151,6 @@ class JobsRepositoryImpl extends JobsRepository {
       return const Left(OfflineFailure());
     }
   }
+
+
 }

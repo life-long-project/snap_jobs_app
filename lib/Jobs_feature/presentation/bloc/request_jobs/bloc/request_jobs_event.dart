@@ -30,6 +30,16 @@ class RequestUserActiveJobsEvent extends RequestJobsEvent {
   List<Object> get props => [userId];
 }
 
+class RequestUserAcceptedJobsEvent extends RequestJobsEvent {
+  final String userId;
+
+  const RequestUserAcceptedJobsEvent({required this.userId});
+
+  @override
+  List<Object> get props => [userId];
+}
+
+
 class RequestUserJobsEvent extends RequestJobsEvent {
   final String userId;
 

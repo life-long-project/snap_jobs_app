@@ -9,7 +9,6 @@ import 'package:snap_jobs/offers_feature/presentation/pages/Add_offer_dialog.dar
 import 'package:snap_jobs/offers_feature/presentation/widgets/offers_list.dart';
 import 'package:user_repository/user_repository.dart';
 
-
 class JobDetailWidget extends StatelessWidget {
   final JobEntity job;
   const JobDetailWidget({
@@ -323,7 +322,7 @@ class JobDetailWidget extends StatelessWidget {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: "Dahab",
+                                          text: job.location ?? "error",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium
@@ -349,16 +348,19 @@ class JobDetailWidget extends StatelessWidget {
 
                       children: [
                         (!job.isFinished)
-                            ?( RepositoryProvider.of<UserRepository>(context)
-                                .user.id! ==
-                                   job.userId) ?
-                                   (job.isActive)  ?
+                            ? (RepositoryProvider.of<UserRepository>(context)
+                                        .user
+                                        .id ==
+                                    job.userId)
+                                ? (job.isActive)
+                                    ?
                                     //job is active and by the user, the user
                                     // should see options add, delete and list of offers to
                                     //choose from
                                     Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
                                           Flexible(
                                             //* Edit button and delete button
@@ -387,9 +389,7 @@ class JobDetailWidget extends StatelessWidget {
                                                       "offers",
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .displaySmall!
-                                                          ,
-
+                                                          .displaySmall!,
                                                     ),
                                                     //* offers list
 
