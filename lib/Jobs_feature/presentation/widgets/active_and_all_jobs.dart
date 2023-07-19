@@ -143,7 +143,7 @@ class ActiveAndAllJobs extends StatelessWidget {
                                     Icons.timer_outlined,
                                   ),
                                   Text(
-                                    'In process Jobs',
+                                    'jobs with your accepted offer',
                                   ),
                                 ],
                               ),
