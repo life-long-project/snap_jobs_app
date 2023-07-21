@@ -62,7 +62,7 @@ class AboutUs extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Mohamed Ayman',
+                  'Mahmoud Mosbah',
                   style: TextStyle(fontSize: 20),
                 ),
                 Image.network(
