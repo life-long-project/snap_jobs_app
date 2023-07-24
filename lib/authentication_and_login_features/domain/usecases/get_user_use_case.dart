@@ -13,7 +13,7 @@ class GetUserUsecase extends BaseUseCase<User, String> {
 
       // user repository gets the user once it's token is set.
       await _userRepository.setToken(token);
-      final user = await _userRepository.user;
+      final user = _userRepository.user;
 
       return user;
     } catch (e) {

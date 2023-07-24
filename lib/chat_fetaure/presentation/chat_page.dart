@@ -11,7 +11,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
-    return  Center(
+    return  const Center(
       child: Text('Chat Page'),);
   }
 }

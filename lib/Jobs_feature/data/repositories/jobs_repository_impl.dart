@@ -52,17 +52,40 @@ class JobsRepositoryImpl extends JobsRepository {
       return remoteDataSource.finishJob(jobId);
     });
   }
+//* get phone number
 
+  @override
+  Future<Either<Failure, String>> getUserPhoneNumber(String userId) async {
+   final String userPhone = await  remoteDataSource.getUserPhoneNumber(userId);
+
+    return Right(userPhone);
+  }
   //* getUserActiveJobs
 
   @override
   getUserActiveJobs(String userId) async {
-    final List<JobEntity> response = await remoteDataSource.getUserJobs(userId);
+    final List<JobEntity> response =
+        await remoteDataSource.getUserActiveJobs(userId);
 
     final List<JobEntity> result = response
         .where((element) =>
             element.isFinished == false && element.isActive == false)
         .toList();
+
+    return Right(result);
+  }
+
+  //* User accepted jobs
+  @override
+  Future<Either<Failure, List<JobEntity>>> getUserAcceptedJobs(
+      String userId) async {
+    final List<JobEntity> response =
+        await remoteDataSource.getUserAcceptedJobs(userId);
+
+    final List<JobEntity> result = response
+    .where((element) =>
+        element.isFinished == false && element.isActive == false)
+    .toList();
 
     return Right(result);
   }
@@ -114,13 +137,6 @@ class JobsRepositoryImpl extends JobsRepository {
     return Right(response);
   }
 
-//* getUserJobs
-  @override
-  Future<Either<Failure, List<JobEntity>>> getUserJobs(String userId) {
-    // TODO: implement getUserJobs
-    throw UnimplementedError();
-  }
-
   //* helper method
 
   Future<Either<Failure, Unit>> _getMessage(Function request) async {
@@ -135,4 +151,6 @@ class JobsRepositoryImpl extends JobsRepository {
       return const Left(OfflineFailure());
     }
   }
+
+
 }

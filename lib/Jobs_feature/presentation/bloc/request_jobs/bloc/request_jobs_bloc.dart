@@ -7,8 +7,8 @@ import 'package:equatable/equatable.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_accepted_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../../../core/network/error_message_model.dart';
@@ -21,11 +21,13 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   String? userId;
   final GetAllJobsUseCase getAllJobs;
   final GetUserActiveJobsUseCase getUserActiveJobs;
+  final GetUserAcceptedJobsUseCase getUserAcceptedJobs;
   final GetOneJobUseCase getOneJob;
 
   @override
   RequestJobsBloc({
     required this.getUserActiveJobs,
+    required this.getUserAcceptedJobs,
     required this.getAllJobs,
     required this.getOneJob,
   }) : super(const RequestJobsState()) {
@@ -44,6 +46,11 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
 
     on<RequestUserActiveJobsEvent>(
       _onRequestUserActiveJobsEvent,
+      transformer: droppable(),
+    );
+
+    on<RequestUserAcceptedJobsEvent>(
+      _onRequestUserAcceptedJobsEvent,
       transformer: droppable(),
     );
   }
@@ -84,6 +91,19 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
     emit(_mapResponseToActiveJobsState(response));
   }
 
+  //* user accepted jobs
+  FutureOr<void> _onRequestUserAcceptedJobsEvent(
+      RequestUserAcceptedJobsEvent event,
+      Emitter<RequestJobsState> emit) async {
+    final response = await getUserAcceptedJobs.call(event.userId);
+    userId = event.userId;
+
+    emit(state.copyWith(status: RequestJobsStatus.loading));
+    await Future.delayed(Duration.zero);
+    emit(_mapResponseToAcceptedJobsState(response));
+  }
+
+//* Refresh
   FutureOr<void> _onRefreshUserActiveJobs(
       Emitter<RequestJobsState> emit) async {
     if (userId != null) {
@@ -93,6 +113,7 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
       emit(_mapResponseToActiveJobsState(response));
     }
   }
+
   //* One Job
 
   Future<void> _onGetOneJobEvent(
@@ -114,14 +135,27 @@ class RequestJobsBloc extends Bloc<RequestJobsEvent, RequestJobsState> {
   } //*helper methods
 
   RequestJobsState _mapResponseToActiveJobsState(
-      Either<Failure, List<JobEntity>> either) {
-    return either.fold(
+      Either<Failure, List<JobEntity>> response) {
+    return response.fold(
       (failure) => state.copyWith(
           message: _mapFailureToMessage(failure),
           status: RequestJobsStatus.failure),
       (jobs) => state.copyWith(
         status: RequestJobsStatus.success,
         userActiveJobs: jobs,
+      ),
+    );
+  }
+
+  RequestJobsState _mapResponseToAcceptedJobsState(
+      Either<Failure, List<JobEntity>> response) {
+    return response.fold(
+      (failure) => state.copyWith(
+          message: _mapFailureToMessage(failure),
+          status: RequestJobsStatus.failure),
+      (jobs) => state.copyWith(
+        status: RequestJobsStatus.success,
+        userAcceptedJobs: jobs,
       ),
     );
   }

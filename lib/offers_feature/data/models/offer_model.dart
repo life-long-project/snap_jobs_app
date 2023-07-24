@@ -34,7 +34,6 @@ class OfferModel extends OfferEntity {
   @JsonKey(
     required: false,
     includeIfNull: false,
-    defaultValue: false,
     includeToJson: false,
     name: "status",
     fromJson: _isAcceptedFromJson,
@@ -82,7 +81,7 @@ OfferEntity   toEntity() {
     );
   }
 
-  OfferModel(
+  const OfferModel(
       {String? offerId,
       String? applicantId,
       required String jobId,

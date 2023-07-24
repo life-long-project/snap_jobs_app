@@ -1,5 +1,3 @@
-
-
 import 'package:dartz/dartz.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 

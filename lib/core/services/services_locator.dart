@@ -11,8 +11,9 @@ import 'package:snap_jobs/Jobs_feature/domain/usecases/delete_job_use_case.dart'
 import 'package:snap_jobs/Jobs_feature/domain/usecases/finish_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_all_jobs_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_one_job_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_phone_number_usecase.dart';
+import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_accepted_jobs.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_active_jobs.dart';
-import 'package:snap_jobs/Jobs_feature/domain/usecases/get_user_jobs_usecase.dart';
 import 'package:snap_jobs/Jobs_feature/domain/usecases/update_job_use_case.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/post_job/post_job_bloc.dart';
 import 'package:snap_jobs/Jobs_feature/presentation/bloc/request_jobs/bloc/request_jobs_bloc.dart';
@@ -29,9 +30,15 @@ import 'package:snap_jobs/core/network/network_info.dart';
 import 'package:snap_jobs/offers_feature/data/data_sources/offers_remote_data_source.dart';
 import 'package:snap_jobs/offers_feature/data/repositories/offer_repository_impl.dart';
 import 'package:snap_jobs/offers_feature/domain/repositories/offer_repository.dart';
-import 'package:snap_jobs/offers_feature/domain/usecases/apply_offer_use_case.dart';
 import 'package:snap_jobs/offers_feature/domain/usecases/offer_use_cases.dart';
 import 'package:snap_jobs/offers_feature/presentation/bloc/offer_bloc.dart';
+import 'package:snap_jobs/profile_feature/data/data_source/profile_remote_data_source.dart';
+import 'package:snap_jobs/profile_feature/data/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/repository/profile_repo.dart';
+import 'package:snap_jobs/profile_feature/domain/usecase/get_profile.dart';
+import 'package:snap_jobs/profile_feature/presentation/controlers/bloc/get_profile_bloc/getbrofile_bloc.dart';
+import 'package:snap_jobs/rate_feature/data/datasources/rate_data_source.dart';
+import 'package:snap_jobs/rate_feature/data/repositories/rate_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../use_case/base_usecase_with_dartz.dart';
@@ -78,8 +85,14 @@ class ServicesLocator {
     sl.registerFactory<RequestJobsBloc>(
       () => RequestJobsBloc(
         getUserActiveJobs: sl<GetUserActiveJobsUseCase>(),
+        getUserAcceptedJobs: sl<GetUserAcceptedJobsUseCase>(),
         getAllJobs: sl<GetAllJobsUseCase>(),
         getOneJob: sl<GetOneJobUseCase>(),
+      ),
+    );
+    sl.registerFactory<GetProfileBloc>(
+      () => GetProfileBloc(
+        getprofileinfousecase: sl<GetProfileInfoUseCase>(),
       ),
     );
     sl.registerFactory<OfferBloc>(
@@ -87,14 +100,22 @@ class ServicesLocator {
         sl<ApplyOfferUseCase>(),
       ),
     );
-
     // *Use Cases
 
-    sl.registerLazySingleton(() => SignUpUseCase(sl<BaseSignUpRepository>()));
+    sl.registerLazySingleton(
+      () => SignUpUseCase(
+        sl<BaseSignUpRepository>(),
+      ),
+    );
 
     //*Jobs  Usecases
     sl.registerLazySingleton(
       () => GetAllJobsUseCase(
+        sl<JobsRepository>(),
+      ),
+    );
+    sl.registerLazySingleton(
+      () => GetUserPhoneNumberUseCase(
         sl<JobsRepository>(),
       ),
     );
@@ -104,11 +125,13 @@ class ServicesLocator {
         sl<JobsRepository>(),
       ),
     );
+
     sl.registerLazySingleton(
-      () => GetUserJobsUseCase(
+      () => GetUserAcceptedJobsUseCase(
         sl<JobsRepository>(),
       ),
     );
+
     sl.registerLazySingleton(
       () => GetOneJobUseCase(
         sl<JobsRepository>(),
@@ -116,10 +139,15 @@ class ServicesLocator {
     );
 
     sl.registerLazySingleton(
+      () => GetProfileInfoUseCase(baserepo: sl<BaseProfileRepo>()),
+    );
+
+    sl.registerLazySingleton(
       () => AddJobUseCase(
         sl<JobsRepository>(),
       ),
     );
+
     sl.registerLazySingleton(
       () => DeleteJobUseCase(
         sl<JobsRepository>(),
@@ -165,12 +193,21 @@ class ServicesLocator {
         sl<BaseSignUpDataSource>(),
       ),
     );
+
+    sl.registerLazySingleton<ProfileRemoteDataSource>(
+      () => ProfileRemoteDataSource(),
+    );
+    sl.registerLazySingleton<BaseProfileRepo>(
+      () => DataRepository(sl<ProfileRemoteDataSource>(), sl<NetworkInfo>()),
+    );
     sl.registerLazySingleton<AuthenticationRepository>(
         () => AuthenticationRepository(
               sl<BaseHttpClient>(),
               sl<SharedPreferences>(),
             ));
-
+  sl.registerLazySingleton<BaseRateRepo>(
+      () => BaseRateRepoImpl(sl<BaseRateDataSource>()),
+    );
     sl.registerSingleton<UserRepository>(
       UserRepository(sl<BaseHttpClient>(), ApiConstants.getUserByID),
     );
@@ -201,11 +238,15 @@ class ServicesLocator {
 
     sl.registerLazySingleton<JobRemoteDataSource>(
         () => PostJobRemoteDataSourceImpl(client: sl()));
+
     sl.registerLazySingleton<JobsLocalDataSource>(
       () => JobsLocalDataSourceImpl(),
     );
 
-    sl.registerLazySingleton<NoParameters>(() => const NoParameters());
+    sl.registerLazySingleton<BaseRateDataSource>(
+      () => RateDateSourceImpl( sl<BaseHttpClient>()),
+    );
+  sl.registerLazySingleton<NoParameters>(() => const NoParameters());
   }
 }
 

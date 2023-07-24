@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../../Home_Feature/Presentation/UI/Screens/home.dart';
+import '../../home_feature/presentation/ui/screens/home.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({

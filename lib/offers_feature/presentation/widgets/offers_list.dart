@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snap_jobs/core/services/services_locator.dart';
 import 'package:snap_jobs/offers_feature/domain/entities/offer_entity.dart';
-import 'package:snap_jobs/offers_feature/domain/usecases/accept_offer_use_case.dart';
 import 'package:snap_jobs/offers_feature/presentation/widgets/offer_card.dart';
 
 class OffersListWidget extends StatefulWidget {

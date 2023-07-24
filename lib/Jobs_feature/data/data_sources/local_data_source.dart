@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snap_jobs/Jobs_feature/domain/entities/job_entity.dart';
 
 import '../../../core/error/exceptions.dart';
-import '../models/job_post_model.dart';
 
 abstract class JobsLocalDataSource {
   Future<List<JobEntity>> getCachedJobs();
@@ -21,7 +17,6 @@ class JobsLocalDataSourceImpl implements JobsLocalDataSource {
 
   @override
   Future<Unit> cacheJobs(List<JobEntity> jobs) async {
-    final path = Directory.current.path;
 
     var box = await Hive.openBox<JobEntity>(cachedJobs);
 
@@ -34,7 +29,6 @@ class JobsLocalDataSourceImpl implements JobsLocalDataSource {
 
   @override
   Future<List<JobEntity>> getCachedJobs() async {
-    final path = Directory.current.path;
 
     final box = await Hive.openBox<JobEntity>(cachedJobs);
 
